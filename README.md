@@ -1,6 +1,6 @@
 # Motivation
 
-![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Screenshot")
+![alt text](https://github.com/AlexWinter/Motivation/blob/master/Screenshot.png "Screenshot")
 
 This project is not finished yet.
 
