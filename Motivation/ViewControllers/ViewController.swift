@@ -23,7 +23,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         notifier.requestSendingNotifications()
 
         NotificationCenter.default.addObserver(self, selector: #selector(self.openSpecificVC(_:)), name: NSNotification.Name(rawValue: "notificationActionReceived"), object: nil)
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadTableData), name: .reload, object: nil)
+
         if let savedData = loadData() {
             data += savedData
         } else {
@@ -46,6 +47,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         longPressGesture.minimumPressDuration = 0.8
         longPressGesture.delegate = self
         self.tableView.addGestureRecognizer(longPressGesture)
+        
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
     }
     
     @objc func handleLongPress(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
@@ -132,7 +136,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let entry = data[indexPath.row]
         cell.textLabel?.text = entry.headline
         cell.textLabel?.font = UIFont(name: "Avenir Next", size: 16.0)
-        cell.textLabel?.textColor = UIColor(red: 80/255, green: 125/255, blue: 160/255, alpha: 1)
+        cell.textLabel?.textColor = Constants.myColor.fullAlpha
         return cell
     }
 
@@ -149,8 +153,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 
     func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath)
-        cell?.contentView.backgroundColor = UIColor(red: 80/255, green: 125/255, blue: 160/255, alpha: 0.5)
-        cell?.backgroundColor = UIColor(red: 80/255, green: 125/255, blue: 160/255, alpha: 0.5)
+        cell?.contentView.backgroundColor = Constants.myColor.halfAlpha
+        cell?.backgroundColor = Constants.myColor.halfAlpha
         cell?.textLabel?.textColor = UIColor.white
     }
 
@@ -158,7 +162,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let cell = tableView.cellForRow(at: indexPath)
         cell?.contentView.backgroundColor = UIColor.clear
         cell?.backgroundColor = UIColor.clear
-        cell?.textLabel?.textColor = UIColor(red: 80/255, green: 125/255, blue: 160/255, alpha: 1)
+        cell?.textLabel?.textColor = Constants.myColor.fullAlpha
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -185,7 +189,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
         return UITableViewCellEditingStyle.delete
-        
     }
 
     func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
@@ -286,13 +289,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         if let soundUrl = Bundle.main.url(forResource: filename, withExtension: ext) {
             var soundId: SystemSoundID = 0
-            
             AudioServicesCreateSystemSoundID(soundUrl as CFURL, &soundId)
-            
             AudioServicesAddSystemSoundCompletion(soundId, nil, nil, { (soundId, clientData) -> Void in
                 AudioServicesDisposeSystemSoundID(soundId)
             }, nil)
-            
             AudioServicesPlaySystemSound(soundId)
         }
         showFunAlert()
@@ -320,10 +320,23 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             UIAlertAction in
             print("Nichts laden")
         }
-        
+
         alertController.addAction(okAction)
         alertController.addAction(cancelAction)
         
         self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func restoreData() {
+        self.data = Slogan.loadDefaultSlogans()
+        self.recalculateRandomDays()
+        self.scheduleAllNotifications()
+    }
+    
+    @objc func reloadTableData(_ notification: Notification) {
+        restoreData()
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
     }
 }

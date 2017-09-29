@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import os.log
 
 let notifier = NotificationManager()
 
@@ -58,7 +57,7 @@ class Slogan: NSObject, NSCoding {
     required convenience init?(coder aDecoder: NSCoder) {
         // The name is required. If we cannot decode a name string, the initializer should fail.
         guard let headline = aDecoder.decodeObject(forKey: PropertyKey.headline) as? String else {
-            os_log("Unable to decode the name for a Slogan object.", log: OSLog.default, type: .debug)
+            print("Unable to decode the name for a Slogan object.")
             return nil
         }
 

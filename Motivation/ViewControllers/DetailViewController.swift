@@ -32,15 +32,15 @@ class DetailViewController: UIViewController, UITextViewDelegate {
             shareButton.isEnabled = false
         }
 
-        navigationController?.navigationItem.backBarButtonItem?.setBackgroundImage(UIImage(named: "Down"), for: .normal, barMetrics: .compact)
-
         bodyTextview.delegate = self
-        bodyTextview.tintColor = UIColor(red: 80/255, green: 125/255, blue: 160/255, alpha: 0.8)
+        bodyTextview.tintColor = Constants.myColor.fullAlpha
         navBarTitleButton.setTitle(navBarTitle.title , for: .normal)
         
         let swipe = UISwipeGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
         swipe.direction = .down
         bodyTextview.addGestureRecognizer(swipe)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardShown(n:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
     }
 
     @IBAction func navBarTouch(_ sender: UIButton) {
@@ -130,7 +130,15 @@ class DetailViewController: UIViewController, UITextViewDelegate {
         }
         return true
     }
-    
+
+    @objc func keyboardShown(n:NSNotification) {
+        let d = n.userInfo!
+        var r = (d[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        r = self.bodyTextview.convert(r, from:nil)
+        self.bodyTextview.contentInset.bottom = r.size.height
+        self.bodyTextview.scrollIndicatorInsets.bottom = r.size.height
+    }
+
     @objc func changeTitle() {
         let alertController = UIAlertController(title: "Neue Überschrift", message: "Geben Sie eine neue Überschrift ein.", preferredStyle: .alert)
         

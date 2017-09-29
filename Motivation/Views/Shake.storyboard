@@ -43,7 +43,7 @@
                                 </items>
                             </navigationBar>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sbD-St-1n8">
-                                <rect key="frame" x="10" y="74" width="355" height="583"/>
+                                <rect key="frame" x="10" y="64" width="360" height="603"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                 <color key="textColor" red="0.31372549020000001" green="0.49019607840000001" blue="0.62745098040000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -53,10 +53,10 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="sbD-St-1n8" firstAttribute="trailing" secondItem="77F-tX-HF8" secondAttribute="trailing" constant="-10" id="Ca5-dD-TxK"/>
+                            <constraint firstItem="sbD-St-1n8" firstAttribute="trailing" secondItem="77F-tX-HF8" secondAttribute="trailing" constant="-5" id="Ca5-dD-TxK"/>
                             <constraint firstItem="sbD-St-1n8" firstAttribute="leading" secondItem="77F-tX-HF8" secondAttribute="leading" constant="10" id="PQU-qF-7tJ"/>
-                            <constraint firstItem="77F-tX-HF8" firstAttribute="bottom" secondItem="sbD-St-1n8" secondAttribute="bottom" constant="10" id="vdV-OD-kMf"/>
-                            <constraint firstItem="sbD-St-1n8" firstAttribute="top" secondItem="77F-tX-HF8" secondAttribute="top" constant="10" id="ya8-Gb-edf"/>
+                            <constraint firstItem="77F-tX-HF8" firstAttribute="bottom" secondItem="sbD-St-1n8" secondAttribute="bottom" id="vdV-OD-kMf"/>
+                            <constraint firstItem="sbD-St-1n8" firstAttribute="top" secondItem="77F-tX-HF8" secondAttribute="top" id="ya8-Gb-edf"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="77F-tX-HF8"/>
                     </view>

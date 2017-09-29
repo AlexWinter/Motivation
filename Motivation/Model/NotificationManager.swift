@@ -76,23 +76,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
             if let error = error {
                 print("Unable to Add Notification Request (\(error), \(error.localizedDescription))")
             }
-//                else {
-//                print("Notification successfully sheduled at \(notificationTrigger) \n \(notificationContent)")
-//            }
         }
-
-//        let calendar = Calendar.current
-//
-//        let day = calendar.component(.day, from: date)
-//        let month = calendar.component(.month, from: date)
-//        let year = calendar.component(.year, from: date)
-//        let hour = calendar.component(.hour, from: date)
-//        let minutes = calendar.component(.minute, from: date)
-//
-//        pendingNotificationNames += title + "\n"
-//        UserDefaults.init(suiteName: "group.com.alexwinter.motivation")?.setValue(pendingNotificationNames, forKey: "pendingNotifications")
-//        pendingNotificationDates += "\(day).\(month).\(year) \(hour):\(String(format: "%02d", minutes))\n"
-//        UserDefaults.init(suiteName: "group.com.alexwinter.motivation")?.setValue(pendingNotificationDates, forKey: "pendingNotificationsDates")
     }
 
     func testLocalNotification() {
@@ -100,14 +84,15 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
         notificationContent.title = "TEST"
         notificationContent.subtitle = "Gestaltgebet"
         notificationContent.body = "Das ist ein Test"
-        notificationContent.sound = UNNotificationSound(named: "DiDiDiDiDi.m4a")
+//        notificationContent.sound = UNNotificationSound(named: "DiDiDiDiDi.m4a")
+        notificationContent.sound = UNNotificationSound.default()
         notificationContent.categoryIdentifier = "actionCategory"
         notificationContent.setValue(true, forKey: "shouldAlwaysAlertWhileAppIsForeground")
         notificationContent.userInfo = ["title":"Gestaltgebet"]
         
         // Add Trigger
 //        let notificationTrigger = UNCalendarNotificationTrigger(dateMatching: Calendar.current.dateComponents([.year,.month,.day,.hour,.minute,.second,], from: date) , repeats: false)
-        let notificationTrigger = UNTimeIntervalNotificationTrigger.init(timeInterval: 5, repeats: false)
+        let notificationTrigger = UNTimeIntervalNotificationTrigger.init(timeInterval: 3, repeats: false)
     
         // Create Notification Request
         let notificationRequest = UNNotificationRequest(identifier: "motivation_local_notification" + "Gestaltgebet", content: notificationContent, trigger: notificationTrigger)
@@ -127,9 +112,6 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         // For handling tap and user actions
         let userInfo = response.notification.request.content.userInfo
-//        if let notificationTitle = userInfo["title"] as? String {
-//            print("Title is: \(notificationTitle)")
-//        }
         
         switch response.actionIdentifier {
         case "action1":
