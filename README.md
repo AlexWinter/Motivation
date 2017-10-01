@@ -5,8 +5,6 @@
 This project is not finished yet.
 
 ## Open ToDo's:
-- Settings: Notification Sound übernehmen ins App
-- Settings: Zeitfenster ins App übernehmen
 - App Icon ein bisschen heller
 - Bar Icons dünner
 - App beim richtigen Spruch öffnen wenn von Extension oder Notification gelauncht.
