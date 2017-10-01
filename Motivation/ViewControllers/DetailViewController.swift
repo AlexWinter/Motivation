@@ -115,7 +115,7 @@ class DetailViewController: UIViewController, UITextViewDelegate {
         bodyTextview.setContentOffset(CGPoint.zero, animated: false)
     }
     
-//    MARK: Textfield
+//    MARK: TextView
     func textViewDidBeginEditing(_ textView: UITextView) {
         if bodyTextview.text == "Text hier eingeben" {
             bodyTextview.text = ""
@@ -127,6 +127,14 @@ class DetailViewController: UIViewController, UITextViewDelegate {
         textView.resignFirstResponder()
         if self.navBarTitle.title != "Überschrift" {
             shareButton.isEnabled = true
+        }
+        return true
+    }
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if(text == "\n") {
+            textView.resignFirstResponder()
+            return false
         }
         return true
     }

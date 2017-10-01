@@ -20,10 +20,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         notifier.requestSendingNotifications()
-
-        NotificationCenter.default.addObserver(self, selector: #selector(self.openSpecificVC(_:)), name: NSNotification.Name(rawValue: "notificationActionReceived"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(reloadTableData), name: .reload, object: nil)
 
         if let savedData = loadData() {
             data += savedData
@@ -34,7 +32,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 
         if !notificationsAlreadyScheduled() {
             self.recalculateRandomDays()
-            scheduleAllNotifications()
         }
 
         let tapGestureRecognizer = UITapGestureRecognizer(target:self, action: #selector(ViewController.playSound))
@@ -50,6 +47,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.openSpecificVC(_:)), name: .openFromNotification , object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadTableData), name: .reload, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(recalculateRandomDays), name: .timeFrameChanged, object: nil)
     }
     
     @objc func handleLongPress(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
@@ -117,7 +118,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 tableView.insertRows(at: [newIndexPath], with: .bottom)
                 tableView.scrollToRow(at: newIndexPath, at: .bottom, animated: true)
                 recalculateRandomDays()
-                scheduleAllNotifications()
             }
         }
     }
@@ -180,7 +180,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             // Delete the row from the data source
             data.remove(at: indexPath.row)
             recalculateRandomDays()
-            scheduleAllNotifications()
             tableView.deleteRows(at: [indexPath], with: .fade)
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
@@ -236,14 +235,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
     }
     
-    func scheduleAllNotifications() -> Void {
-        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
-        data.forEach { (saying ) in
-            notifier.scheduleNotification(with: saying.headline, text: saying.text, date: saying.fireDay)
-        }
-    }
-    
-    func recalculateRandomDays() {
+    @objc func recalculateRandomDays() {
         let unshuffledArray = Array(1 ... data.count)
         let shuffledArray = GKRandomSource.sharedRandom().arrayByShufflingObjects(in: unshuffledArray)
         var i = 0
@@ -253,6 +245,14 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             i += 1
         }
         saveData()
+        scheduleAllNotifications()
+    }
+    
+    func scheduleAllNotifications() -> Void {
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+        data.forEach { (saying ) in
+            notifier.scheduleNotification(with: saying.headline, text: saying.text, date: saying.fireDay)
+        }
     }
 
     //MARK: Load / save Data
@@ -318,7 +318,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         let cancelAction = UIAlertAction(title: "Nein", style: UIAlertActionStyle.cancel) {
             UIAlertAction in
-            print("Nichts laden")
         }
 
         alertController.addAction(okAction)
@@ -330,7 +329,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func restoreData() {
         self.data = Slogan.loadDefaultSlogans()
         self.recalculateRandomDays()
-        self.scheduleAllNotifications()
     }
     
     @objc func reloadTableData(_ notification: Notification) {
