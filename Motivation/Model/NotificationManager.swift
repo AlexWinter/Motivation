@@ -9,17 +9,14 @@
 import UIKit
 import UserNotifications
 
-var pendingNotificationNames:String = ""
-var pendingNotificationDates:String = ""
-
 class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     
     let center = UNUserNotificationCenter.current()
 
     func requestSendingNotifications() {
-        UNUserNotificationCenter.current().delegate = self
-        
-        UNUserNotificationCenter.current().getNotificationSettings { (notificationSettings) in
+        center.delegate = self
+
+        center.getNotificationSettings { (notificationSettings) in
             switch notificationSettings.authorizationStatus {
             case .notDetermined:
                 self.requestAuthorization(completionHandler: { (success) in
@@ -37,7 +34,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     
     private func requestAuthorization(completionHandler: @escaping (_ success: Bool) -> ()) {
         // Request Authorization
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { (success, error) in
+        center.requestAuthorization(options: [.alert, .sound, .badge]) { (success, error) in
             if let error = error {
                 print("Request Authorization Failed (\(error), \(error.localizedDescription))")
             }
@@ -46,8 +43,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
             let action2 = UNNotificationAction(identifier: "action2", title: "Ignorieren", options: [.destructive])
             let category = UNNotificationCategory(identifier: "actionCategory", actions: [action1,action2], intentIdentifiers: [], options: [])
             
-            UNUserNotificationCenter.current().setNotificationCategories([category])
-
+            self.center.setNotificationCategories([category])
             completionHandler(success)
         }
     }
@@ -72,7 +68,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
         let notificationRequest = UNNotificationRequest(identifier: "motivation_local_notification" + title, content: notificationContent, trigger: notificationTrigger)
         
         // Add Request to User Notification Center
-        UNUserNotificationCenter.current().add(notificationRequest) { (error) in
+        center.add(notificationRequest) { (error) in
             if let error = error {
                 print("Unable to Add Notification Request (\(error), \(error.localizedDescription))")
             }
@@ -82,10 +78,15 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     func testLocalNotification() {
         let notificationContent = UNMutableNotificationContent()
         notificationContent.title = "TEST"
-        notificationContent.subtitle = "Gestaltgebet"
+        notificationContent.subtitle = "Test"
         notificationContent.body = "Das ist ein Test"
-//        notificationContent.sound = UNNotificationSound(named: "DiDiDiDiDi.m4a")
-        notificationContent.sound = UNNotificationSound.default()
+        if NotificationSound.individual {
+            notificationContent.sound = UNNotificationSound(named: "DiDiDiDiDi.m4a")
+            notificationContent.body = "Individueller Sound"
+        } else {
+            notificationContent.sound = UNNotificationSound.default()
+            notificationContent.body = "Standard Sound"
+        }
         notificationContent.categoryIdentifier = "actionCategory"
         notificationContent.setValue(true, forKey: "shouldAlwaysAlertWhileAppIsForeground")
         notificationContent.userInfo = ["title":"Gestaltgebet"]
@@ -98,7 +99,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
         let notificationRequest = UNNotificationRequest(identifier: "motivation_local_notification" + "Gestaltgebet", content: notificationContent, trigger: notificationTrigger)
         
         // Add Request to User Notification Center
-        UNUserNotificationCenter.current().add(notificationRequest) { (error) in
+        center.add(notificationRequest) { (error) in
             if let error = error {
                 print("Unable to Add Notification Request (\(error), \(error.localizedDescription))")
             }
@@ -115,12 +116,38 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
         
         switch response.actionIdentifier {
         case "action1":
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "notificationActionReceived"), object: nil, userInfo: userInfo)
+            NotificationCenter.default.post(name: .openFromNotification, object: nil, userInfo: userInfo)
         case "action2":
             print("Ignorieren Tapped")
         default:
             break
         }
         completionHandler()
+    }
+    
+    func reScheduleAllNotificationsWithTheNewSound() {
+        let arrayOfNotifications: [UNNotificationRequest] = []
+
+        center.getPendingNotificationRequests(completionHandler: { (notifications) in
+            for notification in notifications{
+                let content = UNMutableNotificationContent()
+                content.title = notification.content.title
+                content.subtitle = notification.content.subtitle
+                content.body = notification.content.body
+                if NotificationSound.individual {
+                    content.sound = UNNotificationSound(named: "DiDiDiDiDi.m4a")
+                } else {
+                    content.sound = UNNotificationSound.default()
+                }
+
+                content.userInfo = notification.content.userInfo
+                content.categoryIdentifier = notification.content.categoryIdentifier
+
+            }
+        })
+
+        for notification in arrayOfNotifications {
+            center.add(notification, withCompletionHandler: nil)
+        }
     }
 }

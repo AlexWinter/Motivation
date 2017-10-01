@@ -13,9 +13,28 @@ func calculateFireDate(daysAdding: Int) -> Date {
     calendar.timeZone = .current
     var components = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: Date())
 
-    components.day = components.day! + daysAdding
-    components.hour = 9 + Int(arc4random_uniform(8))
-    components.minute = 0 + Int(arc4random_uniform(60))
+    let (startHour, startMinute) = intFromTime(date: TimeFrame.start)
+    let (endHour, endMinute) = intFromTime(date: TimeFrame.end)
 
+    components.day = components.day! + daysAdding
+    components.hour = startHour + Int(arc4random_uniform(UInt32(endHour-startHour)))
+
+    if startHour == endHour {
+        components.minute = startMinute + Int(arc4random_uniform(UInt32(endMinute)))
+    } else if components.hour == startHour {
+        components.minute = startMinute + Int(arc4random_uniform(UInt32(60)))
+    } else if components.hour == endHour {
+        components.minute = Int(arc4random_uniform(UInt32(endMinute)))
+    } else {
+        components.minute = 0 + Int(arc4random_uniform(UInt32(60)))
+    }
     return Calendar.current.date(from: components)!
+}
+
+func intFromTime(date: Date) -> (Int, Int) {
+    var calendar = Calendar.current
+    calendar.timeZone = .current
+    var components = calendar.dateComponents([.hour, .minute], from: date)
+
+    return (Int(components.hour!), (Int(components.minute!)))
 }

@@ -9,15 +9,12 @@
 import UIKit
 import AVFoundation
 import UserNotifications
-import LocalAuthentication
 
-class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPickerViewDataSource, UNUserNotificationCenterDelegate {
 
     private var startTimeCellEpanded: Bool = false
     private var endTimeCellEpanded: Bool = false
-    
-    var individualNotificationSound = true
-    
+
     @IBOutlet weak var cellSoundIndividual: UITableViewCell!
     @IBOutlet weak var cellSoundStandard: UITableViewCell!
     @IBOutlet weak var pickerStartTime: UIDatePicker!
@@ -34,14 +31,12 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        getSavedSettings()
+        getSavedSound()
         getSavedTimeFrame()
-        initDatePickers()
         getVersionNumber()
         changeAllTextColors()
-        
-//        allScheduledNotifications()
     }
+
 //    A small hack because the colors selected in the Storyboard are just not quite there
     func changeAllTextColors() {
         labelIndividualSound.textColor = Constants.myColor.fullAlpha
@@ -52,79 +47,28 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
         labelEndTime.textColor = Constants.myColor.fullAlpha
         labelResetData.textColor = Constants.myColor.fullAlpha
         labelVersion.textColor = Constants.myColor.fullAlpha
+//        Possible Private Method :(
+        pickerStartTime.setValue(Constants.myColor.fullAlpha, forKeyPath: "textColor")
+        pickerEndTime.setValue(Constants.myColor.fullAlpha, forKeyPath: "textColor")
     }
     
-    func getSavedSettings() {
-        let defaults = UserDefaults.standard
-
-        if (defaults.bool(forKey: "hasLaunchedOnce")) {
-            // App already launched
-        } else {
-            // This is the first launch ever
-            defaults.set(true, forKey: "hasLaunchedOnce")
-            defaults.set(true, forKey: "individualNotificationSound")
-            UserDefaults.standard.set(pickerEndTime.date, forKey: "EndTime")
-        }
-        
-        let individualSound = defaults.bool(forKey: "individualNotificationSound")
-
-        if !individualSound {
-            cellSoundStandard.accessoryType = .checkmark
-        } else {
+    func getSavedSound() {
+        if NotificationSound.individual {
             cellSoundIndividual.accessoryType = .checkmark
+        } else {
+            cellSoundStandard.accessoryType = .checkmark
         }
-        individualNotificationSound = individualSound
     }
-    
-    func getSavedTimeFrame() {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "HH:mm"
-        
-        if (UserDefaults.standard.object(forKey: "StartTime") != nil) {
-            TimeFrame.start = (UserDefaults.standard.object(forKey: "StartTime") as? Date)!
-        } else {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat =  "HH:mm"
-            
-            if let date = dateFormatter.date(from: "09:00") {
-                pickerStartTime.date = date
-                TimeFrame.start = date
-            }
-        }
-        
-        if (UserDefaults.standard.object(forKey: "EndTime") != nil) {
-            TimeFrame.end = (UserDefaults.standard.object(forKey: "EndTime") as? Date)!
-        } else {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat =  "HH:mm"
-            
-            if let date = dateFormatter.date(from: "18:00") {
-                pickerEndTime.date = date
-                TimeFrame.end = date
-            }
-        }
 
+    func getSavedTimeFrame() {
         pickerStartTime.date = TimeFrame.start
         pickerEndTime.date = TimeFrame.end
         
+        pickerStartTime.maximumDate = pickerEndTime.date
+        pickerEndTime.minimumDate = pickerStartTime.date
+
         updateTimeLabel(label: labelStartTime, from: pickerStartTime)
         updateTimeLabel(label: labelEndTime, from: pickerEndTime)
-
-    }
-    
-    func initDatePickers() {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat =  "HH:mm"
-        
-//        if let date = dateFormatter.date(from: "09:00") {
-//            pickerStartTime.date = date
-//        }
-//        if let date = dateFormatter.date(from: "18:00") {
-//            pickerEndTime.date = date
-//        }
-        
-        pickerStartTime.setValue(Constants.myColor.fullAlpha, forKeyPath: "textColor")
-        pickerEndTime.setValue(Constants.myColor.fullAlpha, forKeyPath: "textColor")
     }
     
     func getVersionNumber() {
@@ -144,22 +88,32 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let cell = tableView.cellForRow(at: indexPath)
         let defaults = UserDefaults.standard
 
         // Change Sound
         if indexPath.section == 0 {
             if indexPath.row == 0 {
                 playCustomSound()
-                cellSoundIndividual.accessoryType = .checkmark
-                cellSoundStandard.accessoryType = .none
-                defaults.set(true, forKey: "individualNotificationSound")
+                if !NotificationSound.individual {
+                    //  Change Notification Sound to individual Sound
+                    cellSoundIndividual.accessoryType = .checkmark
+                    cellSoundStandard.accessoryType = .none
+                    NotificationSound.individual = true
+                    defaults.set(true, forKey: "individualNotificationSound")
+                    notifier.reScheduleAllNotificationsWithTheNewSound()
+                }
             } else if indexPath.row == 1 {
                 playStandardSound()
-                cellSoundIndividual.accessoryType = .none
-                cellSoundStandard.accessoryType = .checkmark
-                defaults.set(false, forKey: "individualNotificationSound")
+                if NotificationSound.individual {
+                    //  Change Notification Sound to standard Sound
+                    cellSoundIndividual.accessoryType = .none
+                    cellSoundStandard.accessoryType = .checkmark
+                    NotificationSound.individual = false
+                    defaults.set(false, forKey: "individualNotificationSound")
+                    notifier.reScheduleAllNotificationsWithTheNewSound()
+                }
             }
+
         // Change Time
         } else if indexPath.section == 1 {
             if indexPath.row == 0 {
@@ -244,12 +198,18 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
     
     @IBAction func startTimeChanged(_ sender: Any) {
         updateTimeLabel(label: labelStartTime, from: pickerStartTime)
+        TimeFrame.start = pickerStartTime.date
+        pickerEndTime.minimumDate = pickerStartTime.date
         UserDefaults.standard.set(pickerStartTime.date, forKey: "StartTime")
+        NotificationCenter.default.post(name: .timeFrameChanged, object: nil)
     }
     
     @IBAction func endTimeChanged(_ sender: Any) {
         updateTimeLabel(label: labelEndTime, from: pickerEndTime)
+        TimeFrame.end = pickerEndTime.date
+        pickerStartTime.maximumDate = pickerEndTime.date
         UserDefaults.standard.set(pickerEndTime.date, forKey: "EndTime")
+        NotificationCenter.default.post(name: .timeFrameChanged, object: nil)
     }
     
     func updateTimeLabel(label: UILabel, from picker: UIDatePicker) {
@@ -276,17 +236,5 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
         
         // Present the controller
         self.present(alertController, animated: true, completion: nil)
-    }
-    
-    func allScheduledNotifications() {
-        let content = UNMutableNotificationContent()
-        content.sound = UNNotificationSound.default()
-
-        let center = UNUserNotificationCenter.current()
-        center.getPendingNotificationRequests(completionHandler: { requests in
-            for request in requests {
-                print("\(request.content.subtitle) mit sound: \(String(describing: request.content.sound?.debugDescription))")
-            }
-        })
     }
 }

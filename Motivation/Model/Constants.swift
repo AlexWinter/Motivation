@@ -9,6 +9,8 @@
 import Foundation
 import UIKit
 
+//var alreadyLaunchedApp: Bool = false
+
 enum Constants {
     struct myColor {
         static let fullAlpha = UIColor(red: 80/255, green: 125/255, blue: 160/255, alpha: 1.0)
@@ -16,11 +18,19 @@ enum Constants {
     }
 }
 
+// Default values are 9:00 and 18:00. They get set in AppDelegate.
 struct TimeFrame {
     static var start: Date = Date()
     static var end: Date = Date()
 }
 
+// Default values is true. It get's set in AppDelegate.
+struct NotificationSound {
+    static var individual: Bool = true
+}
+
 extension Notification.Name {
-    static let reload = Notification.Name("reload")
+    static let reload = Notification.Name("Reload")
+    static let timeFrameChanged = Notification.Name("TimeFrameChanged")
+    static let openFromNotification = Notification.Name("notificationActionReceived")
 }
