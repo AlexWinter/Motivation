@@ -2,7 +2,7 @@
 
 ![alt text](https://github.com/AlexWinter/Motivation/blob/master/Screenshot.png "Screenshot")
 
-This project is not finished yet.
+Das Projekt befindet sich noch in Entwicklung.
 
 ## Open ToDo's:
 - App Icon ein bisschen heller

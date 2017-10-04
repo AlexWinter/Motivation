@@ -188,12 +188,12 @@
 		769B5EFC1F4C56E70060B784 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				76FFF4161F7CE4B3005686EF /* Constants.swift */,
+				766E6AF81F7ED1FE00B1206D /* SetDefaultValues.swift */,
 				76A146811F7AD16B003A0BAD /* Slogans.swift */,
 				767AE1581F4ECC9500C2D4C1 /* NotificationManager.swift */,
 				76D2BDED1F594D5A0099EBB2 /* FireDates.swift */,
 				769B5EF51F4C49D50060B784 /* CustomTableViewCell.swift */,
-				76FFF4161F7CE4B3005686EF /* Constants.swift */,
-				766E6AF81F7ED1FE00B1206D /* SetDefaultValues.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";

@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-//var alreadyLaunchedApp: Bool = false
+var textInWidget: String = ""
 
 enum Constants {
     struct myColor {
@@ -33,4 +33,16 @@ extension Notification.Name {
     static let reload = Notification.Name("Reload")
     static let timeFrameChanged = Notification.Name("TimeFrameChanged")
     static let openFromNotification = Notification.Name("notificationActionReceived")
+    static let openFromWidget = Notification.Name("OpenFromWidget")
+}
+
+extension UserDefaults {
+    enum Keys {
+        static let IndividualNotificationSound = "IndividualNotificationSound"
+        static let StartTime = "StartTime"
+        static let EndTime = "EndTime"
+        static let HasLaunchedOnce = "HasLaunchedOnce"
+        static let NotificationsAlreadyScheduled = "NotificationsAlreadyScheduled"
+        static let ExtensionText = "ExtensionText"
+    }
 }

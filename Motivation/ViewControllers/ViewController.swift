@@ -20,7 +20,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         notifier.requestSendingNotifications()
 
         if let savedData = loadData() {
@@ -41,7 +41,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         self.becomeFirstResponder()
         
         let longPressGesture:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(self.handleLongPress(_:)))
-        longPressGesture.minimumPressDuration = 0.8
+        longPressGesture.minimumPressDuration = 0.6
         longPressGesture.delegate = self
         self.tableView.addGestureRecognizer(longPressGesture)
         
@@ -51,6 +51,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         NotificationCenter.default.addObserver(self, selector: #selector(self.openSpecificVC(_:)), name: .openFromNotification , object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(reloadTableData), name: .reload, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(recalculateRandomDays), name: .timeFrameChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(openFromTodayWidget), name: .openFromWidget, object: nil)
     }
     
     @objc func handleLongPress(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
@@ -104,14 +105,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     @IBAction func unwindToList(sender: UIStoryboardSegue) {
         if let sourceViewController = sender.source as? DetailViewController, let changedSlogan = sourceViewController.selectedSlogan {
-            
+    
             if let selectedIndexPath = tableView.indexPathForSelectedRow {
                 // Update an existing Slogan
                 data[selectedIndexPath.row] = changedSlogan
                 tableView.reloadRows(at: [selectedIndexPath], with: .none)
-                saveData()
-            }
-            else {
+                recalculateRandomDays()
+            } else {
                 // Add a new Slogan
                 let newIndexPath = IndexPath(row: data.count, section: 0)
                 data.append(changedSlogan)
@@ -224,11 +224,27 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
     }
 
+    @objc func openFromTodayWidget() {
+        for entry in data {
+            if entry.text == textInWidget {
+                let index = data.index(where: { (item) -> Bool in
+                    item.headline == entry.headline
+                })
+                
+                let rowToSelect = IndexPath(row: index!, section: 0)
+                let cell = tableView.cellForRow(at: rowToSelect)
+                tableView.selectRow(at: rowToSelect, animated: true, scrollPosition: .top)
+                performSegue(withIdentifier: "ShowSlogan", sender: cell)
+            }
+        }
+        textInWidget = ""
+    }
+
     func notificationsAlreadyScheduled() -> Bool {
         let defaults = UserDefaults.standard
-        let alreadyScheduled = defaults.bool(forKey: "alreadyScheduled")
+        let alreadyScheduled = defaults.bool(forKey: UserDefaults.Keys.NotificationsAlreadyScheduled)
         if !alreadyScheduled {
-            defaults.set(true, forKey: "alreadyScheduled")
+            defaults.set(true, forKey: UserDefaults.Keys.NotificationsAlreadyScheduled)
             return false
         } else {
             return true

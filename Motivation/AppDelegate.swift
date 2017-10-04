@@ -31,6 +31,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+        
+        let defaults = UserDefaults(suiteName: "group.com.alexwinter.motivation")
+
+        if (defaults?.value(forKey: UserDefaults.Keys.ExtensionText)) == nil {
+            textInWidget = ""
+        } else {
+            textInWidget = defaults?.value(forKey: UserDefaults.Keys.ExtensionText) as! String
+            defaults?.set("", forKey: UserDefaults.Keys.ExtensionText)
+            NotificationCenter.default.post(name: .openFromWidget, object: nil)
+        }
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {

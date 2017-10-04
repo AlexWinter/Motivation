@@ -89,8 +89,7 @@ class DetailViewController: UIViewController, UITextViewDelegate {
         if (bodyTextview.text == "Text hier eingeben" || bodyTextview.text.isEmpty || navBarTitle.title == "Überschrift") {
             return
         } else {
-
-            let text: String = String(navBarTitle.title! + "\n" + bodyTextview.text)
+            let text: String = String(navBarTitle.title! + ":\n\"" + bodyTextview.text + "\"")
             let activityViewController = UIActivityViewController(activityItems: [text as Any], applicationActivities: nil)
 
             activityViewController.popoverPresentationController?.barButtonItem = (sender as! UIBarButtonItem)
@@ -127,14 +126,6 @@ class DetailViewController: UIViewController, UITextViewDelegate {
         textView.resignFirstResponder()
         if self.navBarTitle.title != "Überschrift" {
             shareButton.isEnabled = true
-        }
-        return true
-    }
-    
-    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        if(text == "\n") {
-            textView.resignFirstResponder()
-            return false
         }
         return true
     }

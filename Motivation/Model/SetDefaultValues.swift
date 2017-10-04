@@ -11,20 +11,18 @@ import Foundation
 func setValuesforFirstLaunch() {
     let defaults = UserDefaults.standard
     
-    if (defaults.bool(forKey: "hasLaunchedOnce")) {
+    if (defaults.bool(forKey: UserDefaults.Keys.HasLaunchedOnce)) {
         // App already launched
-//        alreadyLaunchedApp = true
         
-        NotificationSound.individual = defaults.bool(forKey: "individualNotificationSound")
-        TimeFrame.start = (defaults.object(forKey: "StartTime") as? Date)!
-        TimeFrame.end = (defaults.object(forKey: "EndTime") as? Date)!
+        NotificationSound.individual = defaults.bool(forKey: UserDefaults.Keys.IndividualNotificationSound)
+        TimeFrame.start = (defaults.object(forKey: UserDefaults.Keys.StartTime) as? Date)!
+        TimeFrame.end = (defaults.object(forKey: UserDefaults.Keys.EndTime) as? Date)!
         
     } else {
-//        alreadyLaunchedApp = false
         // This is the first launch ever
         // Set Notification Sound to individual = true
-        defaults.set(true, forKey: "hasLaunchedOnce")
-        defaults.set(true, forKey: "individualNotificationSound")
+        defaults.set(true, forKey: UserDefaults.Keys.HasLaunchedOnce)
+        defaults.set(true, forKey: UserDefaults.Keys.IndividualNotificationSound)
         NotificationSound.individual = true
         
         // Set Time Frame for Notification to 9:00 to 18:00
@@ -37,7 +35,7 @@ func setValuesforFirstLaunch() {
             TimeFrame.end = date
         }
         
-        defaults.set(TimeFrame.start, forKey: "StartTime")
-        defaults.set(TimeFrame.end, forKey: "EndTime")
+        defaults.set(TimeFrame.start, forKey: UserDefaults.Keys.StartTime)
+        defaults.set(TimeFrame.end, forKey: UserDefaults.Keys.EndTime)
     }
 }

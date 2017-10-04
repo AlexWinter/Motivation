@@ -24,7 +24,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" rowHeight="40" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="dfW-dD-thR">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" delaysContentTouches="NO" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" rowHeight="40" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="dfW-dD-thR">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="separatorColor" red="0.31372549020000001" green="0.49019607840000001" blue="0.62745098040000002" alpha="0.5" colorSpace="calibratedRGB"/>
@@ -80,7 +80,7 @@
                         <barButtonItem key="leftBarButtonItem" image="Settings" id="d9O-TY-2K0">
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
-                                <segue destination="38x-4k-zqu" kind="presentation" identifier="ShowSettings" id="8du-HD-1dA"/>
+                                <segue destination="38x-4k-zqu" kind="presentation" identifier="ShowSettings" modalPresentationStyle="overFullScreen" id="8du-HD-1dA"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" image="Add" id="XUD-Gl-vAS">
@@ -112,7 +112,7 @@
                                 <color key="tintColor" red="0.31372549020000001" green="0.49019607840000001" blue="0.62745098040000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="textColor" red="0.31372549020000001" green="0.49019607840000001" blue="0.62745098040000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="16"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" spellCheckingType="yes" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" spellCheckingType="yes" enablesReturnKeyAutomatically="YES"/>
                             </textView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SFR-bZ-xDL">
                                 <rect key="frame" x="0.0" y="524" width="320" height="44"/>
@@ -240,9 +240,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <color key="tintColor" red="0.31372549020000001" green="0.49019607840000001" blue="0.62745098040000002" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="separatorColor" red="0.31372549020000001" green="0.49019607840000001" blue="0.62745098040000002" alpha="0.5" colorSpace="calibratedRGB"/>
                         <color key="sectionIndexColor" red="0.31372549020000001" green="0.49019607840000001" blue="0.62745098040000002" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="sectionIndexBackgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="sectionIndexBackgroundColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="sectionIndexTrackingBackgroundColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <sections>
                             <tableViewSection headerTitle="Ton für Benachrichtigungen" id="t1M-am-lEq">
                                 <cells>
@@ -256,7 +258,7 @@
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="App eigener Ton" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="DE6-HW-UTw">
                                                     <rect key="frame" x="16" y="0.0" width="289" height="39.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="16"/>
+                                                    <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="15"/>
                                                     <color key="textColor" red="0.31372549020000001" green="0.49019607840000001" blue="0.62745098040000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -274,7 +276,7 @@
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Standard Ton" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Wvv-qe-h1m">
                                                     <rect key="frame" x="16" y="0.0" width="289" height="39.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="16"/>
+                                                    <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="15"/>
                                                     <color key="textColor" red="0.31372549020000001" green="0.49019607840000001" blue="0.62745098040000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -294,8 +296,8 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="9:00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aJw-lT-8Qr">
-                                                    <rect key="frame" x="284" y="13" width="33" height="22"/>
-                                                    <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="16"/>
+                                                    <rect key="frame" x="286" y="11" width="31" height="20"/>
+                                                    <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="15"/>
                                                     <color key="textColor" red="0.31372549020000001" green="0.49019607840000001" blue="0.62745098040000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -312,22 +314,22 @@
                                                     </connections>
                                                 </datePicker>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Beginn" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EWH-HF-iXX">
-                                                    <rect key="frame" x="10" y="8" width="52.5" height="35"/>
+                                                    <rect key="frame" x="8" y="11" width="49" height="20"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="35" id="dni-KF-hBz"/>
+                                                        <constraint firstAttribute="height" constant="20" id="dni-KF-hBz"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="16"/>
+                                                    <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="15"/>
                                                     <color key="textColor" red="0.31372549020000001" green="0.49019607840000001" blue="0.62745098040000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="aJw-lT-8Qr" firstAttribute="top" secondItem="Hws-32-Dg3" secondAttribute="topMargin" constant="5" id="FYu-0b-bTd"/>
+                                                <constraint firstItem="aJw-lT-8Qr" firstAttribute="top" secondItem="Hws-32-Dg3" secondAttribute="topMargin" constant="3" id="FYu-0b-bTd"/>
                                                 <constraint firstItem="aJw-lT-8Qr" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Hws-32-Dg3" secondAttribute="leadingMargin" id="R3s-FL-M3j"/>
                                                 <constraint firstItem="aJw-lT-8Qr" firstAttribute="trailing" secondItem="Hws-32-Dg3" secondAttribute="trailingMargin" constant="5" id="VsY-MJ-dzr"/>
-                                                <constraint firstItem="EWH-HF-iXX" firstAttribute="top" secondItem="Hws-32-Dg3" secondAttribute="topMargin" id="sWu-0k-HlU"/>
+                                                <constraint firstItem="EWH-HF-iXX" firstAttribute="top" secondItem="Hws-32-Dg3" secondAttribute="topMargin" constant="3" id="sWu-0k-HlU"/>
                                                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="EWH-HF-iXX" secondAttribute="trailingMargin" id="y2b-kv-WmV"/>
-                                                <constraint firstItem="EWH-HF-iXX" firstAttribute="leading" secondItem="Hws-32-Dg3" secondAttribute="leadingMargin" constant="2" id="z2w-wq-hkj"/>
+                                                <constraint firstItem="EWH-HF-iXX" firstAttribute="leading" secondItem="Hws-32-Dg3" secondAttribute="leadingMargin" id="z2w-wq-hkj"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -339,8 +341,8 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="18:00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0OG-Ro-LbB">
-                                                    <rect key="frame" x="268" y="13" width="42" height="22"/>
-                                                    <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="16"/>
+                                                    <rect key="frame" x="270.5" y="11" width="39.5" height="20"/>
+                                                    <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="15"/>
                                                     <color key="textColor" red="0.31372549020000001" green="0.49019607840000001" blue="0.62745098040000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -357,19 +359,19 @@
                                                     </connections>
                                                 </datePicker>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ende" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Znq-Fa-9gO">
-                                                    <rect key="frame" x="10" y="13" width="38.5" height="22"/>
-                                                    <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="16"/>
+                                                    <rect key="frame" x="8" y="11" width="36" height="20"/>
+                                                    <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="15"/>
                                                     <color key="textColor" red="0.31372549020000001" green="0.49019607840000001" blue="0.62745098040000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="Znq-Fa-9gO" firstAttribute="top" secondItem="da3-6o-x2K" secondAttribute="topMargin" constant="5" id="Dz8-fZ-Cb3"/>
+                                                <constraint firstItem="Znq-Fa-9gO" firstAttribute="top" secondItem="da3-6o-x2K" secondAttribute="topMargin" constant="3" id="Dz8-fZ-Cb3"/>
                                                 <constraint firstItem="0OG-Ro-LbB" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="da3-6o-x2K" secondAttribute="leading" id="I82-cV-Je3"/>
                                                 <constraint firstAttribute="trailing" secondItem="0OG-Ro-LbB" secondAttribute="trailing" constant="10" id="l7L-yc-HA3"/>
-                                                <constraint firstItem="Znq-Fa-9gO" firstAttribute="leading" secondItem="da3-6o-x2K" secondAttribute="leadingMargin" constant="2" id="phL-iV-den"/>
+                                                <constraint firstItem="Znq-Fa-9gO" firstAttribute="leading" secondItem="da3-6o-x2K" secondAttribute="leadingMargin" id="phL-iV-den"/>
                                                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Znq-Fa-9gO" secondAttribute="trailingMargin" id="vN9-ki-ZPH"/>
-                                                <constraint firstItem="0OG-Ro-LbB" firstAttribute="top" secondItem="da3-6o-x2K" secondAttribute="topMargin" constant="5" id="y6W-Em-E5r"/>
+                                                <constraint firstItem="0OG-Ro-LbB" firstAttribute="top" secondItem="da3-6o-x2K" secondAttribute="topMargin" constant="3" id="y6W-Em-E5r"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -387,7 +389,7 @@
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Sprüche zurücksetzen" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="RJL-Qa-q2S">
                                                     <rect key="frame" x="16" y="0.0" width="289" height="39.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="16"/>
+                                                    <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="15"/>
                                                     <color key="textColor" red="0.31372549020000001" green="0.49019607840000001" blue="0.62745098040000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -402,10 +404,10 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="39.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Version" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="hPv-ct-cuH">
-                                                    <rect key="frame" x="15" y="0.0" width="290" height="39.5"/>
+                                                <label opaque="NO" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Version" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="hPv-ct-cuH">
+                                                    <rect key="frame" x="16" y="0.0" width="289" height="39.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="16"/>
+                                                    <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="15"/>
                                                     <color key="textColor" red="0.31372549020000001" green="0.49019607840000001" blue="0.62745098040000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -462,6 +464,9 @@
                             <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="17"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <color key="textShadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </textAttributes>
+                        <textAttributes key="largeTitleTextAttributes">
+                            <fontDescription key="fontDescription" type="system" pointSize="0.0"/>
                         </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>

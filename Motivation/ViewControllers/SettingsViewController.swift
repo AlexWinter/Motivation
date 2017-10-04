@@ -51,7 +51,7 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
         pickerStartTime.setValue(Constants.myColor.fullAlpha, forKeyPath: "textColor")
         pickerEndTime.setValue(Constants.myColor.fullAlpha, forKeyPath: "textColor")
     }
-    
+
     func getSavedSound() {
         if NotificationSound.individual {
             cellSoundIndividual.accessoryType = .checkmark
@@ -63,7 +63,7 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
     func getSavedTimeFrame() {
         pickerStartTime.date = TimeFrame.start
         pickerEndTime.date = TimeFrame.end
-        
+
         pickerStartTime.maximumDate = pickerEndTime.date
         pickerEndTime.minimumDate = pickerStartTime.date
 
@@ -83,7 +83,6 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
 //    MARK: TableView
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath)
-        cell?.textLabel?.font = UIFont(name: "Avenir Next", size: 16.0)
         cell?.textLabel?.textColor = Constants.myColor.fullAlpha
     }
 
@@ -99,7 +98,7 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
                     cellSoundIndividual.accessoryType = .checkmark
                     cellSoundStandard.accessoryType = .none
                     NotificationSound.individual = true
-                    defaults.set(true, forKey: "individualNotificationSound")
+                    defaults.set(true, forKey: UserDefaults.Keys.IndividualNotificationSound)
                     notifier.reScheduleAllNotificationsWithTheNewSound()
                 }
             } else if indexPath.row == 1 {
@@ -109,7 +108,7 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
                     cellSoundIndividual.accessoryType = .none
                     cellSoundStandard.accessoryType = .checkmark
                     NotificationSound.individual = false
-                    defaults.set(false, forKey: "individualNotificationSound")
+                    defaults.set(false, forKey: UserDefaults.Keys.IndividualNotificationSound)
                     notifier.reScheduleAllNotificationsWithTheNewSound()
                 }
             }
@@ -155,11 +154,20 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
         }
         return 42
     }
+
     override func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath)
         cell?.contentView.backgroundColor = Constants.myColor.halfAlpha
         cell?.backgroundColor = Constants.myColor.fullAlpha
         cell?.textLabel?.textColor = UIColor.white
+        
+        if indexPath.section == 1 && indexPath.row == 0 {
+            labelStart.textColor = UIColor.white
+            labelStartTime.textColor = UIColor.white
+        } else if indexPath.section == 1 && indexPath.row == 1 {
+            labelEnd.textColor = UIColor.white
+            labelEndTime.textColor = UIColor.white
+        }
     }
     
     override func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
@@ -167,6 +175,14 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
         cell?.contentView.backgroundColor = UIColor.white
         cell?.backgroundColor = UIColor.white
         cell?.textLabel?.textColor = Constants.myColor.fullAlpha
+        
+        if indexPath.section == 1 && indexPath.row == 0 {
+            labelStart.textColor = Constants.myColor.fullAlpha
+            labelStartTime.textColor = Constants.myColor.fullAlpha
+        } else if indexPath.section == 1 && indexPath.row == 1 {
+            labelEnd.textColor = Constants.myColor.fullAlpha
+            labelEndTime.textColor = Constants.myColor.fullAlpha
+        }
     }
 
     //    MARK: Play Sound
@@ -183,6 +199,7 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
             AudioServicesPlaySystemSound(soundId)
         }
     }
+
     func playStandardSound() {
         AudioServicesPlaySystemSound(1315)
     }
@@ -200,7 +217,7 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
         updateTimeLabel(label: labelStartTime, from: pickerStartTime)
         TimeFrame.start = pickerStartTime.date
         pickerEndTime.minimumDate = pickerStartTime.date
-        UserDefaults.standard.set(pickerStartTime.date, forKey: "StartTime")
+        UserDefaults.standard.set(pickerStartTime.date, forKey: UserDefaults.Keys.StartTime)
         NotificationCenter.default.post(name: .timeFrameChanged, object: nil)
     }
     
@@ -208,7 +225,7 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
         updateTimeLabel(label: labelEndTime, from: pickerEndTime)
         TimeFrame.end = pickerEndTime.date
         pickerStartTime.maximumDate = pickerEndTime.date
-        UserDefaults.standard.set(pickerEndTime.date, forKey: "EndTime")
+        UserDefaults.standard.set(pickerEndTime.date, forKey: UserDefaults.Keys.EndTime)
         NotificationCenter.default.post(name: .timeFrameChanged, object: nil)
     }
     

@@ -131,6 +131,22 @@
                {
                "headline": "Wie immer",
                "text": "Wenn du das tust, was du immer getan hast, bekommst du das, was du immer bekommen hast."
+               },
+               {
+               "headline": "Vincent van Gogh",
+               "text": "Wie wäre das Leben, hätten wir nicht den Mut etwas zu riskieren."
+               },
+               {
+               "headline": "Søren Kierkegaard",
+               "text": "Das Leben leben kann man nur vorwärts,\ndas Leben verstehen nur rückwärts."
+               },
+               {
+               "headline": "Mark Twain",
+               "text": "Gib jedem Tag die Chance, der schönste deines Lebens zu werden."
+               },
+               {
+               "headline": "Seneca",
+               "text": "Wie ein Theaterstück ist das Leben. Nicht wie lange, sondern wie gut es gespielt wurde, darauf kommt es an."
                }
                ]
 }
