@@ -50,6 +50,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.openSpecificVC(_:)), name: .openFromNotification , object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(reloadTableData), name: .reload, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(recalculateRandomDays), name: .reschedule , object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(recalculateRandomDays), name: .timeFrameChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(openFromTodayWidget), name: .openFromWidget, object: nil)
     }

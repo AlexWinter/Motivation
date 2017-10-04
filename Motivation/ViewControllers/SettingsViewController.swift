@@ -27,8 +27,9 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
     @IBOutlet weak var labelStart: UILabel!
     @IBOutlet weak var labelEnd: UILabel!
     @IBOutlet weak var labelResetData: UILabel!
+    @IBOutlet weak var labelRecalculateNotifications: UILabel!
     @IBOutlet weak var labelVersion: UILabel!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         getSavedSound()
@@ -47,6 +48,7 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
         labelEndTime.textColor = Constants.myColor.fullAlpha
         labelResetData.textColor = Constants.myColor.fullAlpha
         labelVersion.textColor = Constants.myColor.fullAlpha
+        labelRecalculateNotifications.textColor = Constants.myColor.fullAlpha
 //        Possible Private Method :(
         pickerStartTime.setValue(Constants.myColor.fullAlpha, forKeyPath: "textColor")
         pickerEndTime.setValue(Constants.myColor.fullAlpha, forKeyPath: "textColor")
@@ -73,11 +75,11 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
     
     func getVersionNumber() {
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
-            self.labelVersion.text = "Version: " + version
+            self.labelVersion.text = "App Version: " + version
         }
-        if let version = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
-            self.labelVersion.text = self.labelVersion.text! + " Build: " + version
-        }
+//        if let version = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
+//            self.labelVersion.text = self.labelVersion.text! + " Build: " + version
+//        }
     }
     
 //    MARK: TableView
@@ -131,6 +133,8 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
         } else if indexPath.section == 2 {
             if indexPath.row == 0 {
                 showAlertForDataReset()
+            } else if indexPath.row == 1 {
+                showAlertForRescheduleNotifications()
             }
         }
         tableView.beginUpdates()
@@ -143,16 +147,16 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
             if startTimeCellEpanded {
                 return 235
             } else {
-                return 42
+                return 40
             }
         } else if indexPath.section == 1 && indexPath.row == 1 {
             if endTimeCellEpanded {
                 return 235
             } else {
-                return 42
+                return 40
             }
         }
-        return 42
+        return 40
     }
 
     override func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
@@ -243,6 +247,25 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
         let okAction = UIAlertAction(title: "Zurücksetzen", style: .default) {
             UIAlertAction in
             NotificationCenter.default.post(name: .reload, object: nil)
+        }
+        let cancelAction = UIAlertAction(title: "Abbrechen", style: .cancel) {
+            UIAlertAction in
+        }
+        // Add the actions
+        alertController.addAction(okAction)
+        alertController.addAction(cancelAction)
+        
+        // Present the controller
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func showAlertForRescheduleNotifications() {
+        let alertController = UIAlertController(title: "Benachrichtigungen neu planen", message: "Alle bestehenden Benachrichtigungen werden gelöscht und neu eingeplant.", preferredStyle: .alert)
+        
+        // Create the actions
+        let okAction = UIAlertAction(title: "Neu planen", style: .default) {
+            UIAlertAction in
+            NotificationCenter.default.post(name: .reschedule, object: nil)
         }
         let cancelAction = UIAlertAction(title: "Abbrechen", style: .cancel) {
             UIAlertAction in

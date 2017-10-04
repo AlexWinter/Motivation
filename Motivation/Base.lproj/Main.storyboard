@@ -377,16 +377,16 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection id="BG4-8v-3Mw">
+                            <tableViewSection headerTitle="Weitere Einstellungen" id="BG4-8v-3Mw">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="RJL-Qa-q2S" style="IBUITableViewCellStyleDefault" id="Cu6-DR-Otu">
-                                        <rect key="frame" x="0.0" y="697.5" width="320" height="40"/>
+                                        <rect key="frame" x="0.0" y="717.5" width="320" height="40"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Cu6-DR-Otu" id="TeF-DV-CrV">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="39.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Sprüche zurücksetzen" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="RJL-Qa-q2S">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Sprüche zurücksetzen" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="RJL-Qa-q2S">
                                                     <rect key="frame" x="16" y="0.0" width="289" height="39.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="15"/>
@@ -398,13 +398,31 @@
                                         <color key="tintColor" red="0.31372549020000001" green="0.49019607840000001" blue="0.62745098040000002" alpha="1" colorSpace="calibratedRGB"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="hPv-ct-cuH" style="IBUITableViewCellStyleDefault" id="hOS-yg-Gi3">
-                                        <rect key="frame" x="0.0" y="737.5" width="320" height="40"/>
+                                        <rect key="frame" x="0.0" y="757.5" width="320" height="40"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="hOS-yg-Gi3" id="iQG-rF-6Os">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="39.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Version" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="hPv-ct-cuH">
+                                                <label opaque="NO" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Benachrichtigungen neu planen" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="hPv-ct-cuH">
+                                                    <rect key="frame" x="16" y="0.0" width="289" height="39.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="15"/>
+                                                    <color key="textColor" red="0.31372549020000001" green="0.49019607840000001" blue="0.62745098040000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <color key="tintColor" red="0.31372549020000001" green="0.49019607840000001" blue="0.62745098040000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="Pc5-Xl-by8" style="IBUITableViewCellStyleDefault" id="UfY-jS-oH9">
+                                        <rect key="frame" x="0.0" y="797.5" width="320" height="40"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="UfY-jS-oH9" id="XAL-KA-FvX">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="39.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="App Version 1.0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Pc5-Xl-by8">
                                                     <rect key="frame" x="16" y="0.0" width="289" height="39.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="15"/>
@@ -437,11 +455,12 @@
                         <outlet property="labelEnd" destination="Znq-Fa-9gO" id="keR-95-Jlg"/>
                         <outlet property="labelEndTime" destination="0OG-Ro-LbB" id="lmG-xL-4zt"/>
                         <outlet property="labelIndividualSound" destination="DE6-HW-UTw" id="fnc-YQ-1mE"/>
+                        <outlet property="labelRecalculateNotifications" destination="hPv-ct-cuH" id="ev3-q0-GuC"/>
                         <outlet property="labelResetData" destination="RJL-Qa-q2S" id="4CB-35-cHM"/>
                         <outlet property="labelStandardSound" destination="Wvv-qe-h1m" id="cqu-Qw-h5o"/>
                         <outlet property="labelStart" destination="EWH-HF-iXX" id="yxJ-vC-AqM"/>
                         <outlet property="labelStartTime" destination="aJw-lT-8Qr" id="eID-z9-jrj"/>
-                        <outlet property="labelVersion" destination="hPv-ct-cuH" id="vxV-8b-9ew"/>
+                        <outlet property="labelVersion" destination="Pc5-Xl-by8" id="hCj-uU-qhW"/>
                         <outlet property="pickerEndTime" destination="mQK-DR-DzU" id="3L7-SB-6a9"/>
                         <outlet property="pickerStartTime" destination="7bQ-hs-EQk" id="Fb4-GC-OgJ"/>
                     </connections>

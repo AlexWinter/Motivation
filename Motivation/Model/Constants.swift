@@ -31,6 +31,7 @@ struct NotificationSound {
 
 extension Notification.Name {
     static let reload = Notification.Name("Reload")
+    static let reschedule = Notification.Name("Reschedule")
     static let timeFrameChanged = Notification.Name("TimeFrameChanged")
     static let openFromNotification = Notification.Name("notificationActionReceived")
     static let openFromWidget = Notification.Name("OpenFromWidget")
