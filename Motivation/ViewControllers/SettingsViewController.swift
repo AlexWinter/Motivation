@@ -162,9 +162,9 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
     override func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath)
         cell?.contentView.backgroundColor = Constants.myColor.halfAlpha
-        cell?.backgroundColor = Constants.myColor.fullAlpha
+        cell?.backgroundColor = Constants.myColor.halfAlpha
         cell?.textLabel?.textColor = UIColor.white
-        
+
         if indexPath.section == 1 && indexPath.row == 0 {
             labelStart.textColor = UIColor.white
             labelStartTime.textColor = UIColor.white
@@ -187,6 +187,19 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
             labelEnd.textColor = Constants.myColor.fullAlpha
             labelEndTime.textColor = Constants.myColor.fullAlpha
         }
+    }
+
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        if section == 2 {
+            notifier.pendingNotifications()
+            
+            if notifier.allPendingNotifications == 1 {
+                return "Noch 1 offene Benachrichtigung"
+            } else {
+                return("Noch " + String(notifier.allPendingNotifications) + " offene Benachrichtigungen")
+            }
+        }
+        return ""
     }
 
     //    MARK: Play Sound
@@ -247,6 +260,7 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
         let okAction = UIAlertAction(title: "Zurücksetzen", style: .default) {
             UIAlertAction in
             NotificationCenter.default.post(name: .reload, object: nil)
+            self.tableView.reloadData()
         }
         let cancelAction = UIAlertAction(title: "Abbrechen", style: .cancel) {
             UIAlertAction in
@@ -266,6 +280,7 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
         let okAction = UIAlertAction(title: "Neu planen", style: .default) {
             UIAlertAction in
             NotificationCenter.default.post(name: .reschedule, object: nil)
+            self.tableView.reloadData()
         }
         let cancelAction = UIAlertAction(title: "Abbrechen", style: .cancel) {
             UIAlertAction in

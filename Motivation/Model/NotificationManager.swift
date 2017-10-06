@@ -12,6 +12,7 @@ import UserNotifications
 class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     
     let center = UNUserNotificationCenter.current()
+    var allPendingNotifications = 0
 
     func requestSendingNotifications() {
         center.delegate = self
@@ -129,7 +130,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
         let arrayOfNotifications: [UNNotificationRequest] = []
 
         center.getPendingNotificationRequests(completionHandler: { (notifications) in
-            for notification in notifications{
+            for notification in notifications {
                 let content = UNMutableNotificationContent()
                 content.title = notification.content.title
                 content.subtitle = notification.content.subtitle
@@ -149,5 +150,11 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
         for notification in arrayOfNotifications {
             center.add(notification, withCompletionHandler: nil)
         }
+    }
+    
+    func pendingNotifications() {
+        center.getPendingNotificationRequests(completionHandler: { (notifications) in
+            self.allPendingNotifications = notifications.count
+        })
     }
 }
