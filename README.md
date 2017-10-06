@@ -5,8 +5,6 @@
 Das Projekt befindet sich noch in Entwicklung.
 
 ## Open ToDo's:
-- App Icon ein bisschen heller
-- Bar Icons dünner
 - App beim richtigen Spruch öffnen wenn von Extension oder Notification gelauncht.
 - Tests schreiben
 - Code suchen der in den Hintergrund kann
