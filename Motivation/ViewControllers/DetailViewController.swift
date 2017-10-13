@@ -105,6 +105,8 @@ class DetailViewController: UIViewController, UITextViewDelegate {
                 UIActivityType.airDrop,
                 UIActivityType.print
             ]
+            UIApplication.shared.keyWindow?.tintColor = Constants.myColor.fullAlpha
+            
             self.present(activityViewController, animated: true, completion: nil)
         }
     }
@@ -165,6 +167,8 @@ class DetailViewController: UIViewController, UITextViewDelegate {
         
         alertController.addAction(confirmAction)
         alertController.addAction(cancelAction)
+        alertController.view.tintColor = Constants.myColor.fullAlpha
+
         self.present(alertController, animated: true, completion: nil)
     }
     

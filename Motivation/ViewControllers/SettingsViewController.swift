@@ -82,13 +82,14 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
 //        }
     }
     
-//    MARK: TableView
+    // MARK: TableView
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath)
         cell?.textLabel?.textColor = Constants.myColor.fullAlpha
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         let defaults = UserDefaults.standard
 
         // Change Sound
@@ -139,7 +140,6 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
         }
         tableView.beginUpdates()
         tableView.endUpdates()
-        tableView.reloadData()
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -191,9 +191,13 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
 
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         if section == 2 {
-            notifier.pendingNotifications()
+            notifier.pendingNotifications {
+                
+            }
             
-            if notifier.allPendingNotifications == 1 {
+            if notifier.allPendingNotifications == 0 {
+                return "Keine offenen Benachrichtigungen"
+            } else if notifier.allPendingNotifications == 1 {
                 return "Noch 1 offene Benachrichtigung"
             } else {
                 return("Noch " + String(notifier.allPendingNotifications) + " offene Benachrichtigungen")
@@ -268,7 +272,8 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
         // Add the actions
         alertController.addAction(okAction)
         alertController.addAction(cancelAction)
-        
+        alertController.view.tintColor = Constants.myColor.fullAlpha
+
         // Present the controller
         self.present(alertController, animated: true, completion: nil)
     }
@@ -288,7 +293,8 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
         // Add the actions
         alertController.addAction(okAction)
         alertController.addAction(cancelAction)
-        
+        alertController.view.tintColor = Constants.myColor.fullAlpha
+
         // Present the controller
         self.present(alertController, animated: true, completion: nil)
     }

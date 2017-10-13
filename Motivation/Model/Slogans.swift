@@ -10,6 +10,58 @@ import UIKit
 
 let notifier = NotificationManager()
 
+
+protocol StorageConnector {
+    func loadData(completionHandler: () -> ())
+}
+
+class ServerStorageConnector : StorageConnector {
+    func loadData(completionHandler: () -> ()) {
+    
+    }
+}
+
+class LocalPlistStorageConnector : StorageConnector {
+    func loadData(completionHandler: () -> ()) {
+        
+    }
+}
+
+class Storage {
+    private var slogans : [Slogan]?
+    
+    var connector : StorageConnector?
+    
+    var numberOfSlogans : Int {
+        if let slogans = slogans {
+            return slogans.count
+        }
+        return 0
+    }
+    
+    init() {
+        loadSlogans()
+    }
+    
+    func sloganAtIndex(index: Int) -> Slogan? {
+        return nil
+    }
+    
+    func updateSlogan(slogan: Slogan, at index: Int) {
+        
+    }
+    
+    func addSlogan(slogan: Slogan) {
+        
+    }
+    
+    private func loadSlogans() {
+        
+    }
+    
+    
+}
+
 class Slogan: NSObject, NSCoding {
 
     //MARK: Properties

@@ -12,10 +12,16 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    
+    var notificationManager : NotificationManager!
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        notificationManager = NotificationManager()
+        
         setValuesforFirstLaunch()
+        
         return true
     }
 
@@ -38,7 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             textInWidget = ""
         } else {
             textInWidget = defaults?.value(forKey: UserDefaults.Keys.ExtensionText) as! String
-            defaults?.set("", forKey: UserDefaults.Keys.ExtensionText)
+            defaults?.set(nil, forKey: UserDefaults.Keys.ExtensionText)
             NotificationCenter.default.post(name: .openFromWidget, object: nil)
         }
     }

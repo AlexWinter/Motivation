@@ -12,21 +12,19 @@
 		7612A42A1F5EA18600EA4889 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7612A4281F5EA18600EA4889 /* MainInterface.storyboard */; };
 		7612A42E1F5EA18600EA4889 /* motivationTodayExt.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 7612A4211F5EA18600EA4889 /* motivationTodayExt.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		762D934A1F7A737500D195A2 /* DiDiDiDiDi.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 762D93491F7A737100D195A2 /* DiDiDiDiDi.m4a */; };
-		765294121F753DB800BD52B0 /* Shake.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 765294111F753DB800BD52B0 /* Shake.storyboard */; };
-		765294141F7541DE00BD52B0 /* ScheduledNotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765294131F7541DE00BD52B0 /* ScheduledNotificationsViewController.swift */; };
 		766E6AF91F7ED1FE00B1206D /* SetDefaultValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766E6AF81F7ED1FE00B1206D /* SetDefaultValues.swift */; };
 		767AE1591F4ECC9500C2D4C1 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767AE1581F4ECC9500C2D4C1 /* NotificationManager.swift */; };
 		769B5EE41F4C2F7C0060B784 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 769B5EE31F4C2F7C0060B784 /* AppDelegate.swift */; };
 		769B5EE61F4C2F7C0060B784 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 769B5EE51F4C2F7C0060B784 /* ViewController.swift */; };
 		769B5EE91F4C2F7C0060B784 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 769B5EE71F4C2F7C0060B784 /* Main.storyboard */; };
 		769B5EEB1F4C2F7C0060B784 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 769B5EEA1F4C2F7C0060B784 /* Assets.xcassets */; };
-		769B5EEE1F4C2F7C0060B784 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 769B5EEC1F4C2F7C0060B784 /* LaunchScreen.storyboard */; };
 		769B5EF61F4C49D50060B784 /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 769B5EF51F4C49D50060B784 /* CustomTableViewCell.swift */; };
 		769B5EFB1F4C51900060B784 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 769B5EFA1F4C51900060B784 /* DetailViewController.swift */; };
 		769B5F001F4C6A6E0060B784 /* motivation.json in Resources */ = {isa = PBXBuildFile; fileRef = 769B5EFF1F4C6A6E0060B784 /* motivation.json */; };
 		76A146821F7AD16B003A0BAD /* Slogans.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A146811F7AD16B003A0BAD /* Slogans.swift */; };
 		76CBBB881F7AB6FF001468FC /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76CBBB871F7AB6FF001468FC /* SettingsViewController.swift */; };
 		76D2BDEE1F594D5A0099EBB2 /* FireDates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D2BDED1F594D5A0099EBB2 /* FireDates.swift */; };
+		76FDE7291F90B8B800CCCE95 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 76FDE7281F90B88000CCCE95 /* LaunchScreen.storyboard */; };
 		76FFF4171F7CE4B3005686EF /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76FFF4161F7CE4B3005686EF /* Constants.swift */; };
 /* End PBXBuildFile section */
 
@@ -63,8 +61,6 @@
 		7612A4331F5EA23700EA4889 /* Motivation.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Motivation.entitlements; sourceTree = "<group>"; };
 		7612A4341F5EA26E00EA4889 /* motivationTodayExt.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = motivationTodayExt.entitlements; sourceTree = "<group>"; };
 		762D93491F7A737100D195A2 /* DiDiDiDiDi.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = DiDiDiDiDi.m4a; sourceTree = "<group>"; };
-		765294111F753DB800BD52B0 /* Shake.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Shake.storyboard; path = Views/Shake.storyboard; sourceTree = "<group>"; };
-		765294131F7541DE00BD52B0 /* ScheduledNotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduledNotificationsViewController.swift; sourceTree = "<group>"; };
 		766E6AF81F7ED1FE00B1206D /* SetDefaultValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetDefaultValues.swift; sourceTree = "<group>"; };
 		767AE1581F4ECC9500C2D4C1 /* NotificationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		769B5EE01F4C2F7C0060B784 /* Motivation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Motivation.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -72,7 +68,6 @@
 		769B5EE51F4C2F7C0060B784 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		769B5EE81F4C2F7C0060B784 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		769B5EEA1F4C2F7C0060B784 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		769B5EED1F4C2F7C0060B784 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		769B5EEF1F4C2F7C0060B784 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		769B5EF51F4C49D50060B784 /* CustomTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
 		769B5EFA1F4C51900060B784 /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
@@ -80,6 +75,7 @@
 		76A146811F7AD16B003A0BAD /* Slogans.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Slogans.swift; path = Motivation/Model/Slogans.swift; sourceTree = SOURCE_ROOT; };
 		76CBBB871F7AB6FF001468FC /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		76D2BDED1F594D5A0099EBB2 /* FireDates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FireDates.swift; sourceTree = "<group>"; };
+		76FDE7281F90B88000CCCE95 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Views/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		76FFF4161F7CE4B3005686EF /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -157,20 +153,19 @@
 				769B5EE31F4C2F7C0060B784 /* AppDelegate.swift */,
 				7612A4331F5EA23700EA4889 /* Motivation.entitlements */,
 				769B5EEA1F4C2F7C0060B784 /* Assets.xcassets */,
-				769B5EEC1F4C2F7C0060B784 /* LaunchScreen.storyboard */,
 				762D93491F7A737100D195A2 /* DiDiDiDiDi.m4a */,
 				769B5EEF1F4C2F7C0060B784 /* Info.plist */,
 				769B5EFF1F4C6A6E0060B784 /* motivation.json */,
 			);
 			name = Resources;
-			sourceTree = "<group>";
+			path = "/Users/alexwinter/Documents/iOS Projects/Motivation/Motivation/Resources";
+			sourceTree = "<absolute>";
 		};
 		769B5EF81F4C51230060B784 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
 				769B5EE51F4C2F7C0060B784 /* ViewController.swift */,
 				769B5EFA1F4C51900060B784 /* DetailViewController.swift */,
-				765294131F7541DE00BD52B0 /* ScheduledNotificationsViewController.swift */,
 				76CBBB871F7AB6FF001468FC /* SettingsViewController.swift */,
 			);
 			path = ViewControllers;
@@ -180,7 +175,7 @@
 			isa = PBXGroup;
 			children = (
 				769B5EE71F4C2F7C0060B784 /* Main.storyboard */,
-				765294111F753DB800BD52B0 /* Shake.storyboard */,
+				76FDE7281F90B88000CCCE95 /* LaunchScreen.storyboard */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -303,11 +298,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				769B5EEE1F4C2F7C0060B784 /* LaunchScreen.storyboard in Resources */,
 				769B5F001F4C6A6E0060B784 /* motivation.json in Resources */,
-				765294121F753DB800BD52B0 /* Shake.storyboard in Resources */,
 				762D934A1F7A737500D195A2 /* DiDiDiDiDi.m4a in Resources */,
 				769B5EEB1F4C2F7C0060B784 /* Assets.xcassets in Resources */,
+				76FDE7291F90B8B800CCCE95 /* LaunchScreen.storyboard in Resources */,
 				769B5EE91F4C2F7C0060B784 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -335,7 +329,6 @@
 				769B5EE41F4C2F7C0060B784 /* AppDelegate.swift in Sources */,
 				76FFF4171F7CE4B3005686EF /* Constants.swift in Sources */,
 				769B5EFB1F4C51900060B784 /* DetailViewController.swift in Sources */,
-				765294141F7541DE00BD52B0 /* ScheduledNotificationsViewController.swift in Sources */,
 				76CBBB881F7AB6FF001468FC /* SettingsViewController.swift in Sources */,
 				76A146821F7AD16B003A0BAD /* Slogans.swift in Sources */,
 			);
@@ -366,14 +359,6 @@
 				769B5EE81F4C2F7C0060B784 /* Base */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		769B5EEC1F4C2F7C0060B784 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				769B5EED1F4C2F7C0060B784 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -519,9 +504,10 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon2;
-				CODE_SIGN_ENTITLEMENTS = Motivation/Motivation.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Motivation/Resources/Motivation.entitlements;
 				DEVELOPMENT_TEAM = SXWG6G643E;
-				INFOPLIST_FILE = Motivation/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/Motivation/Resources/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.alexwinter.Motivation;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -535,9 +521,10 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon2;
-				CODE_SIGN_ENTITLEMENTS = Motivation/Motivation.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Motivation/Resources/Motivation.entitlements;
 				DEVELOPMENT_TEAM = SXWG6G643E;
-				INFOPLIST_FILE = Motivation/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/Motivation/Resources/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.alexwinter.Motivation;
 				PRODUCT_NAME = "$(TARGET_NAME)";

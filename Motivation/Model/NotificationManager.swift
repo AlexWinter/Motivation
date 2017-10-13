@@ -12,7 +12,7 @@ import UserNotifications
 class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     
     let center = UNUserNotificationCenter.current()
-    var allPendingNotifications = 0
+    var allPendingNotifications: Int = 0
 
     func requestSendingNotifications() {
         center.delegate = self
@@ -143,7 +143,6 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 
                 content.userInfo = notification.content.userInfo
                 content.categoryIdentifier = notification.content.categoryIdentifier
-
             }
         })
 
@@ -152,9 +151,46 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
         }
     }
     
-    func pendingNotifications() {
+    func pendingNotifications(completionHandler: @escaping () -> ()) {
+        print("pendingNotifications start")
         center.getPendingNotificationRequests(completionHandler: { (notifications) in
+            print("pendingNotifications set value")
             self.allPendingNotifications = notifications.count
+            DispatchQueue.main.async {
+                completionHandler()
+            }
+            
         })
+        print("pendingNotifications end")
+    }
+    
+    func scheduleNoMoreFutureNotificationsReminder() {
+        let notificationContent = UNMutableNotificationContent()
+        notificationContent.title = "Keine Benachrichtigungen mehr"
+        notificationContent.body = "Es sind keine Benachrichtigungen mehr geplant für die Zukunft. Die Benachrichtigungen können in den Einstellungen im App neu eingeplant werden."
+        if NotificationSound.individual {
+            notificationContent.sound = UNNotificationSound(named: "DiDiDiDiDi.m4a")
+            notificationContent.body = "Individueller Sound"
+        } else {
+            notificationContent.sound = UNNotificationSound.default()
+            notificationContent.body = "Standard Sound"
+        }
+        notificationContent.categoryIdentifier = "actionCategory"
+        notificationContent.setValue(true, forKey: "shouldAlwaysAlertWhileAppIsForeground")
+        notificationContent.userInfo = ["title":"NoMoreOpenNotifications"]
+        
+        let date: Date = calculateFireDate(daysAdding: allPendingNotifications + 1)
+        // Add Trigger
+        let notificationTrigger = UNCalendarNotificationTrigger(dateMatching: Calendar.current.dateComponents([.year,.month,.day,.hour,.minute,.second,], from: date) , repeats: false)
+        
+        // Create Notification Request
+        let notificationRequest = UNNotificationRequest(identifier: "motivation_local_notification" + "NoMoreOpenNotifications", content: notificationContent, trigger: notificationTrigger)
+        
+        // Add Request to User Notification Center
+        center.add(notificationRequest) { (error) in
+            if let error = error {
+                print("Unable to Add Notification Request (\(error), \(error.localizedDescription))")
+            }
+        }
     }
 }

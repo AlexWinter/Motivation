@@ -14,7 +14,9 @@ import GameKit
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate {
 
     var data = [Slogan]()
-    let notifier = NotificationManager()
+    var notifier : NotificationManager {
+        return (UIApplication.shared.delegate! as! AppDelegate).notificationManager
+    }
     var deletedSlogan: Slogan!
     var deletedLine = 0
 
@@ -36,15 +38,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             self.recalculateRandomDays()
         }
 
-        let tapGestureRecognizer = UITapGestureRecognizer(target:self, action: #selector(ViewController.playSound))
-        tapGestureRecognizer.numberOfTapsRequired = 3
-        self.navigationController?.navigationBar.addGestureRecognizer(tapGestureRecognizer)
-        
         let longPressGesture:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(self.handleLongPress(_:)))
         longPressGesture.minimumPressDuration = 0.6
         longPressGesture.delegate = self
         self.tableView.addGestureRecognizer(longPressGesture)
-        
+    
         NotificationCenter.default.addObserver(self, selector: #selector(self.openSpecificVC(_:)), name: .openFromNotification , object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(reloadTableData), name: .reload, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(recalculateRandomDays), name: .reschedule , object: nil)
@@ -54,7 +52,20 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.becomeFirstResponder()
-    }
+
+//        MARK: Warum immer leer?
+        print("pendingNotifications call")
+        notifier.pendingNotifications { [weak self] in
+            if let me = self {
+            print("all pending in completion: \(me.notifier.allPendingNotifications)")
+            }
+        }
+        print("pendingNotifications called")
+        print("all pending: \(notifier.allPendingNotifications)")
+        print("pendingNotifications get value")
+        
+       
+}
     
     @objc func handleLongPress(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
         if longPressGestureRecognizer.state == UIGestureRecognizerState.began {
@@ -74,26 +85,25 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
         if motion == .motionShake {
             if deletedSlogan == nil {
-//              Nothing to restore
+                // Nothing to restore
                 displayAlertNothingToUndo()
             } else {
-//              Restore last deleted Slogan
+                // Restore last deleted Slogan
                 displayAlertForUndoLastDelete()
             }
-//  Show Shake.storyboard - For testing purpose only
-//            let storyboard = UIStoryboard(name: "Shake", bundle: nil)
-//            let vc = storyboard.instantiateInitialViewController() as UIViewController!
-//            present(vc!, animated: true, completion: nil)
         }
     }
-    
+    // MARK: Undelete or restore
     func displayAlertNothingToUndo() {
-        let alertController = UIAlertController(title: "", message: "Kein gelöschter Slogan zum Wiederherstellen gefunden.", preferredStyle: UIAlertControllerStyle.alert)
+        let alertController = UIAlertController(title: "", message: "Kein gelöschter Spruch zum Wiederherstellen gefunden.", preferredStyle: UIAlertControllerStyle.alert)
         
         let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) {
             (result : UIAlertAction) -> Void in
         }
+
         alertController.addAction(okAction)
+        alertController.view.tintColor = Constants.myColor.fullAlpha
+
         self.present(alertController, animated: true, completion: nil)
     }
     
@@ -109,7 +119,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         alertController.addAction(okAction)
         alertController.addAction(cancelAction)
-        
+        alertController.view.tintColor = Constants.myColor.fullAlpha
+
         self.present(alertController, animated: true, completion: nil)
     }
     
@@ -117,21 +128,20 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         if deletedLine == 0 {
             data.append(deletedSlogan)
             tableView.beginUpdates()
-            tableView.insertRows(at: [IndexPath(row: data.count - 1, section: 0)], with: .automatic)
+            tableView.insertRows(at: [IndexPath(row: data.count - 1, section: 0)], with: .left)
             tableView.endUpdates()
             
             recalculateRandomDays()
             tableView.reloadData()
             tableView.scrollToRow(at: IndexPath(row: data.count - 1, section: 0), at: .bottom, animated: true)
         } else {
-//            data.append(deletedSlogan)
             data.insert(deletedSlogan, at: deletedLine)
             tableView.beginUpdates()
-            tableView.insertRows(at: [IndexPath(row: deletedLine, section: 0)], with: .automatic)
+            tableView.insertRows(at: [IndexPath(row: deletedLine, section: 0)], with: .fade)
             tableView.endUpdates()
-            
+
             recalculateRandomDays()
-            tableView.reloadData()
+            //tableView.reloadData()
             tableView.scrollToRow(at: IndexPath(row: deletedLine, section: 0), at: .bottom, animated: true)
         }
         deletedSlogan = nil
@@ -328,11 +338,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         scheduleAllNotifications()
     }
     
-    func scheduleAllNotifications() -> Void {
+    func scheduleAllNotifications() {
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
         data.forEach { (saying ) in
             notifier.scheduleNotification(with: saying.headline, text: saying.text, date: saying.fireDay)
         }
+        notifier.scheduleNoMoreFutureNotificationsReminder()
     }
 
     //MARK: Load / save Data
@@ -362,32 +373,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         defaults?.setValue(data2, forKey: "widgetData")
     }
 
-    //MARK: Having fun
-    @objc func playSound() {
-        let filename = "DiDiDiDiDi"
-        let ext = "m4a"
-        
-        if let soundUrl = Bundle.main.url(forResource: filename, withExtension: ext) {
-            var soundId: SystemSoundID = 0
-            AudioServicesCreateSystemSoundID(soundUrl as CFURL, &soundId)
-            AudioServicesAddSystemSoundCompletion(soundId, nil, nil, { (soundId, clientData) -> Void in
-                AudioServicesDisposeSystemSoundID(soundId)
-            }, nil)
-            AudioServicesPlaySystemSound(soundId)
-        }
-        showFunAlert()
-    }
-    
-    func showFunAlert () {
-        let alertController = UIAlertController(title: "😃", message: "", preferredStyle: UIAlertControllerStyle.alert)
-        
-        let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) {
-            (result : UIAlertAction) -> Void in
-        }
-        alertController.addAction(okAction)
-        self.present(alertController, animated: true, completion: nil)
-    }
-    
     func alertNoData() {
         let alertController = UIAlertController(title: "Keine Daten", message: "Sollen die Standard Daten geladen werden?", preferredStyle: .alert)
         let okAction = UIAlertAction(title: "Ja", style: UIAlertActionStyle.default) {
@@ -402,7 +387,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 
         alertController.addAction(okAction)
         alertController.addAction(cancelAction)
-        
+        alertController.view.tintColor = Constants.myColor.fullAlpha
+
         self.present(alertController, animated: true, completion: nil)
     }
     
