@@ -9,8 +9,13 @@
 import UIKit
 import AVFoundation
 import UserNotifications
+import MessageUI
 
-class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPickerViewDataSource, UNUserNotificationCenterDelegate {
+class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPickerViewDataSource, UNUserNotificationCenterDelegate, MFMailComposeViewControllerDelegate {
+
+    var notifier : NotificationManager {
+        return (UIApplication.shared.delegate! as! AppDelegate).notificationManager
+    }
 
     private var startTimeCellEpanded: Bool = false
     private var endTimeCellEpanded: Bool = false
@@ -136,10 +141,32 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
                 showAlertForDataReset()
             } else if indexPath.row == 1 {
                 showAlertForRescheduleNotifications()
+            } else if indexPath.row == 2 {
+//                Kontakt Email senden
+                sendContactEmail()
             }
         }
         tableView.beginUpdates()
         tableView.endUpdates()
+    }
+    
+    // MARK: Send Email
+    func sendContactEmail() {
+        if MFMailComposeViewController.canSendMail() {
+        let mail = MFMailComposeViewController()
+        mail.mailComposeDelegate = self
+        mail.setToRecipients(["Motivations.App@icloud.com"])
+        mail.setMessageBody("", isHTML: true)
+        mail.view.tintColor = Constants.myColor.fullAlpha
+    
+        present(mail, animated: true)
+        } else {
+        // show failure alert
+        }
+    }
+    
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true)
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -191,10 +218,6 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
 
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         if section == 2 {
-            notifier.pendingNotifications {
-                
-            }
-            
             if notifier.allPendingNotifications == 0 {
                 return "Keine offenen Benachrichtigungen"
             } else if notifier.allPendingNotifications == 1 {

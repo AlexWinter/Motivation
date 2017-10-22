@@ -503,7 +503,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon2;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Motivation/Resources/Motivation.entitlements;
 				DEVELOPMENT_TEAM = SXWG6G643E;
 				INFOPLIST_FILE = "$(SRCROOT)/Motivation/Resources/Info.plist";
@@ -520,7 +520,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon2;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Motivation/Resources/Motivation.entitlements;
 				DEVELOPMENT_TEAM = SXWG6G643E;
 				INFOPLIST_FILE = "$(SRCROOT)/Motivation/Resources/Info.plist";

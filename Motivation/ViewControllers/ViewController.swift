@@ -17,6 +17,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     var notifier : NotificationManager {
         return (UIApplication.shared.delegate! as! AppDelegate).notificationManager
     }
+
     var deletedSlogan: Slogan!
     var deletedLine = 0
 
@@ -53,19 +54,26 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         self.tableView.dataSource = self
         self.becomeFirstResponder()
 
-//        MARK: Warum immer leer?
-        print("pendingNotifications call")
+//      TODO: Fertig implementieren
+//        print("pendingNotifications call")
         notifier.pendingNotifications { [weak self] in
             if let me = self {
-            print("all pending in completion: \(me.notifier.allPendingNotifications)")
+//            print("all pending in completion: \(me.notifier.allPendingNotifications)")
+                if me.notifier.allPendingNotifications == 0 {
+                    // show Alert for new Notifications
+                    self?.alertNoMoreFutureNotificationsScheduled()
+                }
             }
         }
-        print("pendingNotifications called")
-        print("all pending: \(notifier.allPendingNotifications)")
-        print("pendingNotifications get value")
-        
-       
-}
+//        print("pendingNotifications called")
+//        print("all pending: \(notifier.allPendingNotifications)")
+//        print("pendingNotifications get value")
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        tableView.reloadData()
+    }
     
     @objc func handleLongPress(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
         if longPressGestureRecognizer.state == UIGestureRecognizerState.began {
@@ -247,16 +255,15 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 data.remove(at: indexPath.row)
                 tableView.deleteRows(at: [indexPath], with: .fade)
                 alertNoData()
-                return
+            } else {
+                deletedSlogan = data[indexPath.row]
+                deletedLine = indexPath.row
+                data.remove(at: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: .fade)
+                recalculateRandomDays()
             }
-            // Delete the row from the data source
-            deletedSlogan = data[indexPath.row]
-            deletedLine = indexPath.row
-            data.remove(at: indexPath.row)
-            recalculateRandomDays()
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+//        } else if editingStyle == .insert {
+//            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }
     }
 
@@ -331,7 +338,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         var i = 0
 
         for saying in data {
-            saying.fireDay = calculateFireDate(daysAdding: shuffledArray[i] as! Int)
+            saying.fireDay = Date().calculateFireDate(daysAdding: shuffledArray[i] as! Int)
             i += 1
         }
         saveData()
@@ -389,6 +396,23 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         alertController.addAction(cancelAction)
         alertController.view.tintColor = Constants.myColor.fullAlpha
 
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func alertNoMoreFutureNotificationsScheduled() {
+        let alertController = UIAlertController(title: "Keine Benachrichtigungen mehr geplant", message: "Es sind keine Benachrichtigungen mehr für die Zukunft geplant. Sollen alle Sprüche neu eingeplant werden?", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "Ja", style: UIAlertActionStyle.default) {
+            UIAlertAction in
+            self.recalculateRandomDays()
+        }
+        let cancelAction = UIAlertAction(title: "Nein", style: UIAlertActionStyle.cancel) {
+            UIAlertAction in
+        }
+        
+        alertController.addAction(okAction)
+        alertController.addAction(cancelAction)
+        alertController.view.tintColor = Constants.myColor.fullAlpha
+        
         self.present(alertController, animated: true, completion: nil)
     }
     

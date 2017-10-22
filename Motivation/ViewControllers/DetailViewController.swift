@@ -56,7 +56,8 @@ class DetailViewController: UIViewController, UITextViewDelegate {
             return
         }
         // Set the Slogan to be passed to ViewController after the unwind segue.
-        selectedSlogan = Slogan(headline: navBarTitle.title!, text: bodyTextview.text, fireDay: calculateFireDate(daysAdding: 0))
+//        selectedSlogan = Slogan(headline: navBarTitle.title!, text: bodyTextview.text, fireDay: calculateFireDate(daysAdding: 0))
+        selectedSlogan = Slogan(headline: navBarTitle.title!, text: bodyTextview.text, fireDay: Date().calculateFireDate(daysAdding: 0))
     }
 
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {

@@ -152,18 +152,14 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     }
     
     func pendingNotifications(completionHandler: @escaping () -> ()) {
-        print("pendingNotifications start")
         center.getPendingNotificationRequests(completionHandler: { (notifications) in
-            print("pendingNotifications set value")
             self.allPendingNotifications = notifications.count
             DispatchQueue.main.async {
                 completionHandler()
             }
-            
         })
-        print("pendingNotifications end")
     }
-    
+
     func scheduleNoMoreFutureNotificationsReminder() {
         let notificationContent = UNMutableNotificationContent()
         notificationContent.title = "Keine Benachrichtigungen mehr"
@@ -179,7 +175,8 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
         notificationContent.setValue(true, forKey: "shouldAlwaysAlertWhileAppIsForeground")
         notificationContent.userInfo = ["title":"NoMoreOpenNotifications"]
         
-        let date: Date = calculateFireDate(daysAdding: allPendingNotifications + 1)
+        let date = Date().calculateFireDate(daysAdding: allPendingNotifications + 1)
+
         // Add Trigger
         let notificationTrigger = UNCalendarNotificationTrigger(dateMatching: Calendar.current.dateComponents([.year,.month,.day,.hour,.minute,.second,], from: date) , repeats: false)
         

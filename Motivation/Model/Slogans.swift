@@ -138,7 +138,9 @@ class Slogan: NSObject, NSCoding {
             }
             
             for sloganObject in sloganObjects {
-                let notifyDate = calculateFireDate(daysAdding: 1)
+//                let notifyDate = Date.calculateFireDate(daysAdding: 1)
+                let date = Date().calculateFireDate(daysAdding: 1)
+                let notifyDate = date.calculateFireDate(daysAdding: 1)
                 
                 if let headline = sloganObject["headline"] as? String,
                     let text = sloganObject["text"]  as? String {
