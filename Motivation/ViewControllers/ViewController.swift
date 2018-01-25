@@ -20,6 +20,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 
     var deletedSlogan: Slogan!
     var deletedLine = 0
+    var closestSlogan: String = ""
 
     @IBOutlet weak var tableView: UITableView!
 
@@ -43,38 +44,70 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         longPressGesture.minimumPressDuration = 0.6
         longPressGesture.delegate = self
         self.tableView.addGestureRecognizer(longPressGesture)
-    
+
         NotificationCenter.default.addObserver(self, selector: #selector(self.openSpecificVC(_:)), name: .openFromNotification , object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(reloadTableData), name: .reload, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(recalculateRandomDays), name: .reschedule , object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(recalculateRandomDays), name: .timeFrameChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(recalculateRandomDays), name: .recalculateRandomDays , object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(openFromTodayWidget), name: .openFromWidget, object: nil)
-        
+
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.becomeFirstResponder()
 
-//      TODO: Fertig implementieren
-//        print("pendingNotifications call")
         notifier.pendingNotifications { [weak self] in
             if let me = self {
-//            print("all pending in completion: \(me.notifier.allPendingNotifications)")
-                if me.notifier.allPendingNotifications == 0 {
-                    // show Alert for new Notifications
-                    self?.alertNoMoreFutureNotificationsScheduled()
+                
+                if (me.data.count == 0) {
+                    self?.alertNoData()
+                } else {
+                    if (me.notifier.allPendingNotifications == 0) {
+                        // show Alert for new Notifications
+                        self?.alertNoMoreFutureNotificationsScheduled()
+                    }
                 }
             }
         }
-//        print("pendingNotifications called")
-//        print("all pending: \(notifier.allPendingNotifications)")
-//        print("pendingNotifications get value")
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        if #available(iOS 11.0, *) {
+            navigationController?.navigationItem.largeTitleDisplayMode = .always
+            navigationController?.navigationBar.prefersLargeTitles = true
+        }
         tableView.reloadData()
+//        testNotification()
+        getClosestSlogan()
     }
-    
+
+    func getClosestSlogan() {
+        if (data.count == 0) {
+            closestSlogan = ""
+            return
+        }
+        let now = Date()
+        var distance: Double = now.timeIntervalSince(data[0].fireDay)
+        var temp: Double = 0
+
+        for headline in data {
+            temp = now.timeIntervalSince(headline.fireDay)
+            if (temp > 0 && temp < distance) {
+                distance = temp
+                closestSlogan = headline.headline
+                print("distance: \(distance)")
+                print("closesSlogan: \(closestSlogan)")
+                print("fireDay: \(headline.fireDay)")
+            }
+        }
+    }
+
+    func testNotification() {
+        var calendar = Calendar.current
+        calendar.timeZone = .current
+        data[1].fireDay = calendar.date(byAdding: .second, value: 3, to: Date())!
+//        print("\(data[1].fireDay) jetzt ist es: \(Date())")
+    }
+
     @objc func handleLongPress(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
         if longPressGestureRecognizer.state == UIGestureRecognizerState.began {
             tableView.setEditing(true, animated: true)
@@ -88,7 +121,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             return true
         }
     }
-    
+
     // Enable detection of shake motion
     override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
         if motion == .motionShake {
@@ -101,6 +134,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             }
         }
     }
+
     // MARK: Undelete or restore
     func displayAlertNothingToUndo() {
         let alertController = UIAlertController(title: "", message: "Kein gelöschter Spruch zum Wiederherstellen gefunden.", preferredStyle: UIAlertControllerStyle.alert)
@@ -217,6 +251,19 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         cell.textLabel?.text = entry.headline
         cell.textLabel?.font = UIFont(name: "Avenir Next", size: 16.0)
         cell.textLabel?.textColor = Constants.myColor.fullAlpha
+
+        
+//        MARK: Highlight last Slogan
+        if (HighlightLastSlogan.isOn && entry.headline == closestSlogan) {
+            cell.contentView.superview!.backgroundColor = Constants.myColor.halfAlpha
+            cell.textLabel?.backgroundColor = UIColor.clear
+            cell.textLabel?.textColor = UIColor.white
+        } else {
+            cell.contentView.superview!.backgroundColor = UIColor.clear
+            cell.contentView.backgroundColor = UIColor.clear
+            cell.backgroundColor = UIColor.clear
+            cell.textLabel?.textColor = Constants.myColor.fullAlpha
+        }
         return cell
     }
 
@@ -240,9 +287,20 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 
     func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath)
+
+        cell?.contentView.superview!.backgroundColor = UIColor.clear
         cell?.contentView.backgroundColor = UIColor.clear
         cell?.backgroundColor = UIColor.clear
         cell?.textLabel?.textColor = Constants.myColor.fullAlpha
+
+        if (cell?.textLabel?.text == closestSlogan) {
+            cell?.contentView.backgroundColor = UIColor.clear
+            cell?.backgroundColor = UIColor.clear
+            cell?.textLabel?.textColor = UIColor.white
+            cell?.textLabel?.backgroundColor = UIColor.white
+            cell?.contentView.superview!.backgroundColor = Constants.myColor.halfAlpha
+        }
+
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -254,6 +312,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             if data.count == 1 {
                 data.remove(at: indexPath.row)
                 tableView.deleteRows(at: [indexPath], with: .fade)
+                data = []
+                saveData()
+                recalculateRandomDays()
+                scheduleAllNotifications()
                 alertNoData()
             } else {
                 deletedSlogan = data[indexPath.row]
@@ -333,6 +395,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     @objc func recalculateRandomDays() {
+        if (data.count == 0) { return }
         let unshuffledArray = Array(1 ... data.count)
         let shuffledArray = GKRandomSource.sharedRandom().arrayByShufflingObjects(in: unshuffledArray)
         var i = 0
@@ -341,14 +404,18 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             saying.fireDay = Date().calculateFireDate(daysAdding: shuffledArray[i] as! Int)
             i += 1
         }
+
         saveData()
         scheduleAllNotifications()
+        getClosestSlogan()
     }
-    
+
     func scheduleAllNotifications() {
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
-        data.forEach { (saying ) in
-            notifier.scheduleNotification(with: saying.headline, text: saying.text, date: saying.fireDay)
+        if (data.count != 0) {
+            data.forEach { (saying ) in
+                notifier.scheduleNotification(with: saying.headline, text: saying.text, date: saying.fireDay)
+            }
         }
         notifier.scheduleNoMoreFutureNotificationsReminder()
     }

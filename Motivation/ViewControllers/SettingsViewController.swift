@@ -26,13 +26,14 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
     @IBOutlet weak var pickerEndTime: UIDatePicker!
     @IBOutlet weak var labelStartTime: UILabel!
     @IBOutlet weak var labelEndTime: UILabel!
-
+    @IBOutlet weak var highlightSwitch: UISwitch!
     @IBOutlet weak var labelStandardSound: UILabel!
     @IBOutlet weak var labelIndividualSound: UILabel!
     @IBOutlet weak var labelStart: UILabel!
     @IBOutlet weak var labelEnd: UILabel!
     @IBOutlet weak var labelResetData: UILabel!
     @IBOutlet weak var labelRecalculateNotifications: UILabel!
+    @IBOutlet weak var labelHighlightLastSlogan: UILabel!
     @IBOutlet weak var labelVersion: UILabel!
 
     override func viewDidLoad() {
@@ -40,7 +41,15 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
         getSavedSound()
         getSavedTimeFrame()
         getVersionNumber()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        if #available(iOS 11.0, *) {
+            navigationController?.navigationItem.largeTitleDisplayMode = .always
+            navigationController?.navigationBar.prefersLargeTitles = true
+        }
         changeAllTextColors()
+        highlightSwitch.isOn = HighlightLastSlogan.isOn
     }
 
 //    A small hack because the colors selected in the Storyboard are just not quite there
@@ -52,6 +61,7 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
         labelStartTime.textColor = Constants.myColor.fullAlpha
         labelEndTime.textColor = Constants.myColor.fullAlpha
         labelResetData.textColor = Constants.myColor.fullAlpha
+        labelHighlightLastSlogan.textColor = Constants.myColor.fullAlpha
         labelVersion.textColor = Constants.myColor.fullAlpha
         labelRecalculateNotifications.textColor = Constants.myColor.fullAlpha
 //        Possible Private Method :(
@@ -85,6 +95,18 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
 //        if let version = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
 //            self.labelVersion.text = self.labelVersion.text! + " Build: " + version
 //        }
+    }
+
+    @IBAction func highlightLastSloganSwitch(_ sender: UISwitch) {
+        let defaults = UserDefaults.standard
+        
+        if (sender.isOn) {
+            HighlightLastSlogan.isOn = true
+            defaults.set(true, forKey: UserDefaults.Keys.HighlightLastSloganKey)
+        } else {
+            HighlightLastSlogan.isOn = false
+            defaults.set(false, forKey: UserDefaults.Keys.HighlightLastSloganKey)
+        }
     }
     
     // MARK: TableView
@@ -146,6 +168,7 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
                 sendContactEmail()
             }
         }
+        
         tableView.beginUpdates()
         tableView.endUpdates()
     }
@@ -187,15 +210,21 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
     }
 
     override func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
+
         let cell = tableView.cellForRow(at: indexPath)
+        
+        if (indexPath.section == 2 && ((indexPath.row == 3) || (indexPath.row == 4))) {
+            return
+        }
+        
         cell?.contentView.backgroundColor = Constants.myColor.halfAlpha
         cell?.backgroundColor = Constants.myColor.halfAlpha
         cell?.textLabel?.textColor = UIColor.white
 
-        if indexPath.section == 1 && indexPath.row == 0 {
+        if (indexPath.section == 1 && indexPath.row == 0) {
             labelStart.textColor = UIColor.white
             labelStartTime.textColor = UIColor.white
-        } else if indexPath.section == 1 && indexPath.row == 1 {
+        } else if (indexPath.section == 1 && indexPath.row == 1) {
             labelEnd.textColor = UIColor.white
             labelEndTime.textColor = UIColor.white
         }
@@ -218,12 +247,10 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
 
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         if section == 2 {
-            if notifier.allPendingNotifications == 0 {
-                return "Keine offenen Benachrichtigungen"
-            } else if notifier.allPendingNotifications == 1 {
-                return "Noch 1 offene Benachrichtigung"
-            } else {
-                return("Noch " + String(notifier.allPendingNotifications) + " offene Benachrichtigungen")
+            switch (notifier.allPendingNotifications) {
+            case 0: return "Keine offenen Benachrichtigungen"
+            case 1: return "Noch 1 offene Benachrichtigung"
+            default: return String("Noch " + String(notifier.allPendingNotifications) + " offene Benachrichtigungen")
             }
         }
         return ""
@@ -262,7 +289,7 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
         TimeFrame.start = pickerStartTime.date
         pickerEndTime.minimumDate = pickerStartTime.date
         UserDefaults.standard.set(pickerStartTime.date, forKey: UserDefaults.Keys.StartTime)
-        NotificationCenter.default.post(name: .timeFrameChanged, object: nil)
+        NotificationCenter.default.post(name: .recalculateRandomDays, object: nil)
     }
     
     @IBAction func endTimeChanged(_ sender: Any) {
@@ -270,7 +297,7 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
         TimeFrame.end = pickerEndTime.date
         pickerStartTime.maximumDate = pickerEndTime.date
         UserDefaults.standard.set(pickerEndTime.date, forKey: UserDefaults.Keys.EndTime)
-        NotificationCenter.default.post(name: .timeFrameChanged, object: nil)
+        NotificationCenter.default.post(name: .recalculateRandomDays, object: nil)
     }
     
     func updateTimeLabel(label: UILabel, from picker: UIDatePicker) {
@@ -307,7 +334,7 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
         // Create the actions
         let okAction = UIAlertAction(title: "Neu planen", style: .default) {
             UIAlertAction in
-            NotificationCenter.default.post(name: .reschedule, object: nil)
+            NotificationCenter.default.post(name: .recalculateRandomDays, object: nil)
             self.tableView.reloadData()
         }
         let cancelAction = UIAlertAction(title: "Abbrechen", style: .cancel) {

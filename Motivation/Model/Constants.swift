@@ -29,10 +29,14 @@ struct NotificationSound {
     static var individual: Bool = true
 }
 
+struct HighlightLastSlogan {
+    static var isOn: Bool = true
+}
+
 extension Notification.Name {
     static let reload = Notification.Name("Reload")
     static let reschedule = Notification.Name("Reschedule")
-    static let timeFrameChanged = Notification.Name("TimeFrameChanged")
+    static let recalculateRandomDays = Notification.Name("recalculateRandomDays")
     static let openFromNotification = Notification.Name("notificationActionReceived")
     static let openFromWidget = Notification.Name("OpenFromWidget")
 }
@@ -42,6 +46,7 @@ extension UserDefaults {
         static let IndividualNotificationSound = "IndividualNotificationSound"
         static let StartTime = "StartTime"
         static let EndTime = "EndTime"
+        static let HighlightLastSloganKey = "HighlightLastSlogan"
         static let HasLaunchedOnce = "HasLaunchedOnce"
         static let NotificationsAlreadyScheduled = "NotificationsAlreadyScheduled"
         static let ExtensionText = "ExtensionText"

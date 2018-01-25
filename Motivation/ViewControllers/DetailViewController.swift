@@ -11,11 +11,12 @@ import UIKit
 class DetailViewController: UIViewController, UITextViewDelegate {
 
     var selectedSlogan: Slogan!
-    
+    var tapGestureRecognizer : UITapGestureRecognizer!
+    @IBOutlet var keyboardHeightLayoutConstraint: NSLayoutConstraint?
+
     @IBOutlet weak var navBarTitle: UINavigationItem!
     @IBOutlet weak var saveButton: UIBarButtonItem!
     @IBOutlet weak var bodyTextview: UITextView!
-    @IBOutlet weak var navBarTitleButton: UIButton!
     @IBOutlet weak var backButton: UIBarButtonItem!
     @IBOutlet weak var shareButton: UIBarButtonItem!
     
@@ -27,23 +28,37 @@ class DetailViewController: UIViewController, UITextViewDelegate {
             navigationController?.interactivePopGestureRecognizer?.delegate = self as? UIGestureRecognizerDelegate
             shareButton.isEnabled = true
         } else {
-            navBarTitleButton.setTitle("Überschrift", for: .normal)
-            navBarTitle.title = "Überschrift"
             shareButton.isEnabled = false
         }
 
         bodyTextview.delegate = self
         bodyTextview.tintColor = Constants.myColor.fullAlpha
-        navBarTitleButton.setTitle(navBarTitle.title , for: .normal)
         
         let swipe = UISwipeGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
         swipe.direction = .down
         bodyTextview.addGestureRecognizer(swipe)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardShown(n:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardShown(n:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardShown(n:)), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardNotification(notification:)), name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
     }
 
-    @IBAction func navBarTouch(_ sender: UIButton) {
+    override func viewWillAppear(_ animated: Bool) {
+        tapGestureRecognizer = UITapGestureRecognizer(target:self, action: #selector(self.navBarTapped(_:)))
+        self.navigationController?.navigationBar.addGestureRecognizer(tapGestureRecognizer)
+        
+        if #available(iOS 11.0, *) {
+            navigationController?.navigationItem.largeTitleDisplayMode = .always
+            navigationController?.navigationBar.prefersLargeTitles = true
+        }
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        self.navigationController?.navigationBar.removeGestureRecognizer(tapGestureRecognizer)
+        NotificationCenter.default.removeObserver(self)
+    }
+
+    @objc func navBarTapped(_ theObject: AnyObject){
         changeTitle()
     }
     
@@ -56,7 +71,6 @@ class DetailViewController: UIViewController, UITextViewDelegate {
             return
         }
         // Set the Slogan to be passed to ViewController after the unwind segue.
-//        selectedSlogan = Slogan(headline: navBarTitle.title!, text: bodyTextview.text, fireDay: calculateFireDate(daysAdding: 0))
         selectedSlogan = Slogan(headline: navBarTitle.title!, text: bodyTextview.text, fireDay: Date().calculateFireDate(daysAdding: 0))
     }
 
@@ -130,15 +144,46 @@ class DetailViewController: UIViewController, UITextViewDelegate {
         if self.navBarTitle.title != "Überschrift" {
             shareButton.isEnabled = true
         }
+        if bodyTextview.text == "" {
+            bodyTextview.text = "Text hier eingeben"
+        }
         return true
     }
 
-    @objc func keyboardShown(n:NSNotification) {
-        let d = n.userInfo!
-        var r = (d[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
-        r = self.bodyTextview.convert(r, from:nil)
-        self.bodyTextview.contentInset.bottom = r.size.height
-        self.bodyTextview.scrollIndicatorInsets.bottom = r.size.height
+//    @objc func keyboardShown(n:NSNotification) {
+//        let d = n.userInfo!
+//        var r = (d[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+//        r = self.bodyTextview.convert(r, from:nil)
+//        self.bodyTextview.contentInset.bottom = r.size.height
+//        self.bodyTextview.scrollIndicatorInsets.bottom = r.size.height
+//    }
+
+    @objc func keyboardNotification(notification: NSNotification) {
+        if let userInfo = notification.userInfo {
+            let endFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+            let endFrameY = endFrame?.origin.y ?? 0
+            let duration:TimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
+            let animationCurveRawNSN = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
+            let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIViewAnimationOptions.curveEaseInOut.rawValue
+            let animationCurve:UIViewAnimationOptions = UIViewAnimationOptions(rawValue: animationCurveRaw)
+            if endFrameY >= UIScreen.main.bounds.size.height {
+                self.keyboardHeightLayoutConstraint?.constant = 0.0
+            } else {
+                self.keyboardHeightLayoutConstraint?.constant = endFrame?.size.height ?? 0.0
+            }
+
+            UIView.animate(withDuration: duration,
+                           delay: TimeInterval(0),
+                           options: animationCurve,
+                           animations: { self.view.layoutIfNeeded() },
+                           completion: nil)
+
+
+            var r = (userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+            r = self.bodyTextview.convert(r, from:nil)
+            self.bodyTextview.contentInset.bottom = r.size.height
+            self.bodyTextview.scrollIndicatorInsets.bottom = r.size.height
+        }
     }
 
     @objc func changeTitle() {
@@ -148,7 +193,6 @@ class DetailViewController: UIViewController, UITextViewDelegate {
             if let field = alertController.textFields?[0] {
                 if !(field.text?.isEmpty)! {
                     self.navBarTitle.title = field.text
-                    self.navBarTitleButton.setTitle(field.text, for: .normal)
                     self.shareButton.isEnabled = true
                 }
             } else {

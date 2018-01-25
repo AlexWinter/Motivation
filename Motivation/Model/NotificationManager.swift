@@ -42,7 +42,8 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
             //actions definition
             let action1 = UNNotificationAction(identifier: "action1", title: "Anzeigen", options: [.foreground])
             let action2 = UNNotificationAction(identifier: "action2", title: "Ignorieren", options: [.destructive])
-            let category = UNNotificationCategory(identifier: "actionCategory", actions: [action1,action2], intentIdentifiers: [], options: [])
+//            let category = UNNotificationCategory(identifier: "actionCategory", actions: [action1,action2], intentIdentifiers: [], options: [])
+            let category = UNNotificationCategory(identifier: "actionCategory", actions: [action1,action2], intentIdentifiers: [], options: UNNotificationCategoryOptions(rawValue: 0))
             
             self.center.setNotificationCategories([category])
             completionHandler(success)
@@ -121,9 +122,19 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
         case "action2":
             print("Ignorieren Tapped")
         default:
+            // User tapped directly on the Notification
+            NotificationCenter.default.post(name: .openFromNotification, object: nil, userInfo: userInfo)
             break
         }
         completionHandler()
+    }
+
+    func printAllOpenNotifications() {
+        center.getPendingNotificationRequests(completionHandler: { (notifications) in
+            for notification in notifications {
+                print("offen: \(notification.content.subtitle) mit: \(notification.content.body )")
+            }
+        })
     }
     
     func reScheduleAllNotificationsWithTheNewSound() {
@@ -153,7 +164,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     
     func pendingNotifications(completionHandler: @escaping () -> ()) {
         center.getPendingNotificationRequests(completionHandler: { (notifications) in
-            self.allPendingNotifications = notifications.count
+            self.allPendingNotifications = notifications.count - 1
             DispatchQueue.main.async {
                 completionHandler()
             }
@@ -163,13 +174,11 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     func scheduleNoMoreFutureNotificationsReminder() {
         let notificationContent = UNMutableNotificationContent()
         notificationContent.title = "Keine Benachrichtigungen mehr"
-        notificationContent.body = "Es sind keine Benachrichtigungen mehr geplant für die Zukunft. Die Benachrichtigungen können in den Einstellungen im App neu eingeplant werden."
+        notificationContent.body = "Es sind keine Benachrichtigungen mehr geplant für die Zukunft. Die Benachrichtigungen können in den Einstellungen der App neu eingeplant werden."
         if NotificationSound.individual {
             notificationContent.sound = UNNotificationSound(named: "DiDiDiDiDi.m4a")
-            notificationContent.body = "Individueller Sound"
         } else {
             notificationContent.sound = UNNotificationSound.default()
-            notificationContent.body = "Standard Sound"
         }
         notificationContent.categoryIdentifier = "actionCategory"
         notificationContent.setValue(true, forKey: "shouldAlwaysAlertWhileAppIsForeground")
