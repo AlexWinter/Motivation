@@ -114,7 +114,17 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
         let cell = tableView.cellForRow(at: indexPath)
         cell?.textLabel?.textColor = Constants.myColor.fullAlpha
     }
-
+    
+    override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        if (indexPath.section == 2 && ((indexPath.row == 3) || (indexPath.row == 4))) {
+            return nil
+        } else {
+            return indexPath
+        }
+    }
+    
+    
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let defaults = UserDefaults.standard
@@ -173,25 +183,6 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
         tableView.endUpdates()
     }
     
-    // MARK: Send Email
-    func sendContactEmail() {
-        if MFMailComposeViewController.canSendMail() {
-        let mail = MFMailComposeViewController()
-        mail.mailComposeDelegate = self
-        mail.setToRecipients(["Motivations.App@icloud.com"])
-        mail.setMessageBody("", isHTML: true)
-        mail.view.tintColor = Constants.myColor.fullAlpha
-    
-        present(mail, animated: true)
-        } else {
-        // show failure alert
-        }
-    }
-    
-    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
-        controller.dismiss(animated: true)
-    }
-    
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 1 && indexPath.row == 0 {
             if startTimeCellEpanded {
@@ -210,12 +201,7 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
     }
 
     override func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
-
         let cell = tableView.cellForRow(at: indexPath)
-        
-        if (indexPath.section == 2 && ((indexPath.row == 3) || (indexPath.row == 4))) {
-            return
-        }
         
         cell?.contentView.backgroundColor = Constants.myColor.halfAlpha
         cell?.backgroundColor = Constants.myColor.halfAlpha
@@ -232,6 +218,7 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
     
     override func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath)
+
         cell?.contentView.backgroundColor = UIColor.white
         cell?.backgroundColor = UIColor.white
         cell?.textLabel?.textColor = Constants.myColor.fullAlpha
@@ -254,6 +241,24 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
             }
         }
         return ""
+    }
+
+    func sendContactEmail() {
+        if MFMailComposeViewController.canSendMail() {
+            let mail = MFMailComposeViewController()
+            mail.mailComposeDelegate = self
+            mail.setToRecipients(["Motivations.App@icloud.com"])
+            mail.setMessageBody("", isHTML: true)
+            mail.view.tintColor = Constants.myColor.fullAlpha
+            
+            present(mail, animated: true)
+        } else {
+            // show failure alert
+        }
+    }
+    
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true)
     }
 
     //    MARK: Play Sound
@@ -285,17 +290,29 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
     }
     
     @IBAction func startTimeChanged(_ sender: Any) {
+        if (pickerStartTime.date >= pickerEndTime.date) {
+            pickerStartTime.minimumDate = pickerEndTime.date.addingTimeInterval(-300.0)
+            pickerStartTime.maximumDate = pickerEndTime.date.addingTimeInterval(300.0)
+        } else {
+            pickerEndTime.date = pickerStartTime.date.addingTimeInterval(300.0)
+        }
+
+        pickerEndTime.minimumDate = pickerStartTime.date.addingTimeInterval(300.0)
         updateTimeLabel(label: labelStartTime, from: pickerStartTime)
         TimeFrame.start = pickerStartTime.date
-        pickerEndTime.minimumDate = pickerStartTime.date
         UserDefaults.standard.set(pickerStartTime.date, forKey: UserDefaults.Keys.StartTime)
         NotificationCenter.default.post(name: .recalculateRandomDays, object: nil)
     }
-    
+
     @IBAction func endTimeChanged(_ sender: Any) {
+        if (pickerEndTime.date <= pickerStartTime.date) {
+            pickerEndTime.minimumDate = pickerStartTime.date.addingTimeInterval(300.0)
+            pickerStartTime.maximumDate = pickerEndTime.date.addingTimeInterval(-300.0)
+        } else {
+            TimeFrame.end = pickerEndTime.date
+            pickerStartTime.maximumDate = pickerEndTime.date.addingTimeInterval(-300.0)
+        }
         updateTimeLabel(label: labelEndTime, from: pickerEndTime)
-        TimeFrame.end = pickerEndTime.date
-        pickerStartTime.maximumDate = pickerEndTime.date
         UserDefaults.standard.set(pickerEndTime.date, forKey: UserDefaults.Keys.EndTime)
         NotificationCenter.default.post(name: .recalculateRandomDays, object: nil)
     }

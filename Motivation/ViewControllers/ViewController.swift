@@ -11,7 +11,7 @@ import UserNotifications
 import AVFoundation
 import GameKit
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate {
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, UIViewControllerPreviewingDelegate {
 
     var data = [Slogan]()
     var notifier : NotificationManager {
@@ -54,6 +54,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         self.tableView.dataSource = self
         self.becomeFirstResponder()
 
+        if (traitCollection.forceTouchCapability == .available) {
+            registerForPreviewing(with: self, sourceView: tableView)
+        }
+
         notifier.pendingNotifications { [weak self] in
             if let me = self {
                 
@@ -86,7 +90,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             return
         }
         let now = Date()
-        var distance: Double = now.timeIntervalSince(data[0].fireDay)
+//        var distance: Double = now.timeIntervalSince(data[0].fireDay)
+        var distance: Double = 48 * 60 * 60
         var temp: Double = 0
 
         for headline in data {
@@ -199,7 +204,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
-        
         switch(segue.identifier ?? "") {
             case "NewSlogan":
                 if let indexPath = tableView.indexPathForSelectedRow {
@@ -493,5 +497,17 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
+    }
+
+// MARK: Peek & Pop
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        guard let indexPath = tableView.indexPathForRow(at: location) else { return nil }
+        guard let detailViewController = storyboard?.instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController else { return nil }
+        detailViewController.selectedSlogan = data[indexPath.row]
+        return detailViewController
+    }
+
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
+        show(viewControllerToCommit, sender: self)
     }
 }
