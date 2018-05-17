@@ -44,7 +44,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         let defaults = UserDefaults(suiteName: "group.com.alexwinter.motivation")
         defaults?.set(textLabel.text, forKey: "ExtensionText")
-        
+
         let myAppUrl = URL(string: "main-screen:")!
         extensionContext?.open(myAppUrl, completionHandler: { (success) in
             if (!success) {

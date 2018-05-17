@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		760FED172029CD86007DD93B /* Welcome.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 760FED162029CD86007DD93B /* Welcome.storyboard */; };
+		760FED192029D722007DD93B /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760FED182029D722007DD93B /* WelcomeViewController.swift */; };
 		7612A4241F5EA18600EA4889 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7612A4231F5EA18600EA4889 /* NotificationCenter.framework */; };
 		7612A4271F5EA18600EA4889 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7612A4261F5EA18600EA4889 /* TodayViewController.swift */; };
 		7612A42A1F5EA18600EA4889 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7612A4281F5EA18600EA4889 /* MainInterface.storyboard */; };
@@ -24,6 +26,8 @@
 		76A146821F7AD16B003A0BAD /* Slogans.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A146811F7AD16B003A0BAD /* Slogans.swift */; };
 		76CBBB881F7AB6FF001468FC /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76CBBB871F7AB6FF001468FC /* SettingsViewController.swift */; };
 		76D2BDEE1F594D5A0099EBB2 /* FireDates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D2BDED1F594D5A0099EBB2 /* FireDates.swift */; };
+		76DE8098206E5A3400DE2E39 /* Tipps.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 76DE8097206E5A3400DE2E39 /* Tipps.storyboard */; };
+		76DE809C206E6E3E00DE2E39 /* TippsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76DE809B206E6E3E00DE2E39 /* TippsViewController.swift */; };
 		76FDE7291F90B8B800CCCE95 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 76FDE7281F90B88000CCCE95 /* LaunchScreen.storyboard */; };
 		76FFF4171F7CE4B3005686EF /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76FFF4161F7CE4B3005686EF /* Constants.swift */; };
 /* End PBXBuildFile section */
@@ -53,6 +57,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		760FED162029CD86007DD93B /* Welcome.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Welcome.storyboard; path = Motivation/Welcome.storyboard; sourceTree = SOURCE_ROOT; };
+		760FED182029D722007DD93B /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		7612A4211F5EA18600EA4889 /* motivationTodayExt.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = motivationTodayExt.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		7612A4231F5EA18600EA4889 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		7612A4261F5EA18600EA4889 /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
@@ -75,6 +81,8 @@
 		76A146811F7AD16B003A0BAD /* Slogans.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Slogans.swift; path = Motivation/Model/Slogans.swift; sourceTree = SOURCE_ROOT; };
 		76CBBB871F7AB6FF001468FC /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		76D2BDED1F594D5A0099EBB2 /* FireDates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FireDates.swift; sourceTree = "<group>"; };
+		76DE8097206E5A3400DE2E39 /* Tipps.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Tipps.storyboard; sourceTree = "<group>"; };
+		76DE809B206E6E3E00DE2E39 /* TippsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TippsViewController.swift; sourceTree = "<group>"; };
 		76FDE7281F90B88000CCCE95 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Views/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		76FFF4161F7CE4B3005686EF /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -167,6 +175,8 @@
 				769B5EE51F4C2F7C0060B784 /* ViewController.swift */,
 				769B5EFA1F4C51900060B784 /* DetailViewController.swift */,
 				76CBBB871F7AB6FF001468FC /* SettingsViewController.swift */,
+				760FED182029D722007DD93B /* WelcomeViewController.swift */,
+				76DE809B206E6E3E00DE2E39 /* TippsViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -176,6 +186,8 @@
 			children = (
 				769B5EE71F4C2F7C0060B784 /* Main.storyboard */,
 				76FDE7281F90B88000CCCE95 /* LaunchScreen.storyboard */,
+				760FED162029CD86007DD93B /* Welcome.storyboard */,
+				76DE8097206E5A3400DE2E39 /* Tipps.storyboard */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -239,7 +251,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0830;
-				LastUpgradeCheck = 0900;
+				LastUpgradeCheck = 0930;
 				ORGANIZATIONNAME = "Alex Winter";
 				TargetAttributes = {
 					7612A4201F5EA18600EA4889 = {
@@ -303,6 +315,8 @@
 				769B5EEB1F4C2F7C0060B784 /* Assets.xcassets in Resources */,
 				76FDE7291F90B8B800CCCE95 /* LaunchScreen.storyboard in Resources */,
 				769B5EE91F4C2F7C0060B784 /* Main.storyboard in Resources */,
+				76DE8098206E5A3400DE2E39 /* Tipps.storyboard in Resources */,
+				760FED172029CD86007DD93B /* Welcome.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -323,6 +337,8 @@
 			files = (
 				767AE1591F4ECC9500C2D4C1 /* NotificationManager.swift in Sources */,
 				766E6AF91F7ED1FE00B1206D /* SetDefaultValues.swift in Sources */,
+				760FED192029D722007DD93B /* WelcomeViewController.swift in Sources */,
+				76DE809C206E6E3E00DE2E39 /* TippsViewController.swift in Sources */,
 				769B5EF61F4C49D50060B784 /* CustomTableViewCell.swift in Sources */,
 				769B5EE61F4C2F7C0060B784 /* ViewController.swift in Sources */,
 				76D2BDEE1F594D5A0099EBB2 /* FireDates.swift in Sources */,
@@ -368,6 +384,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = motivationTodayExt/motivationTodayExt.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = SXWG6G643E;
 				INFOPLIST_FILE = motivationTodayExt/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
@@ -383,6 +400,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = motivationTodayExt/motivationTodayExt.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = SXWG6G643E;
 				INFOPLIST_FILE = motivationTodayExt/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
@@ -408,6 +426,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -415,6 +434,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -422,7 +442,8 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -464,6 +485,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -471,6 +493,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -478,7 +501,8 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -505,6 +529,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Motivation/Resources/Motivation.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = SXWG6G643E;
 				INFOPLIST_FILE = "$(SRCROOT)/Motivation/Resources/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -522,6 +547,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Motivation/Resources/Motivation.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = SXWG6G643E;
 				INFOPLIST_FILE = "$(SRCROOT)/Motivation/Resources/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;

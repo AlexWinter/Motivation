@@ -18,7 +18,13 @@ extension Date {
         let (endHour, endMinute) = intFromTime(date: TimeFrame.end)
 
         components.day = components.day! + daysAdding
-        components.hour = startHour + Int(arc4random_uniform(UInt32(endHour-startHour)))
+        
+        
+        var tempCalculation = 0
+        if (endHour - startHour > 0) {
+            tempCalculation = Int(arc4random_uniform(UInt32(endHour - startHour)))
+        }
+        components.hour = startHour + tempCalculation
 
         if startHour == endHour {
             components.minute = startMinute + Int(arc4random_uniform(UInt32(endMinute)))

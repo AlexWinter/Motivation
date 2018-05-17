@@ -35,7 +35,9 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
     @IBOutlet weak var labelRecalculateNotifications: UILabel!
     @IBOutlet weak var labelHighlightLastSlogan: UILabel!
     @IBOutlet weak var labelVersion: UILabel!
-
+    @IBOutlet weak var labelEmail: UILabel!
+    @IBOutlet weak var labelTipps: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         getSavedSound()
@@ -61,10 +63,11 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
         labelStartTime.textColor = Constants.myColor.fullAlpha
         labelEndTime.textColor = Constants.myColor.fullAlpha
         labelResetData.textColor = Constants.myColor.fullAlpha
+        labelEmail.textColor = Constants.myColor.fullAlpha
         labelHighlightLastSlogan.textColor = Constants.myColor.fullAlpha
-        labelVersion.textColor = Constants.myColor.fullAlpha
         labelRecalculateNotifications.textColor = Constants.myColor.fullAlpha
-//        Possible Private Method :(
+        labelTipps.textColor = Constants.myColor.fullAlpha
+        labelVersion.textColor = Constants.myColor.fullAlpha
         pickerStartTime.setValue(Constants.myColor.fullAlpha, forKeyPath: "textColor")
         pickerEndTime.setValue(Constants.myColor.fullAlpha, forKeyPath: "textColor")
     }
@@ -81,13 +84,13 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
         pickerStartTime.date = TimeFrame.start
         pickerEndTime.date = TimeFrame.end
 
-        pickerStartTime.maximumDate = pickerEndTime.date
-        pickerEndTime.minimumDate = pickerStartTime.date
+//        pickerStartTime.maximumDate = pickerEndTime.date
+//        pickerEndTime.minimumDate = pickerStartTime.date
 
         updateTimeLabel(label: labelStartTime, from: pickerStartTime)
         updateTimeLabel(label: labelEndTime, from: pickerEndTime)
     }
-    
+
     func getVersionNumber() {
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
             self.labelVersion.text = "App Version: " + version
@@ -108,23 +111,24 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
             defaults.set(false, forKey: UserDefaults.Keys.HighlightLastSloganKey)
         }
     }
-    
+
     // MARK: TableView
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath)
         cell?.textLabel?.textColor = Constants.myColor.fullAlpha
+        if (indexPath.section == 2 && ((indexPath.row == 3) || (indexPath.row == 5))) {
+            cell?.selectionStyle = .none
+        }
     }
-    
+
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        if (indexPath.section == 2 && ((indexPath.row == 3) || (indexPath.row == 4))) {
+        if (indexPath.section == 2 && ((indexPath.row == 3) || (indexPath.row == 5))) {
             return nil
         } else {
             return indexPath
         }
     }
-    
-    
-    
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let defaults = UserDefaults.standard
@@ -174,8 +178,12 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
             } else if indexPath.row == 1 {
                 showAlertForRescheduleNotifications()
             } else if indexPath.row == 2 {
-//                Kontakt Email senden
+//                Feedback Email
                 sendContactEmail()
+            } else if indexPath.row == 4 {
+                let storyboard = UIStoryboard(name: "Tipps", bundle: nil)
+                let vc = storyboard.instantiateInitialViewController()
+                present(vc!, animated: true, completion: nil)
             }
         }
         
@@ -213,6 +221,10 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
         } else if (indexPath.section == 1 && indexPath.row == 1) {
             labelEnd.textColor = UIColor.white
             labelEndTime.textColor = UIColor.white
+        } else if (indexPath.section == 2 && ((indexPath.row == 3) || (indexPath.row == 5))) {
+            cell?.contentView.backgroundColor = UIColor.white
+            cell?.backgroundColor = UIColor.white
+            cell?.textLabel?.textColor = Constants.myColor.halfAlpha
         }
     }
     
@@ -235,7 +247,8 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         if section == 2 {
             switch (notifier.allPendingNotifications) {
-            case 0: return "Keine offenen Benachrichtigungen"
+            case Int.min..<1: return "Keine offenen Benachrichtigungen"
+//            case 0: return "Keine offenen Benachrichtigungen"
             case 1: return "Noch 1 offene Benachrichtigung"
             default: return String("Noch " + String(notifier.allPendingNotifications) + " offene Benachrichtigungen")
             }
@@ -291,28 +304,28 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
     
     @IBAction func startTimeChanged(_ sender: Any) {
         if (pickerStartTime.date >= pickerEndTime.date) {
-            pickerStartTime.minimumDate = pickerEndTime.date.addingTimeInterval(-300.0)
-            pickerStartTime.maximumDate = pickerEndTime.date.addingTimeInterval(300.0)
-        } else {
-            pickerEndTime.date = pickerStartTime.date.addingTimeInterval(300.0)
+            pickerEndTime.date = pickerStartTime.date.addingTimeInterval(300)
+            updateTimeLabel(label: labelEndTime, from: pickerEndTime)
         }
 
-        pickerEndTime.minimumDate = pickerStartTime.date.addingTimeInterval(300.0)
         updateTimeLabel(label: labelStartTime, from: pickerStartTime)
-        TimeFrame.start = pickerStartTime.date
-        UserDefaults.standard.set(pickerStartTime.date, forKey: UserDefaults.Keys.StartTime)
-        NotificationCenter.default.post(name: .recalculateRandomDays, object: nil)
+        setNewTimeFrame()
     }
 
     @IBAction func endTimeChanged(_ sender: Any) {
         if (pickerEndTime.date <= pickerStartTime.date) {
-            pickerEndTime.minimumDate = pickerStartTime.date.addingTimeInterval(300.0)
-            pickerStartTime.maximumDate = pickerEndTime.date.addingTimeInterval(-300.0)
-        } else {
-            TimeFrame.end = pickerEndTime.date
-            pickerStartTime.maximumDate = pickerEndTime.date.addingTimeInterval(-300.0)
+            pickerStartTime.date = pickerEndTime.date.addingTimeInterval(-300)
+            updateTimeLabel(label: labelStartTime, from: pickerStartTime)
         }
+
         updateTimeLabel(label: labelEndTime, from: pickerEndTime)
+        setNewTimeFrame()
+    }
+    
+    func setNewTimeFrame() {
+        TimeFrame.start = pickerStartTime.date
+        TimeFrame.end = pickerEndTime.date
+        UserDefaults.standard.set(pickerStartTime.date, forKey: UserDefaults.Keys.StartTime)
         UserDefaults.standard.set(pickerEndTime.date, forKey: UserDefaults.Keys.EndTime)
         NotificationCenter.default.post(name: .recalculateRandomDays, object: nil)
     }

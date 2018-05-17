@@ -71,6 +71,14 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 }
             }
         }
+        
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        if appDelegate.headlineInNotification != "" {
+            openFromNotification(notificationHeadline: appDelegate.headlineInNotification)
+            appDelegate.headlineInNotification = ""
+        }
+        
+//        notifier.testLocalNotification()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -80,7 +88,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             navigationController?.navigationBar.prefersLargeTitles = true
         }
         tableView.reloadData()
-//        testNotification()
+        testNotification()
         getClosestSlogan()
     }
 
@@ -90,7 +98,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             return
         }
         let now = Date()
-//        var distance: Double = now.timeIntervalSince(data[0].fireDay)
         var distance: Double = 48 * 60 * 60
         var temp: Double = 0
 
@@ -99,9 +106,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             if (temp > 0 && temp < distance) {
                 distance = temp
                 closestSlogan = headline.headline
-                print("distance: \(distance)")
-                print("closesSlogan: \(closestSlogan)")
-                print("fireDay: \(headline.fireDay)")
             }
         }
     }
@@ -110,7 +114,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         var calendar = Calendar.current
         calendar.timeZone = .current
         data[1].fireDay = calendar.date(byAdding: .second, value: 3, to: Date())!
-//        print("\(data[1].fireDay) jetzt ist es: \(Date())")
+        print("\(data[1].fireDay) jetzt ist es: \(Date())")
     }
 
     @objc func handleLongPress(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
@@ -223,7 +227,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     @IBAction func unwindToList(sender: UIStoryboardSegue) {
         if let sourceViewController = sender.source as? DetailViewController, let changedSlogan = sourceViewController.selectedSlogan {
-    
             if let selectedIndexPath = tableView.indexPathForSelectedRow {
                 // Update an existing Slogan
                 data[selectedIndexPath.row] = changedSlogan
@@ -256,8 +259,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         cell.textLabel?.font = UIFont(name: "Avenir Next", size: 16.0)
         cell.textLabel?.textColor = Constants.myColor.fullAlpha
 
-        
-//        MARK: Highlight last Slogan
+    // MARK: Highlight last Slogan
         if (HighlightLastSlogan.isOn && entry.headline == closestSlogan) {
             cell.contentView.superview!.backgroundColor = Constants.myColor.halfAlpha
             cell.textLabel?.backgroundColor = UIColor.clear
@@ -356,6 +358,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     //MARK: Notifications
     @objc func openSpecificVC (_ notification: NSNotification) {
         if let notificationText = notification.userInfo?["title"] as? String {
+print("viewDidLoad:openSpecificVC: \(notificationText)")
+            
+            
             for headline in data {
                 if headline.headline == notificationText {
                     let index = data.index(where: { (item) -> Bool in
@@ -367,6 +372,20 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                     tableView.selectRow(at: rowToSelect, animated: true, scrollPosition: .top)
                     performSegue(withIdentifier: "ShowSlogan", sender: cell)
                 }
+            }
+        }
+    }
+    
+    func openFromNotification(notificationHeadline: String) {
+        for headline in data {
+            if headline.headline == notificationHeadline {
+                let index = data.index(where: { (item) -> Bool in
+                    item.headline == headline.headline
+                })
+                let rowToSelect = IndexPath(row: index!, section: 0)
+                let cell = tableView.cellForRow(at: rowToSelect)
+                tableView.selectRow(at: rowToSelect, animated: true, scrollPosition: .top)
+                performSegue(withIdentifier: "ShowSlogan", sender: cell)
             }
         }
     }

@@ -32,7 +32,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
             }
         }
     }
-    
+
     private func requestAuthorization(completionHandler: @escaping (_ success: Bool) -> ()) {
         // Request Authorization
         center.requestAuthorization(options: [.alert, .sound, .badge]) { (success, error) in
@@ -80,14 +80,14 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     func testLocalNotification() {
         let notificationContent = UNMutableNotificationContent()
         notificationContent.title = "TEST"
-        notificationContent.subtitle = "Test"
-        notificationContent.body = "Das ist ein Test"
+        notificationContent.subtitle = "Fabian..."
+        notificationContent.body = "... sagt Hallo!"
         if NotificationSound.individual {
             notificationContent.sound = UNNotificationSound(named: "DiDiDiDiDi.m4a")
-            notificationContent.body = "Individueller Sound"
+            notificationContent.body = notificationContent.body + "\n(mit individuellem Sound)"
         } else {
             notificationContent.sound = UNNotificationSound.default()
-            notificationContent.body = "Standard Sound"
+            notificationContent.body = notificationContent.body + "\n(Standard Sound)"
         }
         notificationContent.categoryIdentifier = "actionCategory"
         notificationContent.setValue(true, forKey: "shouldAlwaysAlertWhileAppIsForeground")
@@ -115,7 +115,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         // For handling tap and user actions
         let userInfo = response.notification.request.content.userInfo
-        
+
         switch response.actionIdentifier {
         case "action1":
             NotificationCenter.default.post(name: .openFromNotification, object: nil, userInfo: userInfo)
@@ -174,7 +174,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     func scheduleNoMoreFutureNotificationsReminder() {
         let notificationContent = UNMutableNotificationContent()
         notificationContent.title = "Keine Benachrichtigungen mehr"
-        notificationContent.body = "Es sind keine Benachrichtigungen mehr geplant für die Zukunft. Die Benachrichtigungen können in den Einstellungen der App neu eingeplant werden."
+        notificationContent.body = "Es sind keine Benachrichtigungen mehr geplant für die Zukunft. In den Einstellungen der App neu kannst du sie erneut planen."
         if NotificationSound.individual {
             notificationContent.sound = UNNotificationSound(named: "DiDiDiDiDi.m4a")
         } else {

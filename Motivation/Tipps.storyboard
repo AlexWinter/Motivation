@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="NEO-1J-A3S">
+    <device id="retina5_9" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Tipps View Controller-->
+        <scene sceneID="UOQ-Fb-2UG">
+            <objects>
+                <viewController id="NEO-1J-A3S" customClass="TippsViewController" customModule="Motivation" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="TJX-GZ-65H">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tipps &amp; Tricks" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4wb-MZ-NKb">
+                                <rect key="frame" x="105" y="64" width="165" height="36"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="26"/>
+                                <color key="textColor" red="0.31372549019607843" green="0.49019607843137253" blue="0.62745098039215685" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Icon" translatesAutoresizingMaskIntoConstraints="NO" id="Jbc-PH-dQA">
+                                <rect key="frame" x="137.66666666666666" y="120" width="100" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="32B-Zu-Nlp"/>
+                                    <constraint firstAttribute="width" constant="100" id="qVx-YE-URm"/>
+                                </constraints>
+                            </imageView>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="clG-Lw-Ape">
+                                <rect key="frame" x="20" y="240" width="335" height="498"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <accessibility key="accessibilityConfiguration">
+                                    <accessibilityTraits key="traits" notEnabled="YES"/>
+                                </accessibility>
+                                <string key="text">Wenn du möchtest erhältst du jeden Tag einen zufälligen Spruch.
+
+Wenn du keine Benachrichtigungen mehr erhalten möchtest kannst dies unter "Einstellungen" &gt; "Mitteilungen" deaktivieren.
+
+Wenn du lange auf einen Spruch deinen Finger hältst gelangst du in den Bearbeiten-Modus. Hier kannst du Sprüche löschen oder verschieben.</string>
+                                <color key="textColor" red="0.31372549020000001" green="0.49019607840000001" blue="0.62745098040000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="16"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iOZ-6w-5bK">
+                                <rect key="frame" x="117" y="718" width="140" height="40"/>
+                                <color key="backgroundColor" red="0.31372549019607843" green="0.49019607843137253" blue="0.62745098039215685" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="K91-Ia-gdQ"/>
+                                    <constraint firstAttribute="width" constant="140" id="i4P-om-zNS"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="16"/>
+                                <state key="normal" title="OK">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="dismiss:" destination="NEO-1J-A3S" eventType="touchUpInside" id="mV0-i4-57c"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="iOZ-6w-5bK" firstAttribute="top" secondItem="clG-Lw-Ape" secondAttribute="bottom" constant="-20" id="1Up-yH-rbG"/>
+                            <constraint firstItem="Jbc-PH-dQA" firstAttribute="centerX" secondItem="roR-EO-vNU" secondAttribute="centerX" id="5m0-Gf-Rek"/>
+                            <constraint firstItem="4wb-MZ-NKb" firstAttribute="top" secondItem="roR-EO-vNU" secondAttribute="top" constant="20" id="5vN-n1-QQc"/>
+                            <constraint firstItem="clG-Lw-Ape" firstAttribute="top" secondItem="Jbc-PH-dQA" secondAttribute="bottom" constant="20" id="9oH-v3-xyG"/>
+                            <constraint firstItem="clG-Lw-Ape" firstAttribute="leading" secondItem="roR-EO-vNU" secondAttribute="leading" constant="20" id="MuH-PK-qeM"/>
+                            <constraint firstItem="iOZ-6w-5bK" firstAttribute="bottom" secondItem="roR-EO-vNU" secondAttribute="bottom" constant="-20" id="RPy-su-m9z"/>
+                            <constraint firstItem="roR-EO-vNU" firstAttribute="trailing" secondItem="clG-Lw-Ape" secondAttribute="trailing" constant="20" id="UKn-5I-BOq"/>
+                            <constraint firstItem="Jbc-PH-dQA" firstAttribute="top" secondItem="4wb-MZ-NKb" secondAttribute="bottom" constant="20" id="Yxg-Wd-0tP"/>
+                            <constraint firstItem="iOZ-6w-5bK" firstAttribute="centerX" secondItem="roR-EO-vNU" secondAttribute="centerX" id="ZaE-rc-aOo"/>
+                            <constraint firstItem="4wb-MZ-NKb" firstAttribute="centerX" secondItem="roR-EO-vNU" secondAttribute="centerX" id="zAH-F7-WTL"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="roR-EO-vNU"/>
+                    </view>
+                    <connections>
+                        <outlet property="go" destination="iOZ-6w-5bK" id="70S-XY-LFz"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7Cl-gx-BrM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-270" y="-488.02816901408454"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="Icon" width="512" height="512"/>
+    </resources>
+</document>

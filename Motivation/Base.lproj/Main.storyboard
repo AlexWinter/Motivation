@@ -1,20 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ESQ-QB-QPr">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ESQ-QB-QPr">
     <device id="retina5_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <array key="AvenirNext.ttc">
-            <string>AvenirNext-Regular</string>
-        </array>
-    </customFonts>
     <scenes>
         <!--Sprüche-->
         <scene sceneID="tne-QT-ifu">
@@ -68,8 +63,8 @@
                                 </connections>
                             </tableView>
                         </subviews>
-                        <color key="backgroundColor" red="0.31372549019607843" green="0.49019607843137253" blue="0.62745098039215685" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="tintColor" red="0.31372549019607843" green="0.49019607843137253" blue="0.62745098039215685" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.31372549019607843" green="0.49019607843137253" blue="0.62745098039215685" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="tintColor" red="0.31372549019607843" green="0.49019607843137253" blue="0.62745098039215685" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="dfW-dD-thR" firstAttribute="leading" secondItem="UMq-Xb-C74" secondAttribute="leading" id="8lV-BZ-GBw"/>
                             <constraint firstItem="dfW-dD-thR" firstAttribute="bottom" secondItem="UMq-Xb-C74" secondAttribute="bottom" id="GWv-fL-CIQ"/>
@@ -88,7 +83,7 @@
                         <barButtonItem key="rightBarButtonItem" image="Add" id="XUD-Gl-vAS">
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
-                                <segue destination="w0T-zZ-T53" kind="show" identifier="NewSlogan" action="showDetailViewController:sender:" id="FrQ-7v-NR9"/>
+                                <segue destination="w0T-zZ-T53" kind="show" identifier="NewSlogan" id="FrQ-7v-NR9"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -109,7 +104,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="TopLeft" keyboardDismissMode="onDrag" text="Text hier eingeben" translatesAutoresizingMaskIntoConstraints="NO" id="xHU-WJ-NlN">
-                                <rect key="frame" x="8" y="140" width="307" height="449"/>
+                                <rect key="frame" x="8" y="141" width="307" height="448"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="tintColor" red="0.31372549020000001" green="0.49019607840000001" blue="0.62745098040000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="textColor" red="0.31372549020000001" green="0.49019607840000001" blue="0.62745098040000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -130,15 +125,15 @@
                                 <color key="barTintColor" red="0.31372549020000001" green="0.49019607840000001" blue="0.62745098040000002" alpha="1" colorSpace="calibratedRGB"/>
                             </toolbar>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="1" green="0.99997437000274658" blue="0.99999129772186279" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="SFR-bZ-xDL" firstAttribute="leading" secondItem="rSM-D7-LkV" secondAttribute="leading" id="1Ic-G8-xJh"/>
                             <constraint firstItem="rSM-D7-LkV" firstAttribute="trailing" secondItem="SFR-bZ-xDL" secondAttribute="trailing" id="FaI-zt-Nwv"/>
                             <constraint firstItem="rSM-D7-LkV" firstAttribute="trailing" secondItem="xHU-WJ-NlN" secondAttribute="trailing" constant="5" id="L6x-AI-hXR"/>
                             <constraint firstItem="xHU-WJ-NlN" firstAttribute="leading" secondItem="GQI-0P-EzR" secondAttribute="leadingMargin" constant="-8" id="R1L-mg-mrC"/>
-                            <constraint firstItem="SFR-bZ-xDL" firstAttribute="top" secondItem="xHU-WJ-NlN" secondAttribute="bottom" id="fn4-Cc-MCK"/>
+                            <constraint firstItem="xHU-WJ-NlN" firstAttribute="bottom" secondItem="SFR-bZ-xDL" secondAttribute="top" id="i4Q-6r-HH7"/>
                             <constraint firstItem="rSM-D7-LkV" firstAttribute="bottom" secondItem="SFR-bZ-xDL" secondAttribute="bottom" id="oxj-3J-nYd"/>
-                            <constraint firstItem="xHU-WJ-NlN" firstAttribute="top" secondItem="rSM-D7-LkV" secondAttribute="top" id="xHe-rq-JDg"/>
+                            <constraint firstItem="xHU-WJ-NlN" firstAttribute="top" secondItem="rSM-D7-LkV" secondAttribute="top" constant="1" id="xHe-rq-JDg"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="rSM-D7-LkV"/>
                     </view>
@@ -174,7 +169,6 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ESQ-QB-QPr" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="667"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="D61-Zw-GhI">
                         <rect key="frame" x="0.0" y="44" width="320" height="96"/>
@@ -285,7 +279,7 @@
                             <tableViewSection headerTitle="Zeitraum für Benachrichtigungen" id="eOM-Rx-mZX">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="startTimeCell" rowHeight="235" id="x3U-gT-lSS">
-                                        <rect key="frame" x="0.0" y="191.33333333333334" width="320" height="235"/>
+                                        <rect key="frame" x="0.0" y="191.33333333333337" width="320" height="235"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="x3U-gT-lSS" id="Hws-32-Dg3">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="234.66666666666666"/>
@@ -401,7 +395,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Benachrichtigungen neu planen" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="hPv-ct-cuH">
-                                                    <rect key="frame" x="15" y="0.0" width="290" height="39.666666666666664"/>
+                                                    <rect key="frame" x="16" y="0.0" width="288" height="39.666666666666664"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="15"/>
                                                     <color key="textColor" red="0.31372549020000001" green="0.49019607840000001" blue="0.62745098040000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -418,8 +412,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="39.666666666666664"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Kontakt Email" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ffw-SZ-nkU">
-                                                    <rect key="frame" x="15" y="0.0" width="290" height="39.666666666666664"/>
+                                                <label opaque="NO" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Feedback" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ffw-SZ-nkU">
+                                                    <rect key="frame" x="16" y="0.0" width="288" height="39.666666666666664"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="15"/>
                                                     <color key="textColor" red="0.31372549020000001" green="0.49019607840000001" blue="0.62745098040000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -429,7 +423,7 @@
                                         </tableViewCellContentView>
                                         <color key="tintColor" red="0.31372549020000001" green="0.49019607840000001" blue="0.62745098040000002" alpha="1" colorSpace="calibratedRGB"/>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="UfY-jS-oH9">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="UfY-jS-oH9">
                                         <rect key="frame" x="0.0" y="844.66666666666674" width="320" height="40"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="UfY-jS-oH9" id="XAL-KA-FvX">
@@ -455,15 +449,15 @@
                                         </tableViewCellContentView>
                                         <color key="tintColor" red="0.31372549020000001" green="0.49019607840000001" blue="0.62745098040000002" alpha="1" colorSpace="calibratedRGB"/>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="6fH-ju-I3w" style="IBUITableViewCellStyleDefault" id="f4D-VY-RDM">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="6fH-ju-I3w" style="IBUITableViewCellStyleDefault" id="f4D-VY-RDM">
                                         <rect key="frame" x="0.0" y="884.66666666666674" width="320" height="40"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="f4D-VY-RDM" id="1pU-hq-sYX">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="39.666666666666664"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="App Version 1.0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="6fH-ju-I3w">
-                                                    <rect key="frame" x="15" y="0.0" width="290" height="39.666666666666664"/>
+                                                <label opaque="NO" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Tipps &amp; Tricks" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="6fH-ju-I3w">
+                                                    <rect key="frame" x="16" y="0.0" width="288" height="39.666666666666664"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="15"/>
                                                     <color key="textColor" red="0.31372549020000001" green="0.49019607840000001" blue="0.62745098040000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -472,6 +466,30 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <color key="tintColor" red="0.31372549020000001" green="0.49019607840000001" blue="0.62745098040000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        <accessibility key="accessibilityConfiguration">
+                                            <accessibilityTraits key="traits" notEnabled="YES"/>
+                                        </accessibility>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="XxP-lP-fw2" style="IBUITableViewCellStyleDefault" id="4AU-er-r8c">
+                                        <rect key="frame" x="0.0" y="924.66666666666674" width="320" height="40"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="4AU-er-r8c" id="CzM-V9-QjU">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="39.666666666666664"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="App Version 1.0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="XxP-lP-fw2">
+                                                    <rect key="frame" x="16" y="0.0" width="288" height="39.666666666666664"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="15"/>
+                                                    <color key="textColor" red="0.31372549020000001" green="0.49019607840000001" blue="0.62745098040000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <color key="tintColor" red="0.31372549020000001" green="0.49019607840000001" blue="0.62745098040000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        <accessibility key="accessibilityConfiguration">
+                                            <accessibilityTraits key="traits" notEnabled="YES"/>
+                                        </accessibility>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -493,6 +511,7 @@
                         <outlet property="cellSoundIndividual" destination="S2I-lD-hne" id="Ugq-r2-yN3"/>
                         <outlet property="cellSoundStandard" destination="vxc-Qe-dvC" id="ijA-EC-pfn"/>
                         <outlet property="highlightSwitch" destination="4so-Ds-PBW" id="Vfy-ZU-6Ct"/>
+                        <outlet property="labelEmail" destination="ffw-SZ-nkU" id="s5K-Ld-6ui"/>
                         <outlet property="labelEnd" destination="Znq-Fa-9gO" id="keR-95-Jlg"/>
                         <outlet property="labelEndTime" destination="0OG-Ro-LbB" id="lmG-xL-4zt"/>
                         <outlet property="labelHighlightLastSlogan" destination="45H-vh-CzQ" id="uUf-vb-fSz"/>
@@ -502,7 +521,8 @@
                         <outlet property="labelStandardSound" destination="Wvv-qe-h1m" id="cqu-Qw-h5o"/>
                         <outlet property="labelStart" destination="EWH-HF-iXX" id="yxJ-vC-AqM"/>
                         <outlet property="labelStartTime" destination="aJw-lT-8Qr" id="eID-z9-jrj"/>
-                        <outlet property="labelVersion" destination="6fH-ju-I3w" id="C5a-dL-3L5"/>
+                        <outlet property="labelTipps" destination="6fH-ju-I3w" id="bfz-DU-Vea"/>
+                        <outlet property="labelVersion" destination="XxP-lP-fw2" id="1SA-8S-29i"/>
                         <outlet property="pickerEndTime" destination="mQK-DR-DzU" id="3L7-SB-6a9"/>
                         <outlet property="pickerStartTime" destination="7bQ-hs-EQk" id="Fb4-GC-OgJ"/>
                     </connections>
@@ -551,5 +571,5 @@
     <inferredMetricsTieBreakers>
         <segue reference="Dyp-Fs-zhk"/>
     </inferredMetricsTieBreakers>
-    <color key="tintColor" red="0.31372549020000001" green="0.49019607840000001" blue="0.62745098040000002" alpha="1" colorSpace="calibratedRGB"/>
+    <color key="tintColor" red="0.31372549019607843" green="0.49019607843137253" blue="0.62745098039215685" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
 </document>

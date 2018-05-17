@@ -37,9 +37,7 @@ class DetailViewController: UIViewController, UITextViewDelegate {
         let swipe = UISwipeGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
         swipe.direction = .down
         bodyTextview.addGestureRecognizer(swipe)
-        
-//        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardShown(n:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardShown(n:)), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
+
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardNotification(notification:)), name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
     }
 
@@ -89,7 +87,6 @@ class DetailViewController: UIViewController, UITextViewDelegate {
     @IBAction func cancel(_ sender: UIBarButtonItem) {
         // Depending on style of presentation (modal or push presentation), this view controller needs to be dismissed in two different ways.
         let isPresentingInAddingMode = presentingViewController is UINavigationController
-
         if isPresentingInAddingMode {
             dismiss(animated: true, completion: nil)
         } else if let owningNavigationController = navigationController{
@@ -128,7 +125,7 @@ class DetailViewController: UIViewController, UITextViewDelegate {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        bodyTextview.setContentOffset(CGPoint.zero, animated: false)
+//        bodyTextview.setContentOffset(CGPoint.zero, animated: false)
     }
     
 //    MARK: TextView
@@ -150,14 +147,6 @@ class DetailViewController: UIViewController, UITextViewDelegate {
         return true
     }
 
-//    @objc func keyboardShown(n:NSNotification) {
-//        let d = n.userInfo!
-//        var r = (d[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
-//        r = self.bodyTextview.convert(r, from:nil)
-//        self.bodyTextview.contentInset.bottom = r.size.height
-//        self.bodyTextview.scrollIndicatorInsets.bottom = r.size.height
-//    }
-
     @objc func keyboardNotification(notification: NSNotification) {
         if let userInfo = notification.userInfo {
             let endFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
@@ -173,11 +162,10 @@ class DetailViewController: UIViewController, UITextViewDelegate {
             }
 
             UIView.animate(withDuration: duration,
-                           delay: TimeInterval(0),
+                           delay: TimeInterval(0.3),
                            options: animationCurve,
                            animations: { self.view.layoutIfNeeded() },
                            completion: nil)
-
 
             var r = (userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
             r = self.bodyTextview.convert(r, from:nil)

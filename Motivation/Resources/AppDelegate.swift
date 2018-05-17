@@ -7,19 +7,36 @@
 //
 
 import UIKit
+import UserNotifications
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
     var window: UIWindow?
-    
     var notificationManager : NotificationManager!
+    var data = [Slogan]()
+    var headlineInNotification: String = ""
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
 
-        notificationManager = NotificationManager()
+        let center = UNUserNotificationCenter.current()
+        center.delegate = self
 
+        let defaults = UserDefaults.standard
+        if (defaults.bool(forKey: UserDefaults.Keys.HasLaunchedOnce)) {
+            print("Not First Launch")
+        } else {
+            print("First Launch")
+
+            self.window = UIWindow(frame: UIScreen.main.bounds)
+            let storyboard = UIStoryboard(name: "Welcome", bundle: nil)
+            let initialViewController = storyboard.instantiateInitialViewController()
+            self.window?.rootViewController = initialViewController
+            self.window?.makeKeyAndVisible()
+        }
+        
+        notificationManager = NotificationManager()
         setValuesforFirstLaunch()
 
         if #available(iOS 11.0, *) {
@@ -28,7 +45,40 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 NSAttributedStringKey.font: UIFont(name: "Avenir Next", size: 28.0)!
             ]
         }
+        openedFromExtension()
         return true
+    }
+
+    func openedFromExtension() {
+        let defaults = UserDefaults(suiteName: "group.com.alexwinter.motivation")
+        
+        if (defaults?.value(forKey: UserDefaults.Keys.ExtensionText)) == nil {
+            textInWidget = ""
+        } else {
+            textInWidget = defaults?.value(forKey: UserDefaults.Keys.ExtensionText) as! String
+            defaults?.set(nil, forKey: UserDefaults.Keys.ExtensionText)
+            NotificationCenter.default.post(name: .openFromWidget, object: nil)
+        }
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        switch response.actionIdentifier {
+        case "action1":
+            openSloganFromNotification(userInfo: response)
+        case "action2":
+            print("Ignorieren Tapped")
+        default:
+            // User tapped directly on the Notification
+            openSloganFromNotification(userInfo: response)
+            break
+        }
+        completionHandler()
+    }
+    
+    func openSloganFromNotification(userInfo:UNNotificationResponse) {
+        if let notificationText:String = userInfo.notification.request.content.userInfo["title"] as! String? {
+            headlineInNotification = notificationText
+        }
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -43,16 +93,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
-        
-        let defaults = UserDefaults(suiteName: "group.com.alexwinter.motivation")
-
-        if (defaults?.value(forKey: UserDefaults.Keys.ExtensionText)) == nil {
-            textInWidget = ""
-        } else {
-            textInWidget = defaults?.value(forKey: UserDefaults.Keys.ExtensionText) as! String
-            defaults?.set(nil, forKey: UserDefaults.Keys.ExtensionText)
-            NotificationCenter.default.post(name: .openFromWidget, object: nil)
-        }
+        openedFromExtension()
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
