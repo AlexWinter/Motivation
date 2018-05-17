@@ -39,6 +39,7 @@ legend{color:inherit;display:table;max-width:100%;padding:0;white-space:normal}t
 html,body{
 	font-family:'Avenir Next LT Pro Regular';
 	text-align: center;
+	color: RGB(80,125,160);
 }
 .header img {
   float: left;
@@ -51,6 +52,10 @@ html,body{
   position: relative;
   top: 18px;
   left: 10px;
+}
+
+footer {
+	color: white;
 }
 
 html{overflow-x:hidden}
