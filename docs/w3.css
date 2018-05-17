@@ -41,6 +41,10 @@ html,body{
 	text-align: center;
 	color: RGB(80,125,160);
 }
+
+.main {
+	margin: 1%;
+}
 .header img {
   float: left;
   width: 100px;
