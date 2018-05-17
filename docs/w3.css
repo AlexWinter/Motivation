@@ -40,6 +40,7 @@ html,body{
 	font-family:'Avenir Next LT Pro Regular';
 	text-align: center;
 	color: RGB(80,125,160);
+	line-height: 1.7;
 }
 
 .main {
