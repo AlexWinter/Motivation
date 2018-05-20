@@ -10,7 +10,6 @@ import UIKit
 
 let notifier = NotificationManager()
 
-
 protocol StorageConnector {
     func loadData(completionHandler: () -> ())
 }
@@ -56,10 +55,8 @@ class Storage {
     }
     
     private func loadSlogans() {
-        
+
     }
-    
-    
 }
 
 class Slogan: NSObject, NSCoding {

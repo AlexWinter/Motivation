@@ -52,7 +52,7 @@ Tipp: Wenn du lange auf einen Spruch deinen Finger hältst gelangst du in den Be
                             </textView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YXx-J8-p0T">
                                 <rect key="frame" x="117.66666666666669" y="718" width="140" height="40"/>
-                                <color key="backgroundColor" red="0.31372549020000001" green="0.49019607840000001" blue="0.62745098040000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.47058823529411764" green="0.62352941176470589" blue="0.72549019607843135" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="140" id="TYn-8P-kVD"/>
                                     <constraint firstAttribute="height" constant="40" id="gOP-gX-prK"/>

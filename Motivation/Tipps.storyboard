@@ -31,8 +31,8 @@
                                     <constraint firstAttribute="width" constant="100" id="qVx-YE-URm"/>
                                 </constraints>
                             </imageView>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="clG-Lw-Ape">
-                                <rect key="frame" x="20" y="240" width="335" height="498"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="TopLeft" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="clG-Lw-Ape">
+                                <rect key="frame" x="20" y="240" width="335" height="458"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <accessibility key="accessibilityConfiguration">
                                     <accessibilityTraits key="traits" notEnabled="YES"/>
@@ -47,8 +47,8 @@ Wenn du lange auf einen Spruch deinen Finger hältst gelangst du in den Bearbeit
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iOZ-6w-5bK">
-                                <rect key="frame" x="117" y="718" width="140" height="40"/>
-                                <color key="backgroundColor" red="0.31372549019607843" green="0.49019607843137253" blue="0.62745098039215685" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <rect key="frame" x="117.66666666666669" y="718" width="140" height="40"/>
+                                <color key="backgroundColor" red="0.47058823529411764" green="0.62352941176470589" blue="0.72549019607843135" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="K91-Ia-gdQ"/>
                                     <constraint firstAttribute="width" constant="140" id="i4P-om-zNS"/>
@@ -64,7 +64,7 @@ Wenn du lange auf einen Spruch deinen Finger hältst gelangst du in den Bearbeit
                         </subviews>
                         <color key="backgroundColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="iOZ-6w-5bK" firstAttribute="top" secondItem="clG-Lw-Ape" secondAttribute="bottom" constant="-20" id="1Up-yH-rbG"/>
+                            <constraint firstItem="iOZ-6w-5bK" firstAttribute="top" secondItem="clG-Lw-Ape" secondAttribute="bottom" constant="20" id="1Up-yH-rbG"/>
                             <constraint firstItem="Jbc-PH-dQA" firstAttribute="centerX" secondItem="roR-EO-vNU" secondAttribute="centerX" id="5m0-Gf-Rek"/>
                             <constraint firstItem="4wb-MZ-NKb" firstAttribute="top" secondItem="roR-EO-vNU" secondAttribute="top" constant="20" id="5vN-n1-QQc"/>
                             <constraint firstItem="clG-Lw-Ape" firstAttribute="top" secondItem="Jbc-PH-dQA" secondAttribute="bottom" constant="20" id="9oH-v3-xyG"/>

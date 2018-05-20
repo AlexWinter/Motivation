@@ -57,27 +57,34 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         if (traitCollection.forceTouchCapability == .available) {
             registerForPreviewing(with: self, sourceView: tableView)
         }
+        
+        if (data.count == 0) {
+            alertNoData()
+        }
 
         notifier.pendingNotifications { [weak self] in
-            if let me = self {
-                
-                if (me.data.count == 0) {
-                    self?.alertNoData()
-                } else {
-                    if (me.notifier.allPendingNotifications == 0) {
-                        // show Alert for new Notifications
-                        self?.alertNoMoreFutureNotificationsScheduled()
-                    }
-                }
-            }
+            print("\(String(describing: self?.notifier.allPendingNotifications))")
+
+//            if let me = self {
+//                if (me.data.count == 0) {
+//                    self?.alertNoData()
+//                } else {
+//                    if (me.notifier.allPendingNotifications == 0) {
+//                        // show Alert for new Notifications
+//                        self?.alertNoMoreFutureNotificationsScheduled()
+//                    }
+//                }
+//            }
         }
-        
+
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         if appDelegate.headlineInNotification != "" {
             openFromNotification(notificationHeadline: appDelegate.headlineInNotification)
             appDelegate.headlineInNotification = ""
+        } else if textInWidget != "" {
+            openFromTodayWidget()
+            textInWidget = ""
         }
-        
 //        notifier.testLocalNotification()
     }
 
@@ -88,7 +95,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             navigationController?.navigationBar.prefersLargeTitles = true
         }
         tableView.reloadData()
-        testNotification()
         getClosestSlogan()
     }
 
@@ -108,13 +114,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 closestSlogan = headline.headline
             }
         }
-    }
-
-    func testNotification() {
-        var calendar = Calendar.current
-        calendar.timeZone = .current
-        data[1].fireDay = calendar.date(byAdding: .second, value: 3, to: Date())!
-        print("\(data[1].fireDay) jetzt ist es: \(Date())")
     }
 
     @objc func handleLongPress(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
@@ -358,8 +357,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     //MARK: Notifications
     @objc func openSpecificVC (_ notification: NSNotification) {
         if let notificationText = notification.userInfo?["title"] as? String {
-print("viewDidLoad:openSpecificVC: \(notificationText)")
-            
+//print("viewDidLoad:openSpecificVC: \(notificationText)")
             
             for headline in data {
                 if headline.headline == notificationText {
@@ -396,14 +394,13 @@ print("viewDidLoad:openSpecificVC: \(notificationText)")
                 let index = data.index(where: { (item) -> Bool in
                     item.headline == entry.headline
                 })
-                
+
                 let rowToSelect = IndexPath(row: index!, section: 0)
                 let cell = tableView.cellForRow(at: rowToSelect)
                 tableView.selectRow(at: rowToSelect, animated: true, scrollPosition: .top)
                 performSegue(withIdentifier: "ShowSlogan", sender: cell)
             }
         }
-        textInWidget = ""
     }
 
     func notificationsAlreadyScheduled() -> Bool {
@@ -440,7 +437,7 @@ print("viewDidLoad:openSpecificVC: \(notificationText)")
                 notifier.scheduleNotification(with: saying.headline, text: saying.text, date: saying.fireDay)
             }
         }
-        notifier.scheduleNoMoreFutureNotificationsReminder()
+//        notifier.scheduleNoMoreFutureNotificationsReminder()
     }
 
     //MARK: Load / save Data
@@ -452,9 +449,9 @@ print("viewDidLoad:openSpecificVC: \(notificationText)")
         let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(data, toFile: Slogan.ArchiveURL.path)
         if isSuccessfulSave {
             saveDataForWidget()
-            print("Data successfully saved")
+//            print("Data successfully saved")
         } else {
-            print("Failed to save data...")
+//            print("Failed to save data...")
         }
     }
     
@@ -522,6 +519,7 @@ print("viewDidLoad:openSpecificVC: \(notificationText)")
     func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
         guard let indexPath = tableView.indexPathForRow(at: location) else { return nil }
         guard let detailViewController = storyboard?.instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController else { return nil }
+        detailViewController.preferredContentSize = CGSize(width: 0, height: 360)
         detailViewController.selectedSlogan = data[indexPath.row]
         return detailViewController
     }

@@ -27,7 +27,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
             case .authorized:
                 break
             case .denied:
-                print("Application Not Allowed to Display Notifications")
+//                print("Application Not Allowed to Display Notifications")
                 break
             }
         }
@@ -36,13 +36,12 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     private func requestAuthorization(completionHandler: @escaping (_ success: Bool) -> ()) {
         // Request Authorization
         center.requestAuthorization(options: [.alert, .sound, .badge]) { (success, error) in
-            if let error = error {
-                print("Request Authorization Failed (\(error), \(error.localizedDescription))")
-            }
+//            if let error = error {
+//                print("Request Authorization Failed (\(error), \(error.localizedDescription))")
+//            }
             //actions definition
             let action1 = UNNotificationAction(identifier: "action1", title: "Anzeigen", options: [.foreground])
             let action2 = UNNotificationAction(identifier: "action2", title: "Ignorieren", options: [.destructive])
-//            let category = UNNotificationCategory(identifier: "actionCategory", actions: [action1,action2], intentIdentifiers: [], options: [])
             let category = UNNotificationCategory(identifier: "actionCategory", actions: [action1,action2], intentIdentifiers: [], options: UNNotificationCategoryOptions(rawValue: 0))
             
             self.center.setNotificationCategories([category])
@@ -77,36 +76,36 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
         }
     }
 
-    func testLocalNotification() {
-        let notificationContent = UNMutableNotificationContent()
-        notificationContent.title = "TEST"
-        notificationContent.subtitle = "Fabian..."
-        notificationContent.body = "... sagt Hallo!"
-        if NotificationSound.individual {
-            notificationContent.sound = UNNotificationSound(named: "DiDiDiDiDi.m4a")
-            notificationContent.body = notificationContent.body + "\n(mit individuellem Sound)"
-        } else {
-            notificationContent.sound = UNNotificationSound.default()
-            notificationContent.body = notificationContent.body + "\n(Standard Sound)"
-        }
-        notificationContent.categoryIdentifier = "actionCategory"
-        notificationContent.setValue(true, forKey: "shouldAlwaysAlertWhileAppIsForeground")
-        notificationContent.userInfo = ["title":"Gestaltgebet"]
-        
-        // Add Trigger
-//        let notificationTrigger = UNCalendarNotificationTrigger(dateMatching: Calendar.current.dateComponents([.year,.month,.day,.hour,.minute,.second,], from: date) , repeats: false)
-        let notificationTrigger = UNTimeIntervalNotificationTrigger.init(timeInterval: 3, repeats: false)
-    
-        // Create Notification Request
-        let notificationRequest = UNNotificationRequest(identifier: "motivation_local_notification" + "Gestaltgebet", content: notificationContent, trigger: notificationTrigger)
-        
-        // Add Request to User Notification Center
-        center.add(notificationRequest) { (error) in
-            if let error = error {
-                print("Unable to Add Notification Request (\(error), \(error.localizedDescription))")
-            }
-        }
-    }
+//    func testLocalNotification() {
+//        let notificationContent = UNMutableNotificationContent()
+//        notificationContent.title = "TEST"
+//        notificationContent.subtitle = "Fabian..."
+//        notificationContent.body = "... sagt Hallo!"
+//        if NotificationSound.individual {
+//            notificationContent.sound = UNNotificationSound(named: "DiDiDiDiDi.m4a")
+//            notificationContent.body = notificationContent.body + "\n(mit individuellem Sound)"
+//        } else {
+//            notificationContent.sound = UNNotificationSound.default()
+//            notificationContent.body = notificationContent.body + "\n(Standard Sound)"
+//        }
+//        notificationContent.categoryIdentifier = "actionCategory"
+//        notificationContent.setValue(true, forKey: "shouldAlwaysAlertWhileAppIsForeground")
+//        notificationContent.userInfo = ["title":"Gestaltgebet"]
+//
+//        // Add Trigger
+////        let notificationTrigger = UNCalendarNotificationTrigger(dateMatching: Calendar.current.dateComponents([.year,.month,.day,.hour,.minute,.second,], from: date) , repeats: false)
+//        let notificationTrigger = UNTimeIntervalNotificationTrigger.init(timeInterval: 3, repeats: false)
+//
+//        // Create Notification Request
+//        let notificationRequest = UNNotificationRequest(identifier: "motivation_local_notification" + "Gestaltgebet", content: notificationContent, trigger: notificationTrigger)
+//
+//        // Add Request to User Notification Center
+//        center.add(notificationRequest) { (error) in
+//            if let error = error {
+//                print("Unable to Add Notification Request (\(error), \(error.localizedDescription))")
+//            }
+//        }
+//    }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         completionHandler([.alert])
@@ -129,14 +128,14 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
         completionHandler()
     }
 
-    func printAllOpenNotifications() {
-        center.getPendingNotificationRequests(completionHandler: { (notifications) in
-            for notification in notifications {
-                print("offen: \(notification.content.subtitle) mit: \(notification.content.body )")
-            }
-        })
-    }
-    
+//    func printAllOpenNotifications() {
+//        center.getPendingNotificationRequests(completionHandler: { (notifications) in
+//            for notification in notifications {
+//                print("offen: \(notification.content.subtitle) mit: \(notification.content.body )")
+//            }
+//        })
+//    }
+
     func reScheduleAllNotificationsWithTheNewSound() {
         let arrayOfNotifications: [UNNotificationRequest] = []
 
@@ -164,39 +163,39 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     
     func pendingNotifications(completionHandler: @escaping () -> ()) {
         center.getPendingNotificationRequests(completionHandler: { (notifications) in
-            self.allPendingNotifications = notifications.count - 1
+            self.allPendingNotifications = notifications.count
             DispatchQueue.main.async {
                 completionHandler()
             }
         })
     }
 
-    func scheduleNoMoreFutureNotificationsReminder() {
-        let notificationContent = UNMutableNotificationContent()
-        notificationContent.title = "Keine Benachrichtigungen mehr"
-        notificationContent.body = "Es sind keine Benachrichtigungen mehr geplant für die Zukunft. In den Einstellungen der App neu kannst du sie erneut planen."
-        if NotificationSound.individual {
-            notificationContent.sound = UNNotificationSound(named: "DiDiDiDiDi.m4a")
-        } else {
-            notificationContent.sound = UNNotificationSound.default()
-        }
-        notificationContent.categoryIdentifier = "actionCategory"
-        notificationContent.setValue(true, forKey: "shouldAlwaysAlertWhileAppIsForeground")
-        notificationContent.userInfo = ["title":"NoMoreOpenNotifications"]
-        
-        let date = Date().calculateFireDate(daysAdding: allPendingNotifications + 1)
-
-        // Add Trigger
-        let notificationTrigger = UNCalendarNotificationTrigger(dateMatching: Calendar.current.dateComponents([.year,.month,.day,.hour,.minute,.second,], from: date) , repeats: false)
-        
-        // Create Notification Request
-        let notificationRequest = UNNotificationRequest(identifier: "motivation_local_notification" + "NoMoreOpenNotifications", content: notificationContent, trigger: notificationTrigger)
-        
-        // Add Request to User Notification Center
-        center.add(notificationRequest) { (error) in
-            if let error = error {
-                print("Unable to Add Notification Request (\(error), \(error.localizedDescription))")
-            }
-        }
-    }
+//    func scheduleNoMoreFutureNotificationsReminder() {
+//        let notificationContent = UNMutableNotificationContent()
+//        notificationContent.title = "Keine Benachrichtigungen mehr"
+//        notificationContent.body = "Es sind keine Benachrichtigungen mehr geplant für die Zukunft. In den Einstellungen der App neu kannst du sie erneut planen."
+//        if NotificationSound.individual {
+//            notificationContent.sound = UNNotificationSound(named: "DiDiDiDiDi.m4a")
+//        } else {
+//            notificationContent.sound = UNNotificationSound.default()
+//        }
+//        notificationContent.categoryIdentifier = "actionCategory"
+//        notificationContent.setValue(true, forKey: "shouldAlwaysAlertWhileAppIsForeground")
+//        notificationContent.userInfo = ["title":"NoMoreOpenNotifications"]
+//
+//        let date = Date().calculateFireDate(daysAdding: allPendingNotifications + 1)
+//
+//        // Add Trigger
+//        let notificationTrigger = UNCalendarNotificationTrigger(dateMatching: Calendar.current.dateComponents([.year,.month,.day,.hour,.minute,.second,], from: date) , repeats: false)
+//
+//        // Create Notification Request
+//        let notificationRequest = UNNotificationRequest(identifier: "motivation_local_notification" + "NoMoreOpenNotifications", content: notificationContent, trigger: notificationTrigger)
+//
+//        // Add Request to User Notification Center
+//        center.add(notificationRequest) { (error) in
+//            if let error = error {
+//                print("Unable to Add Notification Request (\(error), \(error.localizedDescription))")
+//            }
+//        }
+//    }
 }

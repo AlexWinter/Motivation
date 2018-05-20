@@ -44,7 +44,7 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
         getSavedTimeFrame()
         getVersionNumber()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         if #available(iOS 11.0, *) {
             navigationController?.navigationItem.largeTitleDisplayMode = .always
@@ -178,7 +178,6 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
             } else if indexPath.row == 1 {
                 showAlertForRescheduleNotifications()
             } else if indexPath.row == 2 {
-//                Feedback Email
                 sendContactEmail()
             } else if indexPath.row == 4 {
                 let storyboard = UIStoryboard(name: "Tipps", bundle: nil)
@@ -186,7 +185,6 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
                 present(vc!, animated: true, completion: nil)
             }
         }
-        
         tableView.beginUpdates()
         tableView.endUpdates()
     }
@@ -214,7 +212,7 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
         cell?.contentView.backgroundColor = Constants.myColor.halfAlpha
         cell?.backgroundColor = Constants.myColor.halfAlpha
         cell?.textLabel?.textColor = UIColor.white
-
+        
         if (indexPath.section == 1 && indexPath.row == 0) {
             labelStart.textColor = UIColor.white
             labelStartTime.textColor = UIColor.white
@@ -234,11 +232,11 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
         cell?.contentView.backgroundColor = UIColor.white
         cell?.backgroundColor = UIColor.white
         cell?.textLabel?.textColor = Constants.myColor.fullAlpha
-        
-        if indexPath.section == 1 && indexPath.row == 0 {
+
+        if (indexPath.section == 1 && indexPath.row == 0) {
             labelStart.textColor = Constants.myColor.fullAlpha
             labelStartTime.textColor = Constants.myColor.fullAlpha
-        } else if indexPath.section == 1 && indexPath.row == 1 {
+        } else if (indexPath.section == 1 && indexPath.row == 1) {
             labelEnd.textColor = Constants.myColor.fullAlpha
             labelEndTime.textColor = Constants.myColor.fullAlpha
         }

@@ -25,9 +25,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         let defaults = UserDefaults.standard
         if (defaults.bool(forKey: UserDefaults.Keys.HasLaunchedOnce)) {
-            print("Not First Launch")
+//            print("Not First Launch")
         } else {
-            print("First Launch")
+//            print("First Launch")
 
             self.window = UIWindow(frame: UIScreen.main.bounds)
             let storyboard = UIStoryboard(name: "Welcome", bundle: nil)
@@ -51,7 +51,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func openedFromExtension() {
         let defaults = UserDefaults(suiteName: "group.com.alexwinter.motivation")
-        
         if (defaults?.value(forKey: UserDefaults.Keys.ExtensionText)) == nil {
             textInWidget = ""
         } else {
@@ -66,7 +65,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         case "action1":
             openSloganFromNotification(userInfo: response)
         case "action2":
-            print("Ignorieren Tapped")
+            break
         default:
             // User tapped directly on the Notification
             openSloganFromNotification(userInfo: response)
