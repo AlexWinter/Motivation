@@ -11,10 +11,16 @@ import UIKit
 class WelcomeViewController: UIViewController {
 
     @IBOutlet weak var go: UIButton!
-
+    @IBOutlet weak var bodyTextView: UITextView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         go.layer.cornerRadius = 8
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        bodyTextView.contentOffset = CGPoint.zero
     }
 
     @IBAction func startApp(_ sender: UIButton) {
