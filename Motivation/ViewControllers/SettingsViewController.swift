@@ -34,7 +34,7 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
     @IBOutlet weak var labelResetData: UILabel!
     @IBOutlet weak var labelRecalculateNotifications: UILabel!
     @IBOutlet weak var labelHighlightLastSlogan: UILabel!
-    @IBOutlet weak var labelVersion: UILabel!
+//    @IBOutlet weak var labelVersion: UILabel!
     @IBOutlet weak var labelEmail: UILabel!
     @IBOutlet weak var labelTipps: UILabel!
     
@@ -42,7 +42,7 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
         super.viewDidLoad()
         getSavedSound()
         getSavedTimeFrame()
-        getVersionNumber()
+//        getVersionNumber()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -67,7 +67,7 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
         labelHighlightLastSlogan.textColor = Constants.myColor.fullAlpha
         labelRecalculateNotifications.textColor = Constants.myColor.fullAlpha
         labelTipps.textColor = Constants.myColor.fullAlpha
-        labelVersion.textColor = Constants.myColor.fullAlpha
+//        labelVersion.textColor = Constants.myColor.fullAlpha
         pickerStartTime.setValue(Constants.myColor.fullAlpha, forKeyPath: "textColor")
         pickerEndTime.setValue(Constants.myColor.fullAlpha, forKeyPath: "textColor")
     }
@@ -91,14 +91,14 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
         updateTimeLabel(label: labelEndTime, from: pickerEndTime)
     }
 
-    func getVersionNumber() {
-        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
-            self.labelVersion.text = "App Version: " + version
-        }
-//        if let version = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
-//            self.labelVersion.text = self.labelVersion.text! + " Build: " + version
+//    func getVersionNumber() {
+//        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+//            self.labelVersion.text = "App Version: " + version
 //        }
-    }
+////        if let version = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
+////            self.labelVersion.text = self.labelVersion.text! + " Build: " + version
+////        }
+//    }
 
     @IBAction func highlightLastSloganSwitch(_ sender: UISwitch) {
         let defaults = UserDefaults.standard
@@ -116,13 +116,13 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath)
         cell?.textLabel?.textColor = Constants.myColor.fullAlpha
-        if (indexPath.section == 2 && ((indexPath.row == 3) || (indexPath.row == 5))) {
+        if (indexPath.section == 2 && indexPath.row == 1) {
             cell?.selectionStyle = .none
         }
     }
 
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        if (indexPath.section == 2 && ((indexPath.row == 3) || (indexPath.row == 5))) {
+        if (indexPath.section == 2 && indexPath.row == 1) {
             return nil
         } else {
             return indexPath
@@ -164,12 +164,14 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
                     startTimeCellEpanded = false
                 } else {
                     startTimeCellEpanded = true
+                    endTimeCellEpanded = false
                 }
             } else if indexPath.row == 1 {
                 if endTimeCellEpanded {
                     endTimeCellEpanded = false
                 } else {
                     endTimeCellEpanded = true
+                    startTimeCellEpanded = false
                 }
             }
         } else if indexPath.section == 2 {
@@ -188,7 +190,7 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
         tableView.beginUpdates()
         tableView.endUpdates()
     }
-    
+
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 1 && indexPath.row == 0 {
             if startTimeCellEpanded {

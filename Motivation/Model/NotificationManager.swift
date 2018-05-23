@@ -54,7 +54,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
         let notificationContent = UNMutableNotificationContent()
         
         // Configure Notification Content
-        notificationContent.title = "Hier der Spruch für heute:"
+//        notificationContent.title = "Hier der Spruch für heute:"
         notificationContent.subtitle = title
         notificationContent.body = text
         notificationContent.sound = UNNotificationSound(named: "DiDiDiDiDi.m4a")
@@ -78,7 +78,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 
 //    func testLocalNotification() {
 //        let notificationContent = UNMutableNotificationContent()
-//        notificationContent.title = "TEST"
+////        notificationContent.title = "TEST"
 //        notificationContent.subtitle = "Fabian..."
 //        notificationContent.body = "... sagt Hallo!"
 //        if NotificationSound.individual {
