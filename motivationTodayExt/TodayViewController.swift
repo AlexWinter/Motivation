@@ -23,17 +23,62 @@ class TodayViewController: UIViewController, NCWidgetProviding {
 // If an error is encountered, use NCUpdateResult.Failed
 // If there's no update required, use NCUpdateResult.NoData
 // If there's an update, use NCUpdateResult.NewData
-        
-        let defaults = UserDefaults(suiteName: "group.com.alexwinter.motivation")
 
-        if let data2 = defaults?.value(forKey: "widgetData") as? NSData {
-            if let arr = NSKeyedUnarchiver.unarchiveObject(with: data2 as Data) as? [String] {
-                textLabel.text = String(arr[Int(arc4random_uniform(UInt32(arr.count)))])
+        var newText: String = getLastSlogan()
+        if (newText != "") {
+//            textLabel.text = "Letzter Spruch \n" + newText
+            textLabel.text = newText
+            completionHandler(NCUpdateResult.newData)
+            return
+        } else {
+            newText = getRandomSlogan()
+            if (newText != "") {
+//                textLabel.text = "Zufälliger Spruch \n" + newText
+                textLabel.text = newText
                 completionHandler(NCUpdateResult.newData)
-            } else {
-                completionHandler(NCUpdateResult.noData)
+                return
             }
         }
+    }
+
+    func getLastSlogan() -> String {
+        var indexOfA: Int = 0
+        
+        let defaults = UserDefaults(suiteName: "group.com.alexwinter.motivation")
+        if let data1 = defaults?.value(forKey: "widgetTimes") as? Data {
+            if let arr: [Date] = NSKeyedUnarchiver.unarchiveObject(with: data1) as? [Date] {
+                if (arr.count == 0) {
+                    return ""
+                }
+
+                if let closestDate = arr.sorted().first(where: {$0.timeIntervalSinceNow < 0}) {
+//                    print(closestDate.description(with: .current))
+                    indexOfA = arr.index(of: closestDate)!
+                }
+                
+                if (indexOfA == 0) {
+                    return ""
+                }
+                
+                if let data2 = defaults?.value(forKey: "widgetData") as? Data {
+                    if let arr2 = NSKeyedUnarchiver.unarchiveObject(with: data2) as? [String] {
+                        return arr2[indexOfA]
+                    }
+                }
+            }
+        }
+        return "Fehler"
+    }
+
+    func getRandomSlogan() -> String {
+        let defaults = UserDefaults(suiteName: "group.com.alexwinter.motivation")
+        if let data2 = defaults?.value(forKey: "widgetData") as? NSData {
+            if let arr = NSKeyedUnarchiver.unarchiveObject(with: data2 as Data) as? [String] {
+//                textLabel.text = String(arr[Int(arc4random_uniform(UInt32(arr.count)))])
+                return String(arr[Int(arc4random_uniform(UInt32(arr.count)))])
+            }
+        }
+        return ""
     }
 
     func widgetActiveDisplayModeDidChange(_ activeDisplayMode: NCWidgetDisplayMode, withMaximumSize maxSize: CGSize) {

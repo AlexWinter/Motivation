@@ -28,7 +28,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //            print("Not First Launch")
         } else {
 //            print("First Launch")
-
             self.window = UIWindow(frame: UIScreen.main.bounds)
             let storyboard = UIStoryboard(name: "Welcome", bundle: nil)
             let initialViewController = storyboard.instantiateInitialViewController()

@@ -160,7 +160,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
             center.add(notification, withCompletionHandler: nil)
         }
     }
-    
+
     func pendingNotifications(completionHandler: @escaping () -> ()) {
         center.getPendingNotificationRequests(completionHandler: { (notifications) in
             self.allPendingNotifications = notifications.count

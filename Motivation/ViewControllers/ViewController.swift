@@ -96,6 +96,23 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         tableView.reloadData()
         getClosestSlogan()
+
+
+//        var arr: [Date] = []
+//        for headline in data {
+//            print("\(headline.fireDay)  \(headline.headline)")
+//            arr.append(headline.fireDay)
+//        }
+//        var temp: Date = Date()
+//        var gefunden: Bool = false
+//        if let closestDate = arr.sorted().first(where: {$0.timeIntervalSinceNow < 0}) {
+//            print(closestDate.description(with: .current))
+//            temp = closestDate
+//            gefunden = true
+////            indexOfA = arr.index(of: closestDate)!
+//        }
+//
+//        print("ergebnis: \(gefunden) \(temp)")
     }
 
     func getClosestSlogan() {
@@ -357,8 +374,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     //MARK: Notifications
     @objc func openSpecificVC (_ notification: NSNotification) {
         if let notificationText = notification.userInfo?["title"] as? String {
-//print("viewDidLoad:openSpecificVC: \(notificationText)")
-            
             for headline in data {
                 if headline.headline == notificationText {
                     let index = data.index(where: { (item) -> Bool in
@@ -437,6 +452,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 notifier.scheduleNotification(with: saying.headline, text: saying.text, date: saying.fireDay)
             }
         }
+    
+        notifier.pendingNotifications { [weak self] in
+            print("\(String(describing: self?.notifier.allPendingNotifications))")
+        }
 //        notifier.scheduleNoMoreFutureNotificationsReminder()
     }
 
@@ -465,10 +484,22 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let defaults = UserDefaults(suiteName: "group.com.alexwinter.motivation")
         let data2 = NSKeyedArchiver.archivedData(withRootObject: slogans)
         defaults?.setValue(data2, forKey: "widgetData")
+        
+        
+        
+        var times: [Date] = []
+        
+        for slogan in self.data {
+            times.append(slogan.fireDay)
+        }
+        
+        let defaults2 = UserDefaults(suiteName: "group.com.alexwinter.motivation")
+        let data3 = NSKeyedArchiver.archivedData(withRootObject: times)
+        defaults2?.setValue(data3, forKey: "widgetTimes")
     }
 
     func alertNoData() {
-        let alertController = UIAlertController(title: "Keine Daten", message: "Sollen die Standard Daten geladen werden?", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Keine Daten vorhanden", message: "Sollen die Standard Sprüche geladen werden?", preferredStyle: .alert)
         let okAction = UIAlertAction(title: "Ja", style: UIAlertActionStyle.default) {
             UIAlertAction in
             self.data = Slogan.loadDefaultSlogans()

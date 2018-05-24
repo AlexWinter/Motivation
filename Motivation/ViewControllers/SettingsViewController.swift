@@ -19,6 +19,8 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
 
     private var startTimeCellEpanded: Bool = false
     private var endTimeCellEpanded: Bool = false
+    
+    var initialTouchPoint: CGPoint = CGPoint(x: 0,y: 0)
 
     @IBOutlet weak var cellSoundIndividual: UITableViewCell!
     @IBOutlet weak var cellSoundStandard: UITableViewCell!
@@ -34,7 +36,6 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
     @IBOutlet weak var labelResetData: UILabel!
     @IBOutlet weak var labelRecalculateNotifications: UILabel!
     @IBOutlet weak var labelHighlightLastSlogan: UILabel!
-//    @IBOutlet weak var labelVersion: UILabel!
     @IBOutlet weak var labelEmail: UILabel!
     @IBOutlet weak var labelTipps: UILabel!
     
@@ -42,7 +43,8 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
         super.viewDidLoad()
         getSavedSound()
         getSavedTimeFrame()
-//        getVersionNumber()
+        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(dragViewDown(_:)))
+        navigationController!.view.addGestureRecognizer(panGesture)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -54,20 +56,40 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
         highlightSwitch.isOn = HighlightLastSlogan.isOn
     }
 
-//    A small hack because the colors selected in the Storyboard are just not quite there
+    @IBAction func dragViewDown(_ sender: UIPanGestureRecognizer) {
+        let touchPoint = sender.location(in: self.view?.window)
+        
+        if sender.state == UIGestureRecognizerState.began {
+            initialTouchPoint = touchPoint
+        } else if sender.state == UIGestureRecognizerState.changed {
+            if (touchPoint.y - initialTouchPoint.y > 0) && (touchPoint.y - initialTouchPoint.y < 100) {
+                self.view.frame = CGRect(x: 0, y: touchPoint.y - self.initialTouchPoint.y, width: self.view.frame.size.width, height: self.view.frame.size.height)
+            } else {
+                self.dismiss(animated: true, completion: nil)
+            }
+        } else if sender.state == UIGestureRecognizerState.ended || sender.state == UIGestureRecognizerState.cancelled {
+            if touchPoint.y - initialTouchPoint.y > 100 {
+                self.dismiss(animated: true, completion: nil)
+            } else {
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
+                })
+            }
+        }
+    }
+
     func changeAllTextColors() {
-        labelIndividualSound.textColor = Constants.myColor.fullAlpha
-        labelStandardSound.textColor = Constants.myColor.fullAlpha
-        labelStart.textColor = Constants.myColor.fullAlpha
-        labelEnd.textColor = Constants.myColor.fullAlpha
-        labelStartTime.textColor = Constants.myColor.fullAlpha
-        labelEndTime.textColor = Constants.myColor.fullAlpha
-        labelResetData.textColor = Constants.myColor.fullAlpha
-        labelEmail.textColor = Constants.myColor.fullAlpha
-        labelHighlightLastSlogan.textColor = Constants.myColor.fullAlpha
-        labelRecalculateNotifications.textColor = Constants.myColor.fullAlpha
-        labelTipps.textColor = Constants.myColor.fullAlpha
-//        labelVersion.textColor = Constants.myColor.fullAlpha
+//        labelIndividualSound.textColor = Constants.myColor.fullAlpha
+//        labelStandardSound.textColor = Constants.myColor.fullAlpha
+//        labelStart.textColor = Constants.myColor.fullAlpha
+//        labelEnd.textColor = Constants.myColor.fullAlpha
+//        labelStartTime.textColor = Constants.myColor.fullAlpha
+//        labelEndTime.textColor = Constants.myColor.fullAlpha
+//        labelResetData.textColor = Constants.myColor.fullAlpha
+//        labelEmail.textColor = Constants.myColor.fullAlpha
+//        labelHighlightLastSlogan.textColor = Constants.myColor.fullAlpha
+//        labelRecalculateNotifications.textColor = Constants.myColor.fullAlpha
+//        labelTipps.textColor = Constants.myColor.fullAlpha
         pickerStartTime.setValue(Constants.myColor.fullAlpha, forKeyPath: "textColor")
         pickerEndTime.setValue(Constants.myColor.fullAlpha, forKeyPath: "textColor")
     }
@@ -83,26 +105,12 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
     func getSavedTimeFrame() {
         pickerStartTime.date = TimeFrame.start
         pickerEndTime.date = TimeFrame.end
-
-//        pickerStartTime.maximumDate = pickerEndTime.date
-//        pickerEndTime.minimumDate = pickerStartTime.date
-
         updateTimeLabel(label: labelStartTime, from: pickerStartTime)
         updateTimeLabel(label: labelEndTime, from: pickerEndTime)
     }
 
-//    func getVersionNumber() {
-//        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
-//            self.labelVersion.text = "App Version: " + version
-//        }
-////        if let version = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
-////            self.labelVersion.text = self.labelVersion.text! + " Build: " + version
-////        }
-//    }
-
     @IBAction func highlightLastSloganSwitch(_ sender: UISwitch) {
         let defaults = UserDefaults.standard
-        
         if (sender.isOn) {
             HighlightLastSlogan.isOn = true
             defaults.set(true, forKey: UserDefaults.Keys.HighlightLastSloganKey)
@@ -115,14 +123,14 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
     // MARK: TableView
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath)
-        cell?.textLabel?.textColor = Constants.myColor.fullAlpha
-        if (indexPath.section == 2 && indexPath.row == 1) {
+//        cell?.textLabel?.textColor = Constants.myColor.fullAlpha
+        if (indexPath.section == 2 && indexPath.row == 0) {
             cell?.selectionStyle = .none
         }
     }
 
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        if (indexPath.section == 2 && indexPath.row == 1) {
+        if (indexPath.section == 2 && indexPath.row == 0) {
             return nil
         } else {
             return indexPath
@@ -175,16 +183,16 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
                 }
             }
         } else if indexPath.section == 2 {
-            if indexPath.row == 0 {
-                showAlertForDataReset()
-            } else if indexPath.row == 1 {
+            if indexPath.row == 1 {
                 showAlertForRescheduleNotifications()
             } else if indexPath.row == 2 {
-                sendContactEmail()
-            } else if indexPath.row == 4 {
+                showAlertForDataReset()
+            } else if indexPath.row == 3 {
                 let storyboard = UIStoryboard(name: "Tipps", bundle: nil)
                 let vc = storyboard.instantiateInitialViewController()
                 present(vc!, animated: true, completion: nil)
+            } else if indexPath.row == 4 {
+                sendContactEmail()
             }
         }
         tableView.beginUpdates()
@@ -221,7 +229,7 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
         } else if (indexPath.section == 1 && indexPath.row == 1) {
             labelEnd.textColor = UIColor.white
             labelEndTime.textColor = UIColor.white
-        } else if (indexPath.section == 2 && ((indexPath.row == 3) || (indexPath.row == 5))) {
+        } else if (indexPath.section == 2 && indexPath.row == 0) {
             cell?.contentView.backgroundColor = UIColor.white
             cell?.backgroundColor = UIColor.white
             cell?.textLabel?.textColor = Constants.myColor.halfAlpha
@@ -248,7 +256,6 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
         if section == 2 {
             switch (notifier.allPendingNotifications) {
             case Int.min..<1: return "Keine offenen Benachrichtigungen"
-//            case 0: return "Keine offenen Benachrichtigungen"
             case 1: return "Noch 1 offene Benachrichtigung"
             default: return String("Noch " + String(notifier.allPendingNotifications) + " offene Benachrichtigungen")
             }
@@ -356,6 +363,10 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
 
         // Present the controller
         self.present(alertController, animated: true, completion: nil)
+        
+        notifier.pendingNotifications { [weak self] in
+            print("\(String(describing: self?.notifier.allPendingNotifications))")
+        }
     }
     
     func showAlertForRescheduleNotifications() {
@@ -377,5 +388,9 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
 
         // Present the controller
         self.present(alertController, animated: true, completion: nil)
+        
+        notifier.pendingNotifications { [weak self] in
+            print("\(String(describing: self?.notifier.allPendingNotifications))")
+        }
     }
 }
