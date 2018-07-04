@@ -14,13 +14,16 @@ import GameKit
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, UIViewControllerPreviewingDelegate {
 
     var data = [Slogan]()
+    var filteredSlogans = [Slogan]()
+
     var notifier : NotificationManager {
         return (UIApplication.shared.delegate! as! AppDelegate).notificationManager
     }
-
     var deletedSlogan: Slogan!
     var deletedLine = 0
+    var selectedRow = 0
     var closestSlogan: String = ""
+    let searchController = UISearchController(searchResultsController: nil)
 
     @IBOutlet weak var tableView: UITableView!
 
@@ -58,23 +61,41 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             registerForPreviewing(with: self, sourceView: tableView)
         }
         
+        // Setup the Search Controller
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Suchen"
+        searchController.searchBar.backgroundColor = .clear
+        searchController.searchBar.barTintColor = Constants.myColor.fullAlpha
+        searchController.searchBar.tintColor = .white
+        searchController.searchBar.barStyle = .default
+        searchController.searchBar.isTranslucent = true
+        definesPresentationContext = true
+
+        navigationItem.searchController = searchController
+        if let textfield = searchController.searchBar.value(forKey: "searchField") as? UITextField {
+            if let backgroundview = textfield.subviews.first {
+                backgroundview.backgroundColor = UIColor.white
+                backgroundview.layer.cornerRadius = 10
+                backgroundview.clipsToBounds = true
+            }
+        }
+
+        let textFieldInsideUISearchBar = searchController.searchBar.value(forKey: "searchField") as! UITextField
+        let tempFontSize = textFieldInsideUISearchBar.font?.pointSize
+        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).defaultTextAttributes = [NSAttributedStringKey.font.rawValue: UIFont(name: "Avenir Next", size: tempFontSize!)!, NSAttributedStringKey.foregroundColor.rawValue: Constants.myColor.fullAlpha]
+        UITextField.appearance(whenContainedInInstancesOf: [type(of: searchController.searchBar)]).tintColor = Constants.myColor.fullAlpha
+
         if (data.count == 0) {
             alertNoData()
         }
 
         notifier.pendingNotifications { [weak self] in
             print("\(String(describing: self?.notifier.allPendingNotifications))")
-
-//            if let me = self {
-//                if (me.data.count == 0) {
-//                    self?.alertNoData()
-//                } else {
-//                    if (me.notifier.allPendingNotifications == 0) {
-//                        // show Alert for new Notifications
-//                        self?.alertNoMoreFutureNotificationsScheduled()
-//                    }
-//                }
-//            }
+            if (self?.notifier.allPendingNotifications == 0) {
+                // show Alert for new Notifications
+                self?.alertNoMoreFutureNotificationsScheduled()
+            }
         }
 
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -84,35 +105,16 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         } else if textInWidget != "" {
             openFromTodayWidget()
             textInWidget = ""
-        }
+        }        
 //        notifier.testLocalNotification()
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
-        if #available(iOS 11.0, *) {
-            navigationController?.navigationItem.largeTitleDisplayMode = .always
-            navigationController?.navigationBar.prefersLargeTitles = true
-        }
+        super.viewWillAppear(animated)
+        navigationController?.navigationItem.largeTitleDisplayMode = .always
+        navigationController?.navigationBar.prefersLargeTitles = true
         tableView.reloadData()
         getClosestSlogan()
-
-
-//        var arr: [Date] = []
-//        for headline in data {
-//            print("\(headline.fireDay)  \(headline.headline)")
-//            arr.append(headline.fireDay)
-//        }
-//        var temp: Date = Date()
-//        var gefunden: Bool = false
-//        if let closestDate = arr.sorted().first(where: {$0.timeIntervalSinceNow < 0}) {
-//            print(closestDate.description(with: .current))
-//            temp = closestDate
-//            gefunden = true
-////            indexOfA = arr.index(of: closestDate)!
-//        }
-//
-//        print("ergebnis: \(gefunden) \(temp)")
     }
 
     func getClosestSlogan() {
@@ -163,7 +165,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     // MARK: Undelete or restore
     func displayAlertNothingToUndo() {
         let alertController = UIAlertController(title: "", message: "Kein gelöschter Spruch zum Wiederherstellen gefunden.", preferredStyle: UIAlertControllerStyle.alert)
-        
+
         let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) {
             (result : UIAlertAction) -> Void in
         }
@@ -200,7 +202,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             
             recalculateRandomDays()
             tableView.reloadData()
-            tableView.scrollToRow(at: IndexPath(row: data.count - 1, section: 0), at: .bottom, animated: true)
+            tableView.scrollToRow(at: IndexPath(row: data.count - 1, section: 0), at: .middle, animated: true)
         } else {
             data.insert(deletedSlogan, at: deletedLine)
             tableView.beginUpdates()
@@ -208,8 +210,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             tableView.endUpdates()
 
             recalculateRandomDays()
-            //tableView.reloadData()
-            tableView.scrollToRow(at: IndexPath(row: deletedLine, section: 0), at: .bottom, animated: true)
+            tableView.scrollToRow(at: IndexPath(row: deletedLine, section: 0), at: .middle, animated: true)
         }
         deletedSlogan = nil
         deletedLine = 0
@@ -230,10 +231,17 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                     tableView.deselectRow(at: indexPath , animated: true)
                 }
             case "ShowSlogan":
+                let entry: Slogan
                 if let destination = segue.destination as? DetailViewController,
                     let indexPath = tableView.indexPathForSelectedRow {
-                    destination.selectedSlogan = data[indexPath.row]
-                }
+                    if isFiltering() {
+                        entry = filteredSlogans[indexPath.row]
+                        destination.selectedSlogan = entry
+                    } else {
+                        entry = data[indexPath.row]
+                        destination.selectedSlogan = entry
+                    }
+            }
             case "ShowSettings":
                 break
             default:
@@ -265,14 +273,24 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if isFiltering() {
+            return filteredSlogans.count
+        }
         return data.count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cellReuseIdentifier", for: indexPath)
-        let entry = data[indexPath.row]
-        cell.textLabel?.text = entry.headline
-        cell.textLabel?.font = UIFont(name: "Avenir Next", size: 16.0)
+        let entry: Slogan
+        if isFiltering() {
+            entry = filteredSlogans[indexPath.row]
+        } else {
+            entry = data[indexPath.row]
+        }
+        
+//        cell.textLabel?.text = entry.headline
+        cell.textLabel?.attributedText = NSMutableAttributedString(string: entry.headline, attributes: [NSAttributedStringKey(rawValue: NSAttributedStringKey.font.rawValue): UIFont(name: "Avenir Next", size: (cell.textLabel?.font.pointSize)!)!])
+        cell.textLabel?.adjustsFontForContentSizeCategory = true
         cell.textLabel?.textColor = Constants.myColor.fullAlpha
 
     // MARK: Highlight last Slogan
@@ -286,10 +304,17 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             cell.backgroundColor = UIColor.clear
             cell.textLabel?.textColor = Constants.myColor.fullAlpha
         }
+        
+//        if (selectedRow != 0 && indexPath.row == selectedRow) {
+//            cell.backgroundColor = UIColor.red
+////            tableView.deselectRow(at: IndexPath(row: selectedRow, section: 0) , animated: true)
+//            print("drin?")
+//        }
         return cell
     }
 
     func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
+        selectedRow = indexPath.row
         return true
     }
 
@@ -322,7 +347,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             cell?.textLabel?.backgroundColor = UIColor.white
             cell?.contentView.superview!.backgroundColor = Constants.myColor.halfAlpha
         }
-
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -484,9 +508,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let defaults = UserDefaults(suiteName: "group.com.alexwinter.motivation")
         let data2 = NSKeyedArchiver.archivedData(withRootObject: slogans)
         defaults?.setValue(data2, forKey: "widgetData")
-        
-        
-        
+
         var times: [Date] = []
         
         for slogan in self.data {
@@ -557,5 +579,44 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 
     func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
         show(viewControllerToCommit, sender: self)
+    }
+    
+    
+// MARK: - Filtering / Searching
+    func filterContentForSearchText(_ searchText: String) {
+        filteredSlogans = data.filter({( slogan : Slogan) -> Bool in
+//            let doesCategoryMatch = true
+            
+            if searchBarIsEmpty() {
+                return false
+            } else {
+//                return doesCategoryMatch && slogan.headline.lowercased().contains(searchText.lowercased()) || slogan.text.lowercased().contains(searchText.lowercased())
+                return slogan.headline.lowercased().contains(searchText.lowercased()) || slogan.text.lowercased().contains(searchText.lowercased())
+            }
+        })
+        tableView.reloadData()
+    }
+    
+    func searchBarIsEmpty() -> Bool {
+        return searchController.searchBar.text?.isEmpty ?? true
+    }
+    
+    func isFiltering() -> Bool {
+        let searchBarScopeIsFiltering = searchController.searchBar.selectedScopeButtonIndex != 0
+        return searchController.isActive && (!searchBarIsEmpty() || searchBarScopeIsFiltering)
+    }
+}
+
+extension ViewController: UISearchBarDelegate {
+// MARK: - UISearchBar Delegate
+    func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+        filterContentForSearchText(searchBar.text!)
+    }
+}
+
+extension ViewController: UISearchResultsUpdating {
+// MARK: - UISearchResultsUpdating Delegate
+    func updateSearchResults(for searchController: UISearchController) {
+        filterContentForSearchText(searchController.searchBar.text!)
     }
 }

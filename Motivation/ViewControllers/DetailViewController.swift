@@ -42,13 +42,18 @@ class DetailViewController: UIViewController, UITextViewDelegate {
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         tapGestureRecognizer = UITapGestureRecognizer(target:self, action: #selector(self.navBarTapped(_:)))
         self.navigationController?.navigationBar.addGestureRecognizer(tapGestureRecognizer)
         
-        if #available(iOS 11.0, *) {
-            navigationController?.navigationItem.largeTitleDisplayMode = .always
-            navigationController?.navigationBar.prefersLargeTitles = true
-        }
+        navigationController?.navigationItem.largeTitleDisplayMode = .always
+        navigationController?.navigationBar.prefersLargeTitles = true
+        scalingCustomFont()
+    }
+
+    func scalingCustomFont() {
+        bodyTextview.font = UIFontMetrics.default.scaledFont(for: UIFont(name: "Avenir Next", size: 16)!)
+        bodyTextview.adjustsFontForContentSizeCategory = true
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -125,7 +130,7 @@ class DetailViewController: UIViewController, UITextViewDelegate {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-//        bodyTextview.setContentOffset(CGPoint.zero, animated: false)
+        bodyTextview.setContentOffset(CGPoint.zero, animated: false)
     }
     
 //    MARK: TextView

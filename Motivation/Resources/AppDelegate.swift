@@ -38,12 +38,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         notificationManager = NotificationManager()
         setValuesforFirstLaunch()
 
-        if #available(iOS 11.0, *) {
-            UINavigationBar.appearance().largeTitleTextAttributes = [
-                NSAttributedStringKey.foregroundColor: UIColor.white,
-                NSAttributedStringKey.font: UIFont(name: "Avenir Next", size: 28.0)!
-            ]
-        }
+        UINavigationBar.appearance().largeTitleTextAttributes = [
+            NSAttributedStringKey.foregroundColor: UIColor.white,
+            NSAttributedStringKey.font: UIFont(name: "Avenir Next", size: 28.0)!
+        ]
         openedFromExtension()
         return true
     }

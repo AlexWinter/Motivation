@@ -48,10 +48,8 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        if #available(iOS 11.0, *) {
-            navigationController?.navigationItem.largeTitleDisplayMode = .always
-            navigationController?.navigationBar.prefersLargeTitles = true
-        }
+        navigationController?.navigationItem.largeTitleDisplayMode = .always
+        navigationController?.navigationBar.prefersLargeTitles = true
         changeAllTextColors()
         highlightSwitch.isOn = HighlightLastSlogan.isOn
     }
@@ -92,6 +90,19 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
 //        labelTipps.textColor = Constants.myColor.fullAlpha
         pickerStartTime.setValue(Constants.myColor.fullAlpha, forKeyPath: "textColor")
         pickerEndTime.setValue(Constants.myColor.fullAlpha, forKeyPath: "textColor")
+        
+        labelIndividualSound.font = UIFontMetrics.default.scaledFont(for: UIFont(name: "Avenir Next", size: 16)!)
+        labelStandardSound.font = UIFontMetrics.default.scaledFont(for: UIFont(name: "Avenir Next", size: 16)!)
+        labelStart.font = UIFontMetrics.default.scaledFont(for: UIFont(name: "Avenir Next", size: 16)!)
+        labelEnd.font = UIFontMetrics.default.scaledFont(for: UIFont(name: "Avenir Next", size: 16)!)
+        labelStartTime.font = UIFontMetrics.default.scaledFont(for: UIFont(name: "Avenir Next", size: 16)!)
+        labelEndTime.font = UIFontMetrics.default.scaledFont(for: UIFont(name: "Avenir Next", size: 16)!)
+        labelResetData.font = UIFontMetrics.default.scaledFont(for: UIFont(name: "Avenir Next", size: 16)!)
+        labelEmail.font = UIFontMetrics.default.scaledFont(for: UIFont(name: "Avenir Next", size: 16)!)
+        labelHighlightLastSlogan.font = UIFontMetrics.default.scaledFont(for: UIFont(name: "Avenir Next", size: 16)!)
+        labelRecalculateNotifications.font = UIFontMetrics.default.scaledFont(for: UIFont(name: "Avenir Next", size: 16)!)
+        labelTipps.font = UIFontMetrics.default.scaledFont(for: UIFont(name: "Avenir Next", size: 16)!)
+        labelHighlightLastSlogan.adjustsFontForContentSizeCategory = true
     }
 
     func getSavedSound() {
@@ -123,7 +134,10 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
     // MARK: TableView
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath)
-//        cell?.textLabel?.textColor = Constants.myColor.fullAlpha
+        
+        cell?.textLabel?.attributedText = NSMutableAttributedString(string: (cell?.textLabel?.text)!, attributes: [NSAttributedStringKey(rawValue: NSAttributedStringKey.font.rawValue): UIFont(name: "Avenir Next", size: (cell?.textLabel?.font.pointSize)!)!])
+        cell?.textLabel?.adjustsFontForContentSizeCategory = true
+        
         if (indexPath.section == 2 && indexPath.row == 0) {
             cell?.selectionStyle = .none
         }
@@ -151,7 +165,8 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
                     cellSoundStandard.accessoryType = .none
                     NotificationSound.individual = true
                     defaults.set(true, forKey: UserDefaults.Keys.IndividualNotificationSound)
-                    notifier.reScheduleAllNotificationsWithTheNewSound()
+//                    notifier.reScheduleAllNotificationsWithTheNewSound()
+                    NotificationCenter.default.post(name: .recalculateRandomDays, object: nil)
                 }
             } else if indexPath.row == 1 {
                 playStandardSound()
@@ -161,7 +176,8 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
                     cellSoundStandard.accessoryType = .checkmark
                     NotificationSound.individual = false
                     defaults.set(false, forKey: UserDefaults.Keys.IndividualNotificationSound)
-                    notifier.reScheduleAllNotificationsWithTheNewSound()
+//                    notifier.reScheduleAllNotificationsWithTheNewSound()
+                    NotificationCenter.default.post(name: .recalculateRandomDays, object: nil)
                 }
             }
 
@@ -204,18 +220,19 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
             if startTimeCellEpanded {
                 return 235
             } else {
-                return 40
+                return UITableViewAutomaticDimension
             }
         } else if indexPath.section == 1 && indexPath.row == 1 {
             if endTimeCellEpanded {
                 return 235
             } else {
-                return 40
+                return UITableViewAutomaticDimension
             }
         }
-        return 40
+//        return 40
+        return UITableViewAutomaticDimension
     }
-
+    
     override func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath)
         
@@ -235,7 +252,7 @@ class SettingsViewController: UITableViewController, UIPickerViewDelegate, UIPic
             cell?.textLabel?.textColor = Constants.myColor.halfAlpha
         }
     }
-    
+
     override func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath)
 

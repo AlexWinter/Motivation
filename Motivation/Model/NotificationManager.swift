@@ -57,7 +57,12 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 //        notificationContent.title = "Hier der Spruch für heute:"
         notificationContent.subtitle = title
         notificationContent.body = text
-        notificationContent.sound = UNNotificationSound(named: "DiDiDiDiDi.m4a")
+//        notificationContent.sound = UNNotificationSound(named: "DiDiDiDiDi.m4a")
+        if NotificationSound.individual {
+            notificationContent.sound = UNNotificationSound(named: "DiDiDiDiDi.m4a")
+        } else {
+            notificationContent.sound = UNNotificationSound.default()
+        }
         notificationContent.categoryIdentifier = "actionCategory"
         notificationContent.setValue(true, forKey: "shouldAlwaysAlertWhileAppIsForeground")
         notificationContent.userInfo = ["title":title]
@@ -136,30 +141,34 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 //        })
 //    }
 
-    func reScheduleAllNotificationsWithTheNewSound() {
-        let arrayOfNotifications: [UNNotificationRequest] = []
-
-        center.getPendingNotificationRequests(completionHandler: { (notifications) in
-            for notification in notifications {
-                let content = UNMutableNotificationContent()
-                content.title = notification.content.title
-                content.subtitle = notification.content.subtitle
-                content.body = notification.content.body
-                if NotificationSound.individual {
-                    content.sound = UNNotificationSound(named: "DiDiDiDiDi.m4a")
-                } else {
-                    content.sound = UNNotificationSound.default()
-                }
-
-                content.userInfo = notification.content.userInfo
-                content.categoryIdentifier = notification.content.categoryIdentifier
-            }
-        })
-
-        for notification in arrayOfNotifications {
-            center.add(notification, withCompletionHandler: nil)
-        }
-    }
+//    func reScheduleAllNotificationsWithTheNewSound() {
+//        let arrayOfNotifications: [UNNotificationRequest] = []
+//        center.getPendingNotificationRequests(completionHandler: { (notifications) in
+//            for notification in notifications {
+//                let content = UNMutableNotificationContent()
+//                content.title = notification.content.title
+//                content.subtitle = notification.content.subtitle
+//                content.body = notification.content.body
+//                if NotificationSound.individual {
+//                    content.sound = UNNotificationSound(named: "DiDiDiDiDi.m4a")
+//                } else {
+//                    content.sound = UNNotificationSound.default()
+//                }
+//                content.userInfo = notification.content.userInfo
+//                content.categoryIdentifier = notification.content.categoryIdentifier
+//            }
+//        })
+//
+//        for notification in arrayOfNotifications {
+////            center.add(notification, withCompletionHandler: nil)
+//
+//            center.add(notification) { (error) in
+//                if let error = error {
+//                    print("Unable to Add Notification Request (\(error), \(error.localizedDescription))")
+//                }
+//            }
+//        }
+//    }
 
     func pendingNotifications(completionHandler: @escaping () -> ()) {
         center.getPendingNotificationRequests(completionHandler: { (notifications) in
